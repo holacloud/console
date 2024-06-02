@@ -1,0 +1,6 @@
+github.com/fulldump/box v0.4.1 h1:f6PesEV4S2juJqPmUeAEBM4FLhrdmo6Qw7MPEr0jOnI=
+github.com/fulldump/box v0.4.1/go.mod h1:k1dcwIeNOar6zLlP9D8oF/4FjQeK8kAt7BtRUh/SrMg=
+github.com/fulldump/goconfig v1.6.1 h1:3Xif582G08uAWfiLIYFLgdZ/H+lUu1kCgMaZdMM44WQ=
+github.com/fulldump/goconfig v1.6.1/go.mod h1:qsSyOhlzhYkL2dJ3KWKxs1hX3Qv58Jzj8pRsIEkHmUY=
+github.com/fulldump/gootstrap v0.0.1 h1:5GkbtDUqSerxn7BRGYwh454ySLzJE7eZu04VqZFA58c=
+github.com/fulldump/gootstrap v0.0.1/go.mod h1:PbsNiPdJwFFnzR7481RKG9sdJzCPaXr+amyIe6+gMqQ=

@@ -1,0 +1,9 @@
+# github.com/fulldump/box v0.4.1
+## explicit; go 1.19
+github.com/fulldump/box
+# github.com/fulldump/goconfig v1.6.1
+## explicit; go 1.5
+github.com/fulldump/goconfig
+# github.com/fulldump/gootstrap v0.0.1
+## explicit; go 1.20
+github.com/fulldump/gootstrap
