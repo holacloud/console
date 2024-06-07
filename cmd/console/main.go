@@ -17,8 +17,9 @@ var VERSION = "dev"
 var BANNER = ` THIS IS THE CONSOLE ` + VERSION
 
 type Config struct {
-	Addr    string `usage:"address to listen on"`
-	Statics string `usage:"Define statics folder, if empty embedded files will be used"`
+	Addr              string `usage:"address to listen on"`
+	EnableCompression bool   `json:"enable_compression"`
+	Statics           string `usage:"Define statics folder, if empty embedded files will be used"`
 
 	ShowBanner bool `usage:"Print banner"`
 	ShowConfig bool `usage:"Print configuration and exit"`
@@ -29,8 +30,9 @@ func main() {
 
 	// Default config
 	c := &Config{
-		Addr:       ":8080",
-		ShowBanner: true,
+		Addr:              ":8080",
+		EnableCompression: true,
+		ShowBanner:        true,
 	}
 
 	// Load config
@@ -54,6 +56,12 @@ func main() {
 
 	// Build api and server
 	h := api.Build(c.Statics, VERSION)
+
+	if c.EnableCompression {
+		fmt.Println("Compression enabled")
+		h.WithInterceptors(api.Compression)
+	}
+
 	s := &http.Server{
 		Addr:    c.Addr,
 		Handler: h,
