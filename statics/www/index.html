@@ -681,7 +681,7 @@
 					fakeHeaders['X-Project'] = this.project.id;
 				}
 				this.fetchDatabases();
-				this.tabs[0].url = 'https://inceptiondb.hola.cloud/v2/?embed&project='+this.project.id;
+				this.tabs[0].url = 'https://inceptiondb.hola.cloud/?embed&project='+this.project.id;
 				this.tabs[1].url = 'https://lambda.hola.cloud/?embed&project='+this.project.id;
 			},
 			closeTab(i) {
@@ -709,7 +709,7 @@
 				this.tab = this.tabs.length-1;
 			},
 			openCollection(database, collection) {
-				let url = 'https://inceptiondb.hola.cloud/v2/?embed&project='+this.project_id+'#/databases/'+database.id+'/collections/'+collection.name;
+				let url = 'https://inceptiondb.hola.cloud/?embed&project='+this.project_id+'#/databases/'+database.id+'/collections/'+collection.name;
 
 				for (let i in this.tabs) {
 					if (this.tabs[i].url == url) {
