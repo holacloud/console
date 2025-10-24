@@ -11,11 +11,22 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
     <style>
         :root {
+            color-scheme: dark;
             --bg-gradient: radial-gradient(circle at 0% 0%, #0ea5e9 0%, rgba(14, 165, 233, 0.15) 25%, rgba(30, 41, 59, 0.85) 60%),
                 linear-gradient(160deg, #0f172a 0%, #111827 45%, #0b1120 100%);
             --surface-glass: rgba(15, 23, 42, 0.65);
             --surface-card: rgba(17, 24, 39, 0.82);
             --surface-elevated: rgba(15, 23, 42, 0.92);
+            --surface-topbar: rgba(15, 23, 42, 0.75);
+            --surface-header: rgba(15, 23, 42, 0.6);
+            --surface-tabbar: rgba(15, 23, 42, 0.65);
+            --surface-pill: rgba(15, 23, 42, 0.85);
+            --surface-muted: rgba(15, 23, 42, 0.45);
+            --surface-input: rgba(15, 23, 42, 0.85);
+            --surface-empty: rgba(15, 23, 42, 0.55);
+            --surface-list: rgba(15, 23, 42, 0.6);
+            --surface-child: rgba(15, 23, 42, 0.45);
+            --surface-tag: rgba(15, 23, 42, 0.65);
             --border-color: rgba(148, 163, 184, 0.24);
             --border-strong: rgba(148, 163, 184, 0.35);
             --text-primary: #f8fafc;
@@ -30,6 +41,7 @@
             --radius-md: 14px;
             --radius-sm: 10px;
             --transition-base: 0.25s ease;
+            --frame-bg: #0f172a;
         }
 
         * {
@@ -166,6 +178,22 @@
             background: rgba(56, 189, 248, 0.2);
         }
 
+        .sidebar-toggle-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+        }
+
+        .sidebar-toggle-button__icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .sidebar-toggle-button__label {
+            font-weight: 600;
+        }
+
         .spinner {
             width: 60px;
             height: 60px;
@@ -268,7 +296,7 @@
             justify-content: space-between;
             padding: 20px 32px;
             border-bottom: 1px solid var(--border-color);
-            background: rgba(15, 23, 42, 0.75);
+            background: var(--surface-topbar);
             backdrop-filter: blur(24px);
             position: sticky;
             top: 0;
@@ -400,6 +428,57 @@
             line-height: 1.6;
         }
 
+        .projects-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .projects-search {
+            position: relative;
+            width: min(320px, 100%);
+        }
+
+        .projects-search__icon {
+            position: absolute;
+            top: 50%;
+            left: 16px;
+            width: 18px;
+            height: 18px;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .projects-search__input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-strong);
+            background: var(--surface-input);
+            color: var(--text-primary);
+            font-size: 15px;
+            transition: border-color var(--transition-base), box-shadow var(--transition-base);
+        }
+
+        .projects-search__input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22);
+        }
+
+        .projects-empty {
+            margin-bottom: 16px;
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--primary);
+            font-size: 14px;
+            display: inline-flex;
+            max-width: 520px;
+            flex-wrap: wrap;
+        }
+
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -453,7 +532,7 @@
             font-size: 13px;
             padding: 6px 12px;
             border-radius: 999px;
-            background: rgba(15, 23, 42, 0.85);
+            background: var(--surface-pill);
             color: var(--text-secondary);
             display: inline-flex;
             align-items: center;
@@ -492,7 +571,7 @@
         .project-card--new {
             border-style: dashed;
             border-color: rgba(56, 189, 248, 0.35);
-            background: rgba(15, 23, 42, 0.45);
+            background: var(--surface-muted);
         }
 
         .new-project-form {
@@ -513,7 +592,7 @@
             width: 100%;
             padding: 12px 16px;
             border-radius: var(--radius-sm);
-            background: rgba(15, 23, 42, 0.85);
+            background: var(--surface-input);
             border: 1px solid var(--border-strong);
             color: var(--text-primary);
             font-size: 15px;
@@ -563,6 +642,53 @@
             opacity: 0;
         }
 
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 30;
+        }
+
+        .sidebar--mobile {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: min(320px, 88vw);
+            max-width: 320px;
+            max-height: none;
+            border-radius: 0;
+            border-right: 1px solid var(--border-color);
+            border-left: none;
+            transform: translateX(-110%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 40;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .sidebar--mobile.sidebar--mobile-open {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .sidebar-close {
+            align-self: flex-end;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 26px;
+            line-height: 1;
+            cursor: pointer;
+            margin: -8px -8px 8px;
+        }
+
+        .sidebar-close:hover {
+            color: var(--text-primary);
+        }
+
         .sidebar-header h3 {
             margin: 0 0 6px;
             font-size: 20px;
@@ -596,7 +722,7 @@
             gap: 8px;
             padding: 18px;
             border-radius: var(--radius-sm);
-            background: rgba(15, 23, 42, 0.55);
+            background: var(--surface-empty);
             color: var(--text-secondary);
             text-align: center;
             font-size: 14px;
@@ -608,7 +734,7 @@
             gap: 10px;
             padding: 10px 12px;
             border-radius: var(--radius-sm);
-            background: rgba(15, 23, 42, 0.6);
+            background: var(--surface-list);
             border: 1px solid transparent;
             color: var(--text-primary);
             cursor: pointer;
@@ -660,7 +786,7 @@
         }
 
         .sidebar-item--child {
-            background: rgba(15, 23, 42, 0.45);
+            background: var(--surface-child);
             font-size: 13px;
         }
 
@@ -686,7 +812,7 @@
             justify-content: space-between;
             padding: 24px 28px;
             border-bottom: 1px solid var(--border-color);
-            background: rgba(15, 23, 42, 0.6);
+            background: var(--surface-header);
             backdrop-filter: blur(18px);
             gap: 16px;
         }
@@ -708,7 +834,7 @@
             font-size: 13px;
             padding: 6px 12px;
             border-radius: 999px;
-            background: rgba(15, 23, 42, 0.85);
+            background: var(--surface-pill);
             color: var(--text-secondary);
         }
 
@@ -734,7 +860,7 @@
             gap: 4px;
             padding: 12px 12px 0;
             flex-wrap: wrap;
-            background: rgba(15, 23, 42, 0.65);
+            background: var(--surface-tabbar);
         }
 
         .workspace-tab {
@@ -799,7 +925,7 @@
             width: 100%;
             height: 100%;
             border: none;
-            background: #0f172a;
+            background: var(--frame-bg);
             opacity: 0;
             pointer-events: none;
             transition: opacity var(--transition-base);
@@ -808,6 +934,52 @@
         .workspace-frame--active {
             opacity: 1;
             pointer-events: auto;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                color-scheme: light;
+                --bg-gradient: radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.35) 0%, rgba(191, 219, 254, 0.3) 30%, rgba(241, 245, 249, 1) 70%),
+                    linear-gradient(160deg, #f8fafc 0%, #e2e8f0 100%);
+                --surface-glass: rgba(255, 255, 255, 0.78);
+                --surface-card: rgba(255, 255, 255, 0.92);
+                --surface-elevated: rgba(255, 255, 255, 0.96);
+                --surface-topbar: rgba(255, 255, 255, 0.9);
+                --surface-header: rgba(255, 255, 255, 0.92);
+                --surface-tabbar: rgba(248, 250, 252, 0.95);
+                --surface-pill: rgba(148, 163, 184, 0.22);
+                --surface-muted: rgba(14, 165, 233, 0.12);
+                --surface-input: rgba(255, 255, 255, 0.96);
+                --surface-empty: rgba(226, 232, 240, 0.9);
+                --surface-list: rgba(241, 245, 249, 0.95);
+                --surface-child: rgba(226, 232, 240, 0.9);
+                --surface-tag: rgba(148, 163, 184, 0.22);
+                --border-color: rgba(148, 163, 184, 0.35);
+                --border-strong: rgba(148, 163, 184, 0.45);
+                --text-primary: #0f172a;
+                --text-secondary: #475569;
+                --shadow-xl: 0 40px 80px rgba(15, 23, 42, 0.18);
+                --shadow-md: 0 16px 32px rgba(15, 23, 42, 0.16);
+                --frame-bg: #f8fafc;
+            }
+
+            body {
+                background: var(--bg-gradient);
+                color: var(--text-primary);
+            }
+
+            .projects-empty {
+                background: rgba(2, 132, 199, 0.12);
+                color: #0369a1;
+            }
+
+            .sidebar-overlay {
+                background: rgba(15, 23, 42, 0.25);
+            }
+
+            .sidebar-close {
+                color: var(--text-secondary);
+            }
         }
 
         @media (max-width: 1180px) {
@@ -843,6 +1015,14 @@
                 justify-content: space-between;
             }
 
+            .sidebar-toggle-button {
+                padding: 10px 14px;
+            }
+
+            .sidebar-toggle-button__label {
+                display: none;
+            }
+
             .project-switcher {
                 width: 100%;
             }
@@ -853,6 +1033,15 @@
 
             .dashboard-body {
                 padding: 24px;
+            }
+
+            .projects-toolbar {
+                width: 100%;
+                justify-content: stretch;
+            }
+
+            .projects-search {
+                width: 100%;
             }
 
             .projects-grid {
@@ -881,6 +1070,10 @@
             .workspace-meta__actions .ghost-button {
                 width: 100%;
                 justify-content: center;
+            }
+
+            .workspace-meta__actions .sidebar-toggle-button__label {
+                display: inline;
             }
 
             .card {
@@ -926,9 +1119,35 @@
                     </div>
                 </div>
                 <div class="topbar-actions">
-                    <button v-if="project" class="ghost-button ghost-button--primary" @click="toggleSidebar">
-                        <span v-if="layout.showSidebar">Ocultar panel</span>
-                        <span v-else>Mostrar panel</span>
+                    <button
+                        v-if="project"
+                        class="ghost-button ghost-button--primary sidebar-toggle-button"
+                        @click="toggleSidebar"
+                        :aria-expanded="layout.showSidebar"
+                        :aria-label="layout.showSidebar ? 'Ocultar panel de recursos' : 'Mostrar panel de recursos'"
+                        aria-controls="resourceSidebar"
+                    >
+                        <svg
+                            v-if="layout.showSidebar"
+                            key="icon-close"
+                            class="sidebar-toggle-button__icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <svg
+                            v-else
+                            key="icon-menu"
+                            class="sidebar-toggle-button__icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <span class="sidebar-toggle-button__label">{{ layout.showSidebar ? 'Ocultar panel' : 'Mostrar panel' }}</span>
                     </button>
                     <div v-if="project" class="project-switcher">
                         <label for="projectSelector">Proyecto activo</label>
@@ -964,46 +1183,79 @@
                         <p>Crea tu primer proyecto para desplegar APIs, bases de datos y archivos en cuestión de segundos.</p>
                         <button class="primary-button" @click="showNewProjectForm">Crear proyecto</button>
                     </div>
-                    <div v-else class="projects-grid">
-                        <article class="project-card" v-for="p in projects" :key="p.id">
-                            <div>
-                                <h3>{{ p.name }}</h3>
-                                <div class="project-card__meta">
-                                    <span class="project-card__id">{{ p.id }}</span>
-                                    <a v-if="p.host" class="project-card__link" :href="'https://' + p.host" target="_blank" rel="noopener">{{ p.host }}</a>
-                                    <span v-if="p.owners && p.owners.length > 1" class="project-card__badge">{{ p.owners.length }} miembros</span>
-                                </div>
-                                <p v-if="p.description" class="project-card__description">{{ p.description }}</p>
+                    <div v-else>
+                        <div v-if="showProjectSearch" class="projects-toolbar">
+                            <div class="projects-search">
+                                <svg class="projects-search__icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13.5 13.5L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                    <circle cx="9" cy="9" r="5" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <input
+                                    type="search"
+                                    class="projects-search__input"
+                                    v-model="inputs.projectQuery"
+                                    placeholder="Buscar proyectos por nombre o dominio"
+                                    aria-label="Buscar proyectos"
+                                >
                             </div>
-                            <button class="primary-button" @click="selectProject(p)">Abrir proyecto</button>
-                        </article>
-                        <article class="project-card project-card--new">
-                            <template v-if="!inputs.showNewProject">
-                                <h3>Crea un nuevo proyecto</h3>
-                                <p style="color: var(--text-secondary); line-height: 1.6;">Lanza un nuevo entorno con bases de datos, funciones y archivos listos para usar.</p>
-                                <button class="ghost-button ghost-button--primary" @click="showNewProjectForm">Nuevo proyecto</button>
-                            </template>
-                            <form v-else class="new-project-form" @submit.prevent="createProject">
+                        </div>
+                        <div v-if="showProjectSearchEmpty" class="projects-empty">
+                            <p>No encontramos proyectos que coincidan con “{{ inputs.projectQuery }}”.</p>
+                        </div>
+                        <div class="projects-grid">
+                            <article class="project-card" v-for="p in filteredProjects" :key="p.id">
                                 <div>
-                                    <label for="projectName">Nombre del proyecto</label>
-                                    <input id="projectName" class="input-control" type="text" v-model="inputs.name" autocomplete="off" placeholder="Ej. Equipo API">
+                                    <h3>{{ p.name }}</h3>
+                                    <div class="project-card__meta">
+                                        <span class="project-card__id">{{ p.id }}</span>
+                                        <a v-if="p.host" class="project-card__link" :href="'https://' + p.host" target="_blank" rel="noopener">{{ p.host }}</a>
+                                        <span v-if="p.owners && p.owners.length > 1" class="project-card__badge">{{ p.owners.length }} miembros</span>
+                                    </div>
+                                    <p v-if="p.description" class="project-card__description">{{ p.description }}</p>
                                 </div>
-                                <div class="form-actions">
-                                    <button type="button" class="ghost-button" @click="cancelNewProject">Cancelar</button>
-                                    <button type="submit" class="primary-button" :disabled="loading.creating || !inputs.name.trim()">
-                                        <span v-if="!loading.creating">Crear</span>
-                                        <span v-else>Creando...</span>
-                                    </button>
-                                </div>
-                            </form>
-                        </article>
+                                <button class="primary-button" @click="selectProject(p)">Abrir proyecto</button>
+                            </article>
+                            <article class="project-card project-card--new">
+                                <template v-if="!inputs.showNewProject">
+                                    <h3>Crea un nuevo proyecto</h3>
+                                    <p style="color: var(--text-secondary); line-height: 1.6;">Lanza un nuevo entorno con bases de datos, funciones y archivos listos para usar.</p>
+                                    <button class="ghost-button ghost-button--primary" @click="showNewProjectForm">Nuevo proyecto</button>
+                                </template>
+                                <form v-else class="new-project-form" @submit.prevent="createProject">
+                                    <div>
+                                        <label for="projectName">Nombre del proyecto</label>
+                                        <input id="projectName" class="input-control" type="text" v-model="inputs.name" autocomplete="off" placeholder="Ej. Equipo API">
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="button" class="ghost-button" @click="cancelNewProject">Cancelar</button>
+                                        <button type="submit" class="primary-button" :disabled="loading.creating || !inputs.name.trim()">
+                                            <span v-if="!loading.creating">Crear</span>
+                                            <span v-else>Creando...</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </article>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div v-else class="dashboard-body" style="padding-bottom: 24px;">
-                <div class="content-shell" :class="{'content-shell--collapsed': !layout.showSidebar}">
-                    <aside class="sidebar" :class="{'sidebar--hidden': !layout.showSidebar}">
+                <div class="content-shell" :class="contentShellClasses">
+                    <div v-if="layout.isMobile && layout.showSidebar" class="sidebar-overlay" @click="toggleSidebar"></div>
+                    <aside
+                        id="resourceSidebar"
+                        class="sidebar"
+                        :class="sidebarClasses"
+                        :aria-hidden="!layout.showSidebar"
+                    >
+                        <button
+                            v-if="layout.isMobile"
+                            type="button"
+                            class="sidebar-close"
+                            @click="toggleSidebar"
+                            aria-label="Cerrar panel de recursos"
+                        >&times;</button>
                         <div class="sidebar-header">
                             <h3>Explorador de recursos</h3>
                             <p>Accede rápidamente a tus bases de datos y lambdas.</p>
@@ -1061,7 +1313,35 @@
                                 </div>
                             </div>
                             <div class="workspace-meta__actions">
-                                <button class="ghost-button" @click="toggleSidebar">{{ layout.showSidebar ? 'Ocultar panel' : 'Mostrar panel' }}</button>
+                                <button
+                                    class="ghost-button sidebar-toggle-button"
+                                    @click="toggleSidebar"
+                                    :aria-expanded="layout.showSidebar"
+                                    :aria-label="layout.showSidebar ? 'Ocultar panel de recursos' : 'Mostrar panel de recursos'"
+                                    aria-controls="resourceSidebar"
+                                >
+                                    <svg
+                                        v-if="layout.showSidebar"
+                                        key="workspace-icon-close"
+                                        class="sidebar-toggle-button__icon"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                    </svg>
+                                    <svg
+                                        v-else
+                                        key="workspace-icon-menu"
+                                        class="sidebar-toggle-button__icon"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                    </svg>
+                                    <span class="sidebar-toggle-button__label">{{ layout.showSidebar ? 'Ocultar panel' : 'Mostrar panel' }}</span>
+                                </button>
                             </div>
                         </header>
                         <nav class="workspace-tabs">
@@ -1127,9 +1407,11 @@
                     inputs: {
                         name: '',
                         showNewProject: false,
+                        projectQuery: '',
                     },
                     layout: {
                         showSidebar: true,
+                        isMobile: false,
                     },
                     shortcutBuffer: '',
                     endpoints,
@@ -1142,9 +1424,49 @@
             },
             mounted() {
                 document.addEventListener('keyup', this.captureShortcut, true);
+                this.handleResize();
+                if (typeof window !== 'undefined') {
+                    window.addEventListener('resize', this.handleResize);
+                }
             },
             beforeUnmount() {
                 document.removeEventListener('keyup', this.captureShortcut, true);
+                if (typeof window !== 'undefined') {
+                    window.removeEventListener('resize', this.handleResize);
+                }
+            },
+            computed: {
+                filteredProjects() {
+                    const query = (this.inputs.projectQuery || '').trim().toLowerCase();
+                    if (!query || !this.showProjectSearch) {
+                        return this.projects;
+                    }
+                    return this.projects.filter(project => {
+                        const name = (project.name || '').toLowerCase();
+                        const host = (project.host || '').toLowerCase();
+                        const id = (project.id || '').toLowerCase();
+                        return name.includes(query) || host.includes(query) || id.includes(query);
+                    });
+                },
+                showProjectSearch() {
+                    return this.projects.length > 2;
+                },
+                showProjectSearchEmpty() {
+                    const query = (this.inputs.projectQuery || '').trim();
+                    return this.showProjectSearch && query && this.filteredProjects.length === 0;
+                },
+                sidebarClasses() {
+                    return {
+                        'sidebar--hidden': !this.layout.showSidebar && !this.layout.isMobile,
+                        'sidebar--mobile': this.layout.isMobile,
+                        'sidebar--mobile-open': this.layout.isMobile && this.layout.showSidebar,
+                    };
+                },
+                contentShellClasses() {
+                    return {
+                        'content-shell--collapsed': !this.layout.showSidebar && !this.layout.isMobile,
+                    };
+                },
             },
             methods: {
                 fetchCurrentUser() {
@@ -1268,7 +1590,7 @@
                     this.inputs.name = '';
                     this.tabs = this.coreTabs();
                     this.tab = 0;
-                    this.layout.showSidebar = true;
+                    this.layout.showSidebar = !this.layout.isMobile;
                     if (this.project_id) {
                         this.fetchTree();
                     }
@@ -1291,6 +1613,7 @@
                     this.tabs = this.coreTabs();
                     this.tab = 0;
                     this.tree = { databases: [], lambdas: [] };
+                    this.inputs.projectQuery = '';
                 },
                 coreTabs() {
                     return [
@@ -1408,6 +1731,17 @@
                 },
                 toggleSidebar() {
                     this.layout.showSidebar = !this.layout.showSidebar;
+                },
+                handleResize() {
+                    if (typeof window === 'undefined') {
+                        return;
+                    }
+                    const nowMobile = window.innerWidth <= 900;
+                    const changed = nowMobile !== this.layout.isMobile;
+                    this.layout.isMobile = nowMobile;
+                    if (changed) {
+                        this.layout.showSidebar = nowMobile ? false : true;
+                    }
                 },
                 captureShortcut(event) {
                     this.shortcutBuffer += event.key.toLowerCase();
