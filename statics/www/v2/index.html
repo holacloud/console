@@ -8,1084 +8,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-    <style>
-        :root {
-            color-scheme: dark;
-            --bg-gradient: radial-gradient(circle at 0% 0%, #0ea5e9 0%, rgba(14, 165, 233, 0.15) 25%, rgba(30, 41, 59, 0.85) 60%),
-                linear-gradient(160deg, #0f172a 0%, #111827 45%, #0b1120 100%);
-            --surface-glass: rgba(15, 23, 42, 0.65);
-            --surface-card: rgba(17, 24, 39, 0.82);
-            --surface-elevated: rgba(15, 23, 42, 0.92);
-            --surface-topbar: rgba(15, 23, 42, 0.75);
-            --surface-header: rgba(15, 23, 42, 0.6);
-            --surface-tabbar: rgba(15, 23, 42, 0.65);
-            --surface-pill: rgba(15, 23, 42, 0.85);
-            --surface-muted: rgba(15, 23, 42, 0.45);
-            --surface-input: rgba(15, 23, 42, 0.85);
-            --surface-empty: rgba(15, 23, 42, 0.55);
-            --surface-list: rgba(15, 23, 42, 0.6);
-            --surface-child: rgba(15, 23, 42, 0.45);
-            --surface-tag: rgba(15, 23, 42, 0.65);
-            --border-color: rgba(148, 163, 184, 0.24);
-            --border-strong: rgba(148, 163, 184, 0.35);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --primary: #38bdf8;
-            --primary-strong: #0ea5e9;
-            --primary-soft: rgba(56, 189, 248, 0.12);
-            --danger: #f43f5e;
-            --shadow-xl: 0 40px 80px rgba(15, 23, 42, 0.45);
-            --shadow-md: 0 16px 32px rgba(15, 23, 42, 0.25);
-            --radius-lg: 20px;
-            --radius-md: 14px;
-            --radius-sm: 10px;
-            --transition-base: 0.25s ease;
-            --frame-bg: #0f172a;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html, body {
-            height: 100%;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            color: var(--text-primary);
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            display: flex;
-            flex-direction: column;
-        }
-
-        [v-cloak] {
-            display: none;
-        }
-
-        a {
-            color: var(--primary);
-            text-decoration: none;
-            transition: color var(--transition-base);
-        }
-
-        a:hover {
-            color: var(--primary-strong);
-        }
-
-        button {
-            font: inherit;
-        }
-
-        input, select, button {
-            border: none;
-            outline: none;
-        }
-
-        #app {
-            flex: 1;
-            display: flex;
-            min-height: 100vh;
-            width: 100%;
-        }
-
-        .state {
-            width: 100%;
-            min-height: 100vh;
-            padding: 64px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .card {
-            background: var(--surface-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
-            padding: 40px;
-            max-width: 520px;
-            width: 100%;
-            text-align: center;
-            backdrop-filter: blur(30px);
-        }
-
-        .card h1,
-        .card h2 {
-            margin-top: 0;
-            margin-bottom: 12px;
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .card p {
-            margin: 0 0 24px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .primary-button,
-        .ghost-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            border-radius: 999px;
-            padding: 12px 28px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base), color var(--transition-base);
-        }
-
-        .primary-button {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
-            color: #0b1120;
-            box-shadow: 0 18px 36px rgba(14, 165, 233, 0.25);
-        }
-
-        .primary-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 24px 48px rgba(14, 165, 233, 0.35);
-        }
-
-        .primary-button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .ghost-button {
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1px solid var(--border-color);
-        }
-
-        .ghost-button:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .ghost-button--primary {
-            background: var(--primary-soft);
-            color: var(--primary);
-            border-color: transparent;
-        }
-
-        .ghost-button--primary:hover {
-            background: rgba(56, 189, 248, 0.2);
-        }
-
-        .sidebar-toggle-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 20px;
-        }
-
-        .sidebar-toggle-button__icon {
-            width: 18px;
-            height: 18px;
-        }
-
-        .sidebar-toggle-button__label {
-            font-weight: 600;
-        }
-
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 6px solid rgba(148, 163, 184, 0.35);
-            border-top-color: var(--primary);
-            animation: spin 1s linear infinite;
-            margin: 0 auto 24px;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
+    <link rel="stylesheet" href="../../ds/styles.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js"
             }
         }
+    </script>
+    <link rel="stylesheet" href="app.css">
 
-        .state-guest .landing {
-            width: 100%;
-            max-width: 1060px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px;
-            align-items: center;
-        }
-
-        .landing-copy {
-            background: var(--surface-glass);
-            border-radius: var(--radius-lg);
-            padding: 48px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-md);
-            backdrop-filter: blur(22px);
-        }
-
-        .landing-kicker {
-            display: inline-flex;
-            padding: 6px 14px;
-            border-radius: 999px;
-            background: rgba(56, 189, 248, 0.16);
-            color: var(--primary);
-            font-size: 13px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            margin-bottom: 18px;
-        }
-
-        .landing-copy h1 {
-            margin: 0 0 16px;
-            font-size: 42px;
-            font-weight: 700;
-            line-height: 1.15;
-        }
-
-        .landing-copy p {
-            margin: 0 0 28px;
-            font-size: 18px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        .landing-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .landing-visual {
-            position: relative;
-            padding: 48px;
-        }
-
-        .landing-visual::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at top, rgba(56, 189, 248, 0.35), transparent 60%);
-            filter: blur(50px);
-            opacity: 0.8;
-        }
-
-        .landing-visual img {
-            position: relative;
-            width: 100%;
-            max-width: 360px;
-            display: block;
-            margin: 0 auto;
-            filter: drop-shadow(0 30px 60px rgba(14, 165, 233, 0.45));
-        }
-
-        .dashboard {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            min-height: 100vh;
-        }
-
-        .topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 32px;
-            border-bottom: 1px solid var(--border-color);
-            background: var(--surface-topbar);
-            backdrop-filter: blur(24px);
-            position: sticky;
-            top: 0;
-            z-index: 20;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .brand-logo {
-            height: 42px;
-            width: auto;
-        }
-
-        .brand-copy {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .brand-title {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-        }
-
-        .brand-subtitle {
-            font-size: 13px;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-        }
-
-        .topbar-actions {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .project-switcher {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .project-switcher label {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-secondary);
-        }
-
-        .select-control {
-            min-width: 220px;
-            background: var(--surface-card);
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 10px 40px 10px 14px;
-            appearance: none;
-            background-image: url('data:image/svg+xml,%3Csvg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M10.59 0.589966L6 5.16997L1.41 0.589966L0 1.99997L6 7.99997L12 1.99997L10.59 0.589966Z" fill="%23ffffff"/%3E%3C/svg%3E');
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-        }
-
-        .select-control option {
-            background: #0f172a;
-        }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 8px 14px;
-            border-radius: 999px;
-            background: rgba(148, 163, 184, 0.08);
-            border: 1px solid rgba(148, 163, 184, 0.16);
-        }
-
-        .user-menu img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(56, 189, 248, 0.55);
-        }
-
-        .user-meta {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .user-nick {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .logout-link {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .dashboard-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 32px 32px 48px;
-            gap: 32px;
-            min-height: 0;
-        }
-
-        .projects-header {
-            max-width: 720px;
-        }
-
-        .projects-header h2 {
-            margin: 0 0 12px;
-            font-size: 32px;
-        }
-
-        .projects-header p {
-            margin: 0;
-            color: var(--text-secondary);
-            font-size: 17px;
-            line-height: 1.6;
-        }
-
-        .projects-toolbar {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .projects-search {
-            position: relative;
-            width: min(320px, 100%);
-        }
-
-        .projects-search__icon {
-            position: absolute;
-            top: 50%;
-            left: 16px;
-            width: 18px;
-            height: 18px;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-            pointer-events: none;
-        }
-
-        .projects-search__input {
-            width: 100%;
-            padding: 12px 16px 12px 44px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-strong);
-            background: var(--surface-input);
-            color: var(--text-primary);
-            font-size: 15px;
-            transition: border-color var(--transition-base), box-shadow var(--transition-base);
-        }
-
-        .projects-search__input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22);
-        }
-
-        .projects-empty {
-            margin-bottom: 16px;
-            padding: 14px 18px;
-            border-radius: var(--radius-md);
-            background: rgba(56, 189, 248, 0.12);
-            color: var(--primary);
-            font-size: 14px;
-            display: inline-flex;
-            max-width: 520px;
-            flex-wrap: wrap;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-        }
-
-        .project-card {
-            background: var(--surface-card);
-            border-radius: var(--radius-md);
-            padding: 28px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-md);
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(18px);
-        }
-
-        .project-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), transparent 60%);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity var(--transition-base);
-        }
-
-        .project-card:hover::after {
-            opacity: 1;
-        }
-
-        .project-card h3 {
-            margin: 0;
-            font-size: 22px;
-        }
-
-        .project-card__meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .project-card__id {
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-            font-size: 13px;
-            padding: 6px 12px;
-            border-radius: 999px;
-            background: var(--surface-pill);
-            color: var(--text-secondary);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .project-card__link {
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: rgba(56, 189, 248, 0.12);
-            color: var(--primary);
-        }
-
-        .project-card__link:hover {
-            background: rgba(56, 189, 248, 0.2);
-        }
-
-        .project-card__badge {
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--primary);
-        }
-
-        .project-card__description {
-            margin: 8px 0 0;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            font-size: 15px;
-        }
-
-        .project-card .primary-button {
-            align-self: flex-start;
-        }
-
-        .project-card--new {
-            border-style: dashed;
-            border-color: rgba(56, 189, 248, 0.35);
-            background: var(--surface-muted);
-        }
-
-        .new-project-form {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            text-align: left;
-        }
-
-        .new-project-form label {
-            font-size: 13px;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-        }
-
-        .input-control {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: var(--radius-sm);
-            background: var(--surface-input);
-            border: 1px solid var(--border-strong);
-            color: var(--text-primary);
-            font-size: 15px;
-            transition: border-color var(--transition-base), box-shadow var(--transition-base);
-        }
-
-        .input-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22);
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-        }
-
-        .content-shell {
-            flex: 1;
-            display: flex;
-            gap: 24px;
-            min-height: 0;
-        }
-
-        .content-shell--collapsed .sidebar {
-            transform: translateX(-110%);
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        .sidebar {
-            width: 320px;
-            background: var(--surface-elevated);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 28px;
-            transition: transform var(--transition-base), opacity var(--transition-base);
-            overflow-y: auto;
-        }
-
-        .sidebar--hidden {
-            transform: translateX(-110%);
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        .sidebar-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.45);
-            backdrop-filter: blur(4px);
-            z-index: 30;
-        }
-
-        .sidebar--mobile {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: min(320px, 88vw);
-            max-width: 320px;
-            max-height: none;
-            border-radius: 0;
-            border-right: 1px solid var(--border-color);
-            border-left: none;
-            transform: translateX(-110%);
-            opacity: 0;
-            pointer-events: none;
-            z-index: 40;
-            box-shadow: var(--shadow-xl);
-        }
-
-        .sidebar--mobile.sidebar--mobile-open {
-            transform: translateX(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .sidebar-close {
-            align-self: flex-end;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 26px;
-            line-height: 1;
-            cursor: pointer;
-            margin: -8px -8px 8px;
-        }
-
-        .sidebar-close:hover {
-            color: var(--text-primary);
-        }
-
-        .sidebar-header h3 {
-            margin: 0 0 6px;
-            font-size: 20px;
-        }
-
-        .sidebar-header p {
-            margin: 0;
-            color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .sidebar-section header {
-            font-size: 12px;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-        }
-
-        .sidebar-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .sidebar-empty {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            padding: 18px;
-            border-radius: var(--radius-sm);
-            background: var(--surface-empty);
-            color: var(--text-secondary);
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .sidebar-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: var(--radius-sm);
-            background: var(--surface-list);
-            border: 1px solid transparent;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: border-color var(--transition-base), background var(--transition-base), transform var(--transition-base);
-            width: 100%;
-        }
-
-        .sidebar-item:hover {
-            border-color: var(--primary);
-            background: rgba(56, 189, 248, 0.16);
-            transform: translateX(4px);
-        }
-
-        .sidebar-item__icon {
-            width: 18px;
-            height: 18px;
-            filter: brightness(1.4);
-        }
-
-        .sidebar-item__icon--child {
-            filter: contrast(0.6) brightness(1.3);
-        }
-
-        .sidebar-item__label {
-            flex: 1;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        .sidebar-item__chevron {
-            width: 10px;
-            height: 10px;
-            border-right: 2px solid rgba(148, 163, 184, 0.7);
-            border-bottom: 2px solid rgba(148, 163, 184, 0.7);
-            transform: rotate(-45deg);
-            transition: transform var(--transition-base);
-        }
-
-        .sidebar-item__chevron--open {
-            transform: rotate(45deg);
-        }
-
-        .sidebar-children {
-            margin-left: 28px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding-top: 6px;
-        }
-
-        .sidebar-item--child {
-            background: var(--surface-child);
-            font-size: 13px;
-        }
-
-        .sidebar-item--child:hover {
-            transform: translateX(6px);
-        }
-
-        .workspace {
-            flex: 1;
-            background: var(--surface-elevated);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-        }
-
-        .workspace-meta {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 24px 28px;
-            border-bottom: 1px solid var(--border-color);
-            background: var(--surface-header);
-            backdrop-filter: blur(18px);
-            gap: 16px;
-        }
-
-        .workspace-meta h2 {
-            margin: 0 0 8px;
-            font-size: 24px;
-        }
-
-        .workspace-meta__details {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .workspace-meta__id {
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-            font-size: 13px;
-            padding: 6px 12px;
-            border-radius: 999px;
-            background: var(--surface-pill);
-            color: var(--text-secondary);
-        }
-
-        .workspace-meta__link {
-            padding: 6px 12px;
-            border-radius: 999px;
-            background: rgba(56, 189, 248, 0.16);
-            color: var(--primary);
-            font-size: 13px;
-        }
-
-        .workspace-meta__badge {
-            padding: 6px 12px;
-            border-radius: 999px;
-            background: rgba(15, 118, 110, 0.25);
-            color: #5eead4;
-            font-size: 13px;
-        }
-
-        .workspace-tabs {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 12px 12px 0;
-            flex-wrap: wrap;
-            background: var(--surface-tabbar);
-        }
-
-        .workspace-tab {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 16px;
-            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1px solid transparent;
-            border-bottom: none;
-            cursor: pointer;
-            position: relative;
-            transition: background var(--transition-base), color var(--transition-base), border-color var(--transition-base);
-        }
-
-        .workspace-tab:hover {
-            color: var(--text-primary);
-        }
-
-        .workspace-tab--active {
-            background: var(--surface-card);
-            color: var(--text-primary);
-            border-color: var(--border-color);
-            border-bottom: 1px solid var(--surface-card);
-        }
-
-        .workspace-tab__icon {
-            width: 16px;
-            height: 16px;
-        }
-
-        .workspace-tab__close {
-            font-size: 18px;
-            line-height: 1;
-            padding-left: 6px;
-            opacity: 0.6;
-        }
-
-        .workspace-tab__close:hover {
-            opacity: 1;
-        }
-
-        .workspace-tab__badge {
-            background: rgba(56, 189, 248, 0.18);
-            color: var(--primary);
-            font-size: 11px;
-            padding: 2px 6px;
-            border-radius: 999px;
-        }
-
-        .workspace-content {
-            position: relative;
-            flex: 1;
-            min-height: 0;
-        }
-
-        .workspace-frame {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: var(--frame-bg);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity var(--transition-base);
-        }
-
-        .workspace-frame--active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        @media (prefers-color-scheme: light) {
-            :root {
-                color-scheme: light;
-                --bg-gradient: radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.35) 0%, rgba(191, 219, 254, 0.3) 30%, rgba(241, 245, 249, 1) 70%),
-                    linear-gradient(160deg, #f8fafc 0%, #e2e8f0 100%);
-                --surface-glass: rgba(255, 255, 255, 0.78);
-                --surface-card: rgba(255, 255, 255, 0.92);
-                --surface-elevated: rgba(255, 255, 255, 0.96);
-                --surface-topbar: rgba(255, 255, 255, 0.9);
-                --surface-header: rgba(255, 255, 255, 0.92);
-                --surface-tabbar: rgba(248, 250, 252, 0.95);
-                --surface-pill: rgba(148, 163, 184, 0.22);
-                --surface-muted: rgba(14, 165, 233, 0.12);
-                --surface-input: rgba(255, 255, 255, 0.96);
-                --surface-empty: rgba(226, 232, 240, 0.9);
-                --surface-list: rgba(241, 245, 249, 0.95);
-                --surface-child: rgba(226, 232, 240, 0.9);
-                --surface-tag: rgba(148, 163, 184, 0.22);
-                --border-color: rgba(148, 163, 184, 0.35);
-                --border-strong: rgba(148, 163, 184, 0.45);
-                --text-primary: #0f172a;
-                --text-secondary: #475569;
-                --shadow-xl: 0 40px 80px rgba(15, 23, 42, 0.18);
-                --shadow-md: 0 16px 32px rgba(15, 23, 42, 0.16);
-                --frame-bg: #f8fafc;
-            }
-
-            body {
-                background: var(--bg-gradient);
-                color: var(--text-primary);
-            }
-
-            .projects-empty {
-                background: rgba(2, 132, 199, 0.12);
-                color: #0369a1;
-            }
-
-            .sidebar-overlay {
-                background: rgba(15, 23, 42, 0.25);
-            }
-
-            .sidebar-close {
-                color: var(--text-secondary);
-            }
-        }
-
-        @media (max-width: 1180px) {
-            .content-shell {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                max-height: 320px;
-                order: 2;
-            }
-
-            .workspace {
-                order: 1;
-            }
-
-            .content-shell--collapsed .sidebar {
-                display: none;
-            }
-        }
-
-        @media (max-width: 900px) {
-            .topbar {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 18px;
-            }
-
-            .topbar-actions {
-                width: 100%;
-                flex-wrap: wrap;
-                justify-content: space-between;
-            }
-
-            .sidebar-toggle-button {
-                padding: 10px 14px;
-            }
-
-            .sidebar-toggle-button__label {
-                display: none;
-            }
-
-            .project-switcher {
-                width: 100%;
-            }
-
-            .select-control {
-                width: 100%;
-            }
-
-            .dashboard-body {
-                padding: 24px;
-            }
-
-            .projects-toolbar {
-                width: 100%;
-                justify-content: stretch;
-            }
-
-            .projects-search {
-                width: 100%;
-            }
-
-            .projects-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            }
-        }
-
-        @media (max-width: 640px) {
-            .landing-copy {
-                padding: 36px;
-            }
-
-            .landing-copy h1 {
-                font-size: 32px;
-            }
-
-            .workspace-meta {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .workspace-meta__actions {
-                width: 100%;
-            }
-
-            .workspace-meta__actions .ghost-button {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .workspace-meta__actions .sidebar-toggle-button__label {
-                display: inline;
-            }
-
-            .card {
-                padding: 32px;
-            }
-        }
-    </style>
 </head>
 <body>
     <div id="app" v-cloak>
         <div v-if="user === 'loading'" class="state state-loading">
-            <div class="card">
+            <div class="card hc-card">
                 <div class="spinner"></div>
                 <h2>Conectando con hola.cloud</h2>
                 <p>Estamos preparando tu espacio de trabajo...</p>
@@ -1093,14 +30,14 @@
         </div>
 
         <div v-else-if="!user" class="state state-guest">
-            <div class="landing">
-                <div class="landing-copy">
+                <div class="landing">
+                    <div class="landing-copy hc-card">
                     <span class="landing-kicker">hola.cloud console</span>
                     <h1>Gestiona tu nube con una experiencia impecable</h1>
                     <p>Controla lambdas, bases de datos y archivos desde un entorno moderno diseñado para equipos que necesitan moverse rápido.</p>
                     <div class="landing-actions">
-                        <a href="https://hola.cloud/auth/login" class="primary-button">Iniciar sesión</a>
-                        <a href="https://hola.cloud" class="ghost-button">Conoce hola.cloud</a>
+                        <a href="https://hola.cloud/auth/login" class="hc-button hc-btn-primary" role="button">Iniciar sesión</a>
+                        <a href="https://hola.cloud" class="hc-button hc-btn-secondary" role="button">Conoce hola.cloud</a>
                     </div>
                 </div>
                 <div class="landing-visual">
@@ -1119,9 +56,11 @@
                     </div>
                 </div>
                 <div class="topbar-actions">
-                    <button
+                    <HcButton
                         v-if="project"
-                        class="ghost-button ghost-button--primary sidebar-toggle-button"
+                        variant="subtle"
+                        class="sidebar-toggle-button"
+                        type="button"
                         @click="toggleSidebar"
                         :aria-expanded="layout.showSidebar"
                         :aria-label="layout.showSidebar ? 'Ocultar panel de recursos' : 'Mostrar panel de recursos'"
@@ -1148,13 +87,16 @@
                             <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                         </svg>
                         <span class="sidebar-toggle-button__label">{{ layout.showSidebar ? 'Ocultar panel' : 'Mostrar panel' }}</span>
-                    </button>
+                    </HcButton>
                     <div v-if="project" class="project-switcher">
-                        <label for="projectSelector">Proyecto activo</label>
-                        <select id="projectSelector" class="select-control" v-model="project_id" @change="switchProject">
-                            <option v-for="p in projects" :key="p.id" :value="p.id">{{ p.name }}</option>
-                            <option value="">← Ver otros proyectos</option>
-                        </select>
+                        <label for="projectSelector" class="hc-form-label">Proyecto activo</label>
+                        <HcSelect
+                            id="projectSelector"
+                            v-model="project_id"
+                            :options="projectOptions"
+                            placeholder="Selecciona un proyecto"
+                            @change="switchProject"
+                        />
                     </div>
                     <div class="user-menu">
                         <img :src="user.picture" alt="Avatar">
@@ -1172,16 +114,16 @@
                     <p>Selecciona un proyecto existente o crea uno nuevo para comenzar a trabajar con los servicios de hola.cloud.</p>
                 </section>
 
-                <div v-if="loading.fetch" class="card" style="max-width: 420px; align-self: center;">
+                <div v-if="loading.fetch" class="card hc-card" style="max-width: 420px; align-self: center;">
                     <div class="spinner" style="width: 48px; height: 48px; border-width: 5px; margin-bottom: 16px;"></div>
                     <p>Cargando proyectos...</p>
                 </div>
 
                 <div v-else>
-                    <div v-if="projects.length === 0" class="card" style="max-width: 520px; align-self: center; text-align: left;">
+                    <div v-if="projects.length === 0" class="card hc-card" style="max-width: 520px; align-self: center; text-align: left;">
                         <h2>Aún no tienes proyectos</h2>
                         <p>Crea tu primer proyecto para desplegar APIs, bases de datos y archivos en cuestión de segundos.</p>
-                        <button class="primary-button" @click="showNewProjectForm">Crear proyecto</button>
+                        <HcButton @click="showNewProjectForm">Crear proyecto</HcButton>
                     </div>
                     <div v-else>
                         <div v-if="showProjectSearch" class="projects-toolbar">
@@ -1192,7 +134,7 @@
                                 </svg>
                                 <input
                                     type="search"
-                                    class="projects-search__input"
+                                    class="projects-search__input hc-input"
                                     v-model="inputs.projectQuery"
                                     placeholder="Buscar proyectos por nombre o dominio"
                                     aria-label="Buscar proyectos"
@@ -1203,7 +145,7 @@
                             <p>No encontramos proyectos que coincidan con “{{ inputs.projectQuery }}”.</p>
                         </div>
                         <div class="projects-grid">
-                            <article class="project-card" v-for="p in filteredProjects" :key="p.id">
+                            <article class="project-card hc-card" v-for="p in filteredProjects" :key="p.id">
                                 <div>
                                     <h3>{{ p.name }}</h3>
                                     <div class="project-card__meta">
@@ -1213,25 +155,25 @@
                                     </div>
                                     <p v-if="p.description" class="project-card__description">{{ p.description }}</p>
                                 </div>
-                                <button class="primary-button" @click="selectProject(p)">Abrir proyecto</button>
+                                <HcButton @click="selectProject(p)">Abrir proyecto</HcButton>
                             </article>
-                            <article class="project-card project-card--new">
+                            <article class="project-card project-card--new hc-card">
                                 <template v-if="!inputs.showNewProject">
                                     <h3>Crea un nuevo proyecto</h3>
                                     <p style="color: var(--text-secondary); line-height: 1.6;">Lanza un nuevo entorno con bases de datos, funciones y archivos listos para usar.</p>
-                                    <button class="ghost-button ghost-button--primary" @click="showNewProjectForm">Nuevo proyecto</button>
+                                    <HcButton variant="secondary" @click="showNewProjectForm">Nuevo proyecto</HcButton>
                                 </template>
                                 <form v-else class="new-project-form" @submit.prevent="createProject">
-                                    <div>
-                                        <label for="projectName">Nombre del proyecto</label>
-                                        <input id="projectName" class="input-control" type="text" v-model="inputs.name" autocomplete="off" placeholder="Ej. Equipo API">
+                                    <div class="hc-input-wrapper">
+                                        <label for="projectName" class="hc-form-label">Nombre del proyecto</label>
+                                        <input id="projectName" class="hc-input" type="text" v-model="inputs.name" autocomplete="off" placeholder="Ej. Equipo API">
                                     </div>
                                     <div class="form-actions">
-                                        <button type="button" class="ghost-button" @click="cancelNewProject">Cancelar</button>
-                                        <button type="submit" class="primary-button" :disabled="loading.creating || !inputs.name.trim()">
+                                        <HcButton type="button" variant="secondary" @click="cancelNewProject">Cancelar</HcButton>
+                                        <HcButton type="submit" :disabled="loading.creating || !inputs.name.trim()">
                                             <span v-if="!loading.creating">Crear</span>
                                             <span v-else>Creando...</span>
-                                        </button>
+                                        </HcButton>
                                     </div>
                                 </form>
                             </article>
@@ -1313,8 +255,10 @@
                                 </div>
                             </div>
                             <div class="workspace-meta__actions">
-                                <button
-                                    class="ghost-button sidebar-toggle-button"
+                                <HcButton
+                                    variant="subtle"
+                                    class="sidebar-toggle-button"
+                                    type="button"
                                     @click="toggleSidebar"
                                     :aria-expanded="layout.showSidebar"
                                     :aria-label="layout.showSidebar ? 'Ocultar panel de recursos' : 'Mostrar panel de recursos'"
@@ -1341,7 +285,7 @@
                                         <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                                     </svg>
                                     <span class="sidebar-toggle-button__label">{{ layout.showSidebar ? 'Ocultar panel' : 'Mostrar panel' }}</span>
-                                </button>
+                                </HcButton>
                             </div>
                         </header>
                         <nav class="workspace-tabs">
@@ -1361,8 +305,12 @@
         </div>
     </div>
 
-    <script>
-        const { createApp } = Vue;
+    <script type="module">
+        import { createApp } from 'vue';
+        import HcButton from '../../ds/components/HcButton.js';
+        import HcCard from '../../ds/components/HcCard.js';
+        import HcInput from '../../ds/components/HcInput.js';
+        import HcSelect from '../../ds/components/HcSelect.js';
 
         const localdev = document.location.hostname === 'localhost';
         const fakeHeaders = {};
@@ -1386,7 +334,7 @@
             endpoints.lambda = '/fakeapi/lambdasapi';
         }
 
-        createApp({
+        const app = createApp({
             data() {
                 return {
                     user: 'loading',
@@ -1466,6 +414,23 @@
                     return {
                         'content-shell--collapsed': !this.layout.showSidebar && !this.layout.isMobile,
                     };
+                },
+                projectOptions() {
+                    const options = this.projects.map(project => ({
+                        value: project.id,
+                        label: project.name,
+                        description: project.host || undefined,
+                        meta:
+                            project.owners && project.owners.length > 1
+                                ? `${project.owners.length} miembros`
+                                : undefined,
+                    }));
+                    options.push({
+                        value: '',
+                        label: '← Ver otros proyectos',
+                        description: 'Regresa al listado completo',
+                    });
+                    return options;
                 },
             },
             methods: {
@@ -1761,7 +726,13 @@
                     return 0;
                 },
             },
-        }).mount('#app');
+        });
+        app.component('HcButton', HcButton);
+        app.component('HcCard', HcCard);
+        app.component('HcInput', HcInput);
+        app.component('HcSelect', HcSelect);
+
+        app.mount('#app');
     </script>
 </body>
 </html>
