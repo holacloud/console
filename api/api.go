@@ -27,6 +27,7 @@ func Build(staticsDir, version string) *box.B {
 	fakeapi.Handle("GET", "/inceptionapi/v1/databases/{databaseid}/collections", FakeListCollections)
 	fakeapi.Handle("GET", "/lambdasapi/api/v0/lambdas", FakeListLambdas)
 	fakeapi.Handle("GET", "/projectsapi/v0/projects", FakeListProjects)
+	fakeapi.Handle("GET", "/projectsapi/v0/projects/{projectid}", FakeProject)
 
 	// Static files
 	b.Handle("GET", "/*", statics.ServeStatics(staticsDir)).
@@ -134,6 +135,44 @@ func FakeListProjects() any {
 			"name":   "Hello",
 			"host":   "big-fish.holacloud.app",
 			"owners": []string{"user1"},
+		},
+	}
+}
+
+func FakeProject() any {
+
+	return JSON{
+		"id":   "project-cac3dcdb-c0fd-4a5b-bc53-a3a761bc269c",
+		"name": "Mi Mundo 🌍😃",
+		"owners": []string{
+			"user-0b654fad-8b74-4431-81d7-a016aa47e29e",
+		},
+		"routers": []JSON{
+			{
+				"type": "proxy",
+				"hosts": []JSON{
+					{
+						"name":               "local-alpaca.holacloud.app",
+						"verified":           true,
+						"creation_timestamp": 1.735794204411397e+18,
+					},
+					{
+						"name":               "mimundo.holacloud.app",
+						"verified":           true,
+						"creation_timestamp": 1.735794204411397e+18,
+					},
+				},
+				"HeadersIn":  nil,
+				"HeadersOut": nil,
+				"config": JSON{
+					"destination": "http://127.0.0.1:3003",
+				},
+			},
+		},
+		"create_timestamp": 1.7357942044106714e+18,
+		"update_timestamp": 1.7357942044206715e+18,
+		"auth": JSON{
+			"enabled": true,
 		},
 	}
 }
