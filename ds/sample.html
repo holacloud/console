@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hola Cloud Design System · Muestra</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      :root {
+        --ds-spacing: clamp(0.85rem, 1.8vw, 1.35rem);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        background: var(--color-background);
+      }
+
+      body {
+        margin: 0;
+        color: var(--color-text-strong);
+      }
+
+      .ds-shell {
+        min-height: 100vh;
+        background: var(--color-background);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+
+      @media (min-width: 960px) {
+        .ds-shell {
+          flex-direction: row;
+        }
+      }
+
+      .ds-sidebar {
+        background: var(--color-surface);
+        border-bottom: 1px solid var(--color-border-subtle);
+        padding: 1.5rem 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        position: fixed;
+        inset: 0 auto 0 0;
+        max-width: min(84vw, 320px);
+        transform: translateX(-110%);
+        transition: transform 0.25s ease;
+        z-index: 30;
+        overflow-y: auto;
+        scrollbar-gutter: stable;
+        box-shadow: var(--shadow-lg);
+      }
+
+      .ds-sidebar.is-open {
+        transform: translateX(0);
+      }
+
+      @media (min-width: 960px) {
+        .ds-sidebar {
+          position: sticky;
+          inset: 0;
+          transform: none;
+          min-width: 260px;
+          max-width: 280px;
+          border-right: 1px solid var(--color-border-subtle);
+          border-bottom: none;
+          max-height: 100vh;
+          box-shadow: none;
+        }
+      }
+
+      .ds-sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(2, 6, 23, 0.45);
+        backdrop-filter: blur(4px);
+        z-index: 20;
+      }
+
+      .ds-logo {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .ds-logo img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .ds-kicker {
+        font-size: 0.8125rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--color-text-muted);
+        margin: 0;
+      }
+
+      .ds-sidebar-title {
+        margin: 0.125rem 0 0;
+        font-weight: 600;
+      }
+
+      .ds-resource-picker {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .ds-resource-picker label {
+        font-size: 0.75rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--color-text-muted);
+      }
+
+      .ds-resource-picker .hc-select {
+        width: 100%;
+      }
+
+      .ds-resource-notice {
+        font-size: 0.85rem;
+        color: var(--color-brand-700);
+        background: rgba(86, 102, 245, 0.12);
+        border-radius: var(--radius-md);
+        padding: 0.45rem 0.7rem;
+      }
+
+      .ds-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+
+      .ds-nav-section h2 {
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--color-text-muted);
+        margin-bottom: 0.6rem;
+      }
+
+      .ds-nav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .ds-nav-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.45rem 0.7rem;
+        border-radius: var(--radius-md);
+        color: var(--color-text-strong);
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .ds-nav-item:hover,
+      .ds-nav-item.is-active {
+        background: var(--color-surface-muted);
+      }
+
+      .ds-nav-badge {
+        background: rgba(86, 102, 245, 0.12);
+        color: var(--color-brand-600);
+        border-radius: 999px;
+        padding: 0.125rem 0.5rem;
+        font-size: 0.75rem;
+      }
+
+      .ds-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(180deg, rgba(86, 102, 245, 0.06) 0%, transparent 35%);
+        overflow-y: auto;
+        max-height: 100vh;
+        scrollbar-gutter: stable;
+      }
+
+      @media (max-width: 959px) {
+        .ds-main {
+          max-height: none;
+        }
+      }
+
+      .ds-topbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.85rem;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.25rem 1.75rem;
+        border-bottom: 1px solid var(--color-border-subtle);
+        background: var(--color-surface);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .ds-topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .ds-icon-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-md);
+        background: var(--color-surface-muted);
+        border: 1px solid var(--color-border-subtle);
+        color: var(--color-text-strong);
+        cursor: pointer;
+        transition: background 0.2s ease, border-color 0.2s ease;
+      }
+
+      .ds-icon-button:hover {
+        background: var(--color-surface-hover);
+        border-color: var(--color-border-strong);
+      }
+
+      @media (min-width: 960px) {
+        .ds-icon-button {
+          display: none;
+        }
+      }
+
+      .ds-topbar-subtitle {
+        margin: 0.25rem 0 0;
+        color: var(--color-text-muted);
+      }
+
+      .ds-topbar-actions {
+        display: flex;
+        gap: 0.65rem;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      .ds-user-menu {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .ds-avatar-button {
+        border: none;
+        background: transparent;
+        padding: 0;
+        cursor: pointer;
+        border-radius: 999px;
+        overflow: hidden;
+        width: 40px;
+        height: 40px;
+      }
+
+      .ds-avatar-button:focus-visible {
+        outline: 2px solid var(--color-brand-500);
+        outline-offset: 2px;
+      }
+
+      .ds-avatar-button img {
+        display: block;
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+      }
+
+      .ds-user-dropdown {
+        position: absolute;
+        top: calc(100% + 0.5rem);
+        right: 0;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border-subtle);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        padding: 0.5rem 0;
+        min-width: 180px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        z-index: 15;
+      }
+
+      .ds-user-dropdown button {
+        background: transparent;
+        border: none;
+        text-align: left;
+        padding: 0.5rem 1rem;
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+      }
+
+      .ds-user-dropdown button:hover {
+        background: var(--color-surface-muted);
+      }
+
+      .ds-content {
+        padding: 2rem 1.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+      }
+
+      @media (max-width: 768px) {
+        .ds-content {
+          padding: 1.25rem 1.1rem;
+        }
+      }
+
+      .ds-hero {
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      @media (min-width: 992px) {
+        .ds-hero {
+          grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+        }
+      }
+
+      .ds-hero-card {
+        display: flex;
+      }
+
+      .ds-status-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+      }
+
+      .ds-status-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.65rem;
+      }
+
+      .ds-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        border-radius: 999px;
+        padding: 0.125rem 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        background: rgba(22, 163, 74, 0.16);
+        color: #15803d;
+      }
+
+      .ds-status-pill.is-down {
+        background: rgba(220, 38, 38, 0.16);
+        color: #dc2626;
+      }
+
+      .ds-grid {
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      @media (min-width: 992px) {
+        .ds-grid {
+          grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+        }
+      }
+
+      .ds-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+      }
+
+      .ds-form-actions {
+        display: flex;
+        gap: 0.65rem;
+        justify-content: flex-end;
+      }
+
+      .ds-success {
+        margin-top: 0.85rem;
+        padding: 0.65rem 0.9rem;
+        border-radius: var(--radius-md);
+        background: rgba(22, 163, 74, 0.1);
+        color: #15803d;
+        font-size: 0.9rem;
+      }
+
+      .ds-timeline {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+      }
+
+      .ds-timeline li {
+        display: flex;
+        gap: 0.65rem;
+        align-items: flex-start;
+      }
+
+      .ds-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        margin-top: 0.35rem;
+        background: var(--color-brand-500);
+      }
+
+      .ds-dot.warning {
+        background: var(--color-warning);
+      }
+
+      .ds-dot.danger {
+        background: var(--color-danger);
+      }
+
+      .ds-event-title {
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .ds-event-meta {
+        margin: 0.125rem 0 0;
+        font-size: 0.8125rem;
+        color: var(--color-text-muted);
+      }
+
+      .ds-footer-actions {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .ds-sidebar,
+        .ds-topbar,
+        .ds-user-dropdown {
+          background: var(--color-surface);
+        }
+
+        .ds-sidebar {
+          border-color: rgba(148, 163, 184, 0.2);
+        }
+
+        .ds-icon-button {
+          background: rgba(148, 163, 184, 0.12);
+          border-color: rgba(148, 163, 184, 0.2);
+          color: var(--color-text-strong);
+        }
+
+        .ds-icon-button:hover {
+          background: rgba(148, 163, 184, 0.18);
+        }
+
+        .ds-main {
+          background: linear-gradient(180deg, rgba(86, 102, 245, 0.14) 0%, rgba(2, 6, 23, 0.95) 45%);
+        }
+
+        .ds-nav-item:hover,
+        .ds-nav-item.is-active {
+          background: rgba(86, 102, 245, 0.18);
+        }
+
+        .ds-nav-badge {
+          color: var(--color-brand-100);
+        }
+
+        .ds-status-pill {
+          background: rgba(22, 163, 74, 0.22);
+          color: #4ade80;
+        }
+
+        .ds-resource-notice {
+          background: rgba(86, 102, 245, 0.2);
+          color: var(--color-brand-100);
+        }
+
+        .ds-status-pill.is-down {
+          background: rgba(220, 38, 38, 0.22);
+          color: #f87171;
+        }
+
+        .ds-success {
+          background: rgba(22, 163, 74, 0.2);
+          color: #4ade80;
+        }
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'media',
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: '#f4f6ff',
+                100: '#e6e9ff',
+                200: '#c8d0ff',
+                300: '#a9b6ff',
+                400: '#899aff',
+                500: '#5666f5',
+                600: '#3a4be6',
+                700: '#2736c2',
+                800: '#1d2999',
+                900: '#131c73',
+              },
+              danger: '#dc2626',
+            },
+            fontFamily: {
+              sans: ['Inter', 'Segoe UI', 'system-ui', 'sans-serif'],
+            },
+          },
+        },
+      };
+    </script>
+    <script type="importmap">
+      {
+        "imports": {
+          "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      import { createApp, reactive, ref, onMounted, onBeforeUnmount, watch } from 'vue';
+      import HcButton from './components/HcButton.js';
+      import HcCard from './components/HcCard.js';
+      import HcInput from './components/HcInput.js';
+      import HcSelect from './components/HcSelect.js';
+
+      const App = {
+        setup() {
+          const navigation = [
+            {
+              title: 'Fundamentos',
+              items: [
+                { label: 'Resumen', active: true },
+                { label: 'Tokens', badge: '12' },
+                { label: 'Tipografía' },
+              ],
+            },
+            {
+              title: 'Componentes',
+              items: [
+                { label: 'Botones', badge: '4' },
+                { label: 'Formularios', badge: '6' },
+                { label: 'Tarjetas' },
+              ],
+            },
+          ];
+
+          const resourceOptions = [
+            {
+              label: 'InceptionDB · Producción',
+              description: 'Cluster activo en la región EU-West-1',
+              value: 'inceptiondb-prod',
+              meta: '🟢 99.99%',
+            },
+            {
+              label: 'InceptionDB · Staging',
+              description: 'Entorno previo a producción con datos sintéticos',
+              value: 'inceptiondb-staging',
+              meta: '🟡 QA',
+            },
+            {
+              label: 'Laboratorio de datos',
+              description: 'Espacio aislado para experimentar sin riesgos',
+              value: 'labs',
+              meta: '🧪',
+            },
+            {
+              label: 'Crear base de datos…',
+              description: 'Inicia un nuevo clúster gestionado desde cero',
+              value: 'create',
+              meta: '➕',
+            },
+          ];
+
+          const selectedResource = ref(resourceOptions[0].value);
+          const resourceNotice = ref('');
+
+          const findResource = (value) => resourceOptions.find((option) => option.value === value);
+          resourceNotice.value = findResource(selectedResource.value)?.description ?? '';
+
+          const metrics = ref([
+            { label: 'Clusters activos', value: '42', trend: '+4.1%' },
+            { label: 'Usuarios conectados', value: '318', trend: '+8.4%' },
+            { label: 'Alertas críticas', value: '3', trend: '-25%' },
+          ]);
+
+          const events = ref([
+            { title: 'Deploy completado en región EU-West', date: '12:24', actor: 'Pipeline #248', type: 'success' },
+            { title: 'Aviso de uso elevado en cluster QA', date: '09:17', actor: 'Monitorización', type: 'warning' },
+            { title: 'Se creó el proyecto "Atlas"', date: '08:03', actor: 'Laura Sánchez', type: 'brand' },
+          ]);
+
+          const form = reactive({
+            name: '',
+            description: '',
+          });
+
+          const loading = ref(false);
+          const error = ref('');
+          const statusMessage = ref('');
+          const helperText = 'Introduce un identificador único y descriptivo.';
+
+          const isDesktop = ref(false);
+          const isSidebarOpen = ref(false);
+          const userMenuOpen = ref(false);
+
+          const mediaQuery = window.matchMedia('(min-width: 960px)');
+          isDesktop.value = mediaQuery.matches;
+          isSidebarOpen.value = mediaQuery.matches;
+
+          const updateViewport = (event) => {
+            const matches = event?.matches ?? mediaQuery.matches;
+            isDesktop.value = matches;
+            if (matches) {
+              isSidebarOpen.value = true;
+            } else {
+              isSidebarOpen.value = false;
+            }
+          };
+
+          const toggleSidebar = () => {
+            if (isDesktop.value) return;
+            isSidebarOpen.value = !isSidebarOpen.value;
+          };
+
+          const closeSidebar = () => {
+            if (isDesktop.value) return;
+            isSidebarOpen.value = false;
+          };
+
+          const handleSubmit = () => {
+            statusMessage.value = '';
+            if (!form.name.trim()) {
+              error.value = 'Indica un nombre para el clúster.';
+              return;
+            }
+
+            loading.value = true;
+            error.value = '';
+
+            setTimeout(() => {
+              loading.value = false;
+              statusMessage.value = `El clúster «${form.name}» se ha configurado correctamente.`;
+            }, 900);
+          };
+
+          const resetForm = () => {
+            form.name = '';
+            form.description = '';
+            statusMessage.value = '';
+            error.value = '';
+          };
+
+          const toggleUserMenu = () => {
+            userMenuOpen.value = !userMenuOpen.value;
+          };
+
+          const handleClickOutside = (event) => {
+            if (!event.target.closest('.ds-user-menu')) {
+              userMenuOpen.value = false;
+            }
+          };
+
+          onMounted(() => {
+            updateViewport();
+            mediaQuery.addEventListener('change', updateViewport);
+            document.addEventListener('click', handleClickOutside);
+          });
+
+          onBeforeUnmount(() => {
+            mediaQuery.removeEventListener('change', updateViewport);
+            document.removeEventListener('click', handleClickOutside);
+          });
+
+          watch(selectedResource, (value) => {
+            const current = findResource(value);
+            if (value === 'create') {
+              resourceNotice.value = 'Utiliza el formulario para dar de alta una nueva base de datos.';
+              if (!isDesktop.value) {
+                isSidebarOpen.value = false;
+              }
+            } else {
+              resourceNotice.value = current?.description ?? '';
+            }
+          });
+
+          return {
+            navigation,
+            resourceOptions,
+            selectedResource,
+            resourceNotice,
+            metrics,
+            events,
+            form,
+            loading,
+            error,
+            statusMessage,
+            helperText,
+            isDesktop,
+            isSidebarOpen,
+            userMenuOpen,
+            toggleSidebar,
+            closeSidebar,
+            handleSubmit,
+            resetForm,
+            toggleUserMenu,
+          };
+        },
+        template: `
+          <div class="ds-shell">
+            <div
+              v-if="!isDesktop && isSidebarOpen"
+              class="ds-sidebar-overlay"
+              @click="closeSidebar"
+            ></div>
+            <aside class="ds-sidebar" :class="{ 'is-open': isSidebarOpen || isDesktop }">
+              <div class="ds-logo">
+                <img src="./logo-hola-cloud.svg" alt="Logo de hola.cloud" />
+                <div>
+                  <p class="ds-kicker">hola.cloud</p>
+                  <p class="ds-sidebar-title">Design system</p>
+                </div>
+              </div>
+              <div class="ds-resource-picker">
+                <label for="resource-picker">Recurso raíz</label>
+                <HcSelect
+                  id="resource-picker"
+                  v-model="selectedResource"
+                  :options="resourceOptions"
+                  placeholder="Selecciona un recurso"
+                />
+                <p v-if="resourceNotice" class="ds-resource-notice">{{ resourceNotice }}</p>
+              </div>
+              <nav class="ds-nav">
+                <section v-for="section in navigation" :key="section.title" class="ds-nav-section">
+                  <h2>{{ section.title }}</h2>
+                  <ul class="ds-nav-list">
+                    <li
+                      v-for="item in section.items"
+                      :key="item.label"
+                      :class="['ds-nav-item', item.active ? 'is-active' : '']"
+                    >
+                      <span>{{ item.label }}</span>
+                      <span v-if="item.badge" class="ds-nav-badge">{{ item.badge }}</span>
+                    </li>
+                  </ul>
+                </section>
+              </nav>
+            </aside>
+            <main class="ds-main">
+              <header class="ds-topbar">
+                <div class="ds-topbar-left">
+                  <button class="ds-icon-button" type="button" aria-label="Mostrar menú" @click="toggleSidebar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <line x1="3" y1="6" x2="21" y2="6" />
+                      <line x1="3" y1="12" x2="21" y2="12" />
+                      <line x1="3" y1="18" x2="21" y2="18" />
+                    </svg>
+                  </button>
+                  <div>
+                    <h1 class="hc-heading-2">Panel de control</h1>
+                    <p class="ds-topbar-subtitle">Componentes Hola Cloud aplicados en un panel listo para reutilizar.</p>
+                  </div>
+                </div>
+                <div class="ds-topbar-actions">
+                  <HcButton variant="subtle">Documentación</HcButton>
+                  <HcButton variant="primary">Nuevo recurso</HcButton>
+                  <div class="ds-user-menu">
+                    <button
+                      class="ds-avatar-button"
+                      type="button"
+                      aria-haspopup="menu"
+                      :aria-expanded="userMenuOpen"
+                      @click.stop="toggleUserMenu"
+                    >
+                      <img src="https://i.pravatar.cc/80?img=5" alt="Avatar de usuario" />
+                    </button>
+                    <div v-if="userMenuOpen" class="ds-user-dropdown" role="menu">
+                      <button type="button" role="menuitem" @click="toggleUserMenu()">Perfil y ajustes</button>
+                      <button type="button" role="menuitem" @click="toggleUserMenu()">Cerrar sesión</button>
+                    </div>
+                  </div>
+                </div>
+              </header>
+              <section class="ds-content">
+                <section class="ds-hero">
+                  <div class="flex flex-col gap-4">
+                    <h2 class="hc-heading-3">Clúster distribuido listo</h2>
+                    <p class="hc-body" style="color: var(--color-text-muted);">
+                      Comprueba el estado de los despliegues recientes y crea nuevos entornos en cuestión de segundos.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                      <HcButton :loading="loading" @click="handleSubmit">Crear despliegue</HcButton>
+                      <HcButton variant="secondary" @click="resetForm">Ver documentación</HcButton>
+                    </div>
+                  </div>
+                  <div class="ds-hero-card">
+                    <HcCard title="Estado global" description="Última actualización hace 5 minutos">
+                      <template #default>
+                        <ul class="ds-status-list">
+                          <li v-for="metric in metrics" :key="metric.label" class="ds-status-item">
+                            <span>{{ metric.label }}</span>
+                            <span class="font-semibold">{{ metric.value }}</span>
+                            <span class="ds-status-pill" :class="metric.trend.startsWith('-') ? 'is-down' : ''">{{ metric.trend }}</span>
+                          </li>
+                        </ul>
+                      </template>
+                    </HcCard>
+                  </div>
+                </section>
+                <section class="ds-grid">
+                  <HcCard title="Crear clúster" description="Completa el formulario para lanzar un nuevo entorno.">
+                    <template #default>
+                      <form class="ds-form" @submit.prevent="handleSubmit">
+                        <HcInput label="Nombre" v-model="form.name" required :help="helperText" :error="error" />
+                        <HcInput label="Descripción" variant="textarea" rows="3" v-model="form.description" help="Describe el propósito del clúster." />
+                        <div class="ds-form-actions">
+                          <HcButton variant="secondary" type="button" @click="resetForm">Reiniciar</HcButton>
+                          <HcButton type="submit" :loading="loading">Crear</HcButton>
+                        </div>
+                      </form>
+                      <p v-if="statusMessage" class="ds-success">{{ statusMessage }}</p>
+                    </template>
+                  </HcCard>
+                  <HcCard title="Actividad reciente">
+                    <template #default>
+                      <ul class="ds-timeline">
+                        <li v-for="event in events" :key="event.title">
+                          <span class="ds-dot" :class="event.type"></span>
+                          <div>
+                            <p class="ds-event-title">{{ event.title }}</p>
+                            <p class="ds-event-meta">{{ event.date }} · {{ event.actor }}</p>
+                          </div>
+                        </li>
+                      </ul>
+                    </template>
+                    <template #footer>
+                      <div class="ds-footer-actions">
+                        <HcButton variant="subtle">Ver historial</HcButton>
+                      </div>
+                    </template>
+                  </HcCard>
+                </section>
+              </section>
+            </main>
+          </div>
+        `,
+      };
+      createApp(App)
+        .component('HcButton', HcButton)
+        .component('HcCard', HcCard)
+        .component('HcInput', HcInput)
+        .component('HcSelect', HcSelect)
+        .mount('#app');
+    </script>
+  </body>
+</html>
