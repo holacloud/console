@@ -214,66 +214,195 @@
 
         .tab-project {
                 box-sizing: border-box;
-                padding: 24px;
+                padding: 32px;
                 height: 100%;
                 overflow-y: auto;
+                background: radial-gradient(circle at top left, rgba(255,255,255,0.06), transparent 40%);
         }
 
         .tab-project h2 {
                 margin-top: 0;
                 display: flex;
-                align-items: center;
+                align-items: baseline;
                 gap: 12px;
+                font-size: 28px;
         }
 
         .tab-project .meta {
-                background-color: rgba(255,255,255,0.05);
-                padding: 16px;
-                border-radius: 6px;
+                background-color: rgba(18, 18, 18, 0.6);
+                padding: 20px;
+                border-radius: 12px;
                 margin-bottom: 24px;
+                box-shadow: 0 12px 32px rgba(0,0,0,0.25);
         }
 
-        .tab-project .meta div {
-                margin-bottom: 8px;
+        .tab-project .meta-row {
+                display: grid;
+                grid-template-columns: 160px 1fr;
+                gap: 12px;
+                margin-bottom: 12px;
         }
 
-        .tab-project .meta div:last-child {
+        .tab-project .meta-row:last-child {
                 margin-bottom: 0;
         }
 
+        .tab-project .meta-label {
+                color: #b5b5b5;
+                letter-spacing: 0.02em;
+                text-transform: uppercase;
+                font-size: 12px;
+        }
+
         .tab-project code {
-                background-color: rgba(0,0,0,0.4);
-                padding: 2px 6px;
-                border-radius: 4px;
+                background-color: rgba(0,0,0,0.55);
+                padding: 6px 8px;
+                border-radius: 6px;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 90%;
+        }
+
+        .tab-project .meta-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.1);
+                font-size: 12px;
+        }
+
+        .tab-project .section {
+                margin-bottom: 32px;
+        }
+
+        .tab-project .section:last-child {
+                margin-bottom: 0;
+        }
+
+        .tab-project .section-title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-weight: bold;
+                font-size: 16px;
+                margin-bottom: 12px;
         }
 
         .tab-project ul {
                 padding-left: 20px;
+                margin: 0;
         }
 
-        .tab-project .section {
-                margin-bottom: 24px;
-        }
-
-        .tab-project .section-title {
-                font-weight: bold;
-                margin-bottom: 8px;
+        .tab-project .empty-state {
+                color: #b5b5b5;
+                font-size: 90%;
         }
 
         .tab-project .actions {
-                margin-top: 24px;
+                margin-top: 32px;
                 display: flex;
                 flex-wrap: wrap;
-                gap: 12px;
+                gap: 16px;
         }
 
         .button-danger {
-                background-color: #aa1b1b;
+                background-color: #b43131;
         }
 
         .button-danger:hover {
                 border-color: #ff5a5a;
-                background-color: #c32121;
+                background-color: #d23d3d;
+        }
+
+        .logs-panel {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 320px;
+                border-top: solid 1px #333333;
+                background-color: #111111;
+                box-shadow: 0 -8px 24px rgba(0,0,0,0.35);
+                display: flex;
+                flex-direction: column;
+        }
+
+        .logs-panel--collapsed {
+                height: 56px;
+        }
+
+        .logs-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+                padding: 12px 18px;
+                border-bottom: solid 1px #252525;
+                background: linear-gradient(180deg, rgba(37,37,37,0.95), rgba(16,16,16,0.95));
+        }
+
+        .logs-header h3 {
+                margin: 0;
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                letter-spacing: 0.02em;
+        }
+
+        .logs-header-actions {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+        }
+
+        .logs-body {
+                flex: 1;
+                position: relative;
+                background-color: #1b1b1b;
+        }
+
+        .logs-body iframe {
+                border: none;
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+        }
+
+        .logs-placeholder {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #b5b5b5;
+                text-align: center;
+                padding: 24px;
+                font-size: 90%;
+        }
+
+        .collapse-button {
+                background: transparent;
+                color: inherit;
+                border: solid 1px rgba(255,255,255,0.15);
+                padding: 6px 12px;
+                border-radius: 4px;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+        }
+
+        .collapse-button:hover {
+                cursor: pointer;
+                border-color: rgba(255,255,255,0.35);
         }
 
 
@@ -503,41 +632,69 @@
                                                                 <div v-else-if="projectDetails" class="project-details">
                                                                         <h2>
                                                                                 Gestión del proyecto
-                                                                                <span style="font-size: 60%; font-weight: normal;">{{ projectDetails.name }}</span>
+                                                                                <span style="font-size: 60%; font-weight: normal; color: #b5b5b5;">{{ projectDetails.name }}</span>
                                                                         </h2>
                                                                         <div class="meta">
-                                                                                <div><span class="section-title">ID:</span> <code>{{ projectDetails.id }}</code></div>
-                                                                                <div v-if="projectDetails.create_timestamp"><span class="section-title">Creado:</span> {{ formatTimestamp(projectDetails.create_timestamp) }}</div>
-                                                                                <div v-if="projectDetails.update_timestamp"><span class="section-title">Actualizado:</span> {{ formatTimestamp(projectDetails.update_timestamp) }}</div>
-                                                                                <div v-if="projectDetails.auth"><span class="section-title">Auth:</span> {{ projectDetails.auth.enabled ? 'habilitado' : 'deshabilitado' }}</div>
-                                                                                <div v-if="projectDetails.deleted"><span class="section-title">Estado:</span> Eliminado</div>
-                                                                        </div>
-
-                                                                        <div class="section" v-if="projectDetails.owners && projectDetails.owners.length">
-                                                                                <div class="section-title">Propietarios</div>
-                                                                                <ul>
-                                                                                        <li v-for="owner in projectDetails.owners" :key="owner">{{ owner }}</li>
-                                                                                </ul>
-                                                                        </div>
-
-                                                                        <div class="section" v-if="projectDetails.routers && projectDetails.routers.length">
-                                                                                <div class="section-title">Routers</div>
-                                                                                <div v-for="(router, routerIndex) in projectDetails.routers" :key="router.id || router.type || routerIndex" style="margin-bottom: 16px;">
-                                                                                        <div style="font-weight: bold;">{{ router.type || 'Router' }}</div>
-                                                                                        <div v-if="router.hosts && router.hosts.length">
-                                                                                                Hosts:
-                                                                                                <ul>
-                                                                                                        <li v-for="(host, hostIndex) in router.hosts" :key="host.name || hostIndex">
-                                                                                                                {{ host.name || 'Host' }}<span v-if="host.verified"> ✅</span>
-                                                                                                        </li>
-                                                                                                </ul>
-                                                                                        </div>
-                                                                                        <div v-else style="font-size: 90%; color: #cccccc;">No hay hosts registrados.</div>
+                                                                                <div class="meta-row">
+                                                                                        <div class="meta-label">Identificador</div>
+                                                                                        <div><code><span class="meta-icon">#</span>{{ projectDetails.id }}</code></div>
+                                                                                </div>
+                                                                                <div class="meta-row" v-if="projectDetails.create_timestamp">
+                                                                                        <div class="meta-label">Creado</div>
+                                                                                        <div>{{ formatTimestamp(projectDetails.create_timestamp) }}</div>
+                                                                                </div>
+                                                                                <div class="meta-row" v-if="projectDetails.update_timestamp">
+                                                                                        <div class="meta-label">Actualizado</div>
+                                                                                        <div>{{ formatTimestamp(projectDetails.update_timestamp) }}</div>
+                                                                                </div>
+                                                                                <div class="meta-row" v-if="projectDetails.auth">
+                                                                                        <div class="meta-label">Auth</div>
+                                                                                        <div>{{ projectDetails.auth.enabled ? 'habilitado' : 'deshabilitado' }}</div>
+                                                                                </div>
+                                                                                <div class="meta-row" v-if="projectDetails.deleted">
+                                                                                        <div class="meta-label">Estado</div>
+                                                                                        <div>Eliminado</div>
                                                                                 </div>
                                                                         </div>
 
+                                                                        <div class="section">
+                                                                                <div class="section-title">
+                                                                                        <span class="meta-icon">👥</span>
+                                                                                        Propietarios
+                                                                                </div>
+                                                                                <ul v-if="projectDetails.owners && projectDetails.owners.length">
+                                                                                        <li v-for="owner in projectDetails.owners" :key="owner">{{ owner }}</li>
+                                                                                </ul>
+                                                                                <div v-else class="empty-state">Todavía no hay propietarios adicionales registrados.</div>
+                                                                        </div>
+
+                                                                        <div class="section">
+                                                                                <div class="section-title">
+                                                                                        <span class="meta-icon">🛰️</span>
+                                                                                        Routers
+                                                                                </div>
+                                                                                <div v-if="projectDetails.routers && projectDetails.routers.length">
+                                                                                        <div v-for="(router, routerIndex) in projectDetails.routers" :key="router.id || router.type || routerIndex" style="margin-bottom: 18px;">
+                                                                                                <div style="font-weight: bold; margin-bottom: 6px;">{{ router.type || 'Router' }}</div>
+                                                                                                <div v-if="router.hosts && router.hosts.length">
+                                                                                                        <ul>
+                                                                                                                <li v-for="(host, hostIndex) in router.hosts" :key="host.name || hostIndex">
+                                                                                                                        {{ host.name || 'Host' }}<span v-if="host.verified"> ✅</span>
+                                                                                                                </li>
+                                                                                                        </ul>
+                                                                                                </div>
+                                                                                                <div v-else class="empty-state">No hay hosts registrados para este router.</div>
+                                                                                                <div v-if="router.config" class="empty-state" style="margin-top: 6px;">
+                                                                                                        Configuración disponible. Revísala en la pestaña de Config.
+                                                                                                </div>
+                                                                                        </div>
+                                                                                </div>
+                                                                                <div v-else class="empty-state">Añade tu primer router para publicar servicios.</div>
+                                                                        </div>
+
                                                                         <div class="actions">
-                                                                                <button class="button" type="button" @click="refreshProjectDetails" :disabled="projectDetailsLoading">Refrescar</button>
+                                                                                <button class="button" type="button" @click="refreshProjectDetails" :disabled="projectDetailsLoading">Refrescar datos</button>
+                                                                                <button class="button button-white" type="button" @click="openProjectInNewTab" :disabled="!projectDetails || !projectDetails.id">Abrir en Projects</button>
                                                                                 <button class="button button-danger" type="button" @click="deleteProject" :disabled="projectDetailsLoading">Eliminar proyecto</button>
                                                                         </div>
                                                                 </div>
@@ -548,22 +705,39 @@
                                                         </div>
                                                 </div>
                                         </div>
-					<div style="background: orange; position: absolute; left: 0; right: 0; bottom: 0; height: 300px;">
+                                        <div
+                                                class="logs-panel"
+                                                :class="{'logs-panel--collapsed': logsCollapsed}"
+                                        >
+                                                <div class="logs-header">
+                                                        <h3>
+                                                                <img src="img/icon-logs.png" alt="" style="height: 18px;">
+                                                                Logs en tiempo real
+                                                                <span v-if="project && !logsCollapsed" style="color: #b5b5b5; font-size: 85%;">{{ project.name }}</span>
+                                                        </h3>
+                                                        <div class="logs-header-actions">
+                                                                <button class="collapse-button" type="button" @click="toggleLogsPanel">{{ logsCollapsed ? 'Expandir' : 'Contraer' }}</button>
+                                                                <button class="collapse-button" type="button" @click="refreshLogsPanel" :disabled="!project_id">Refrescar</button>
+                                                                <button class="collapse-button" type="button" @click="openLogsInNewTab" :disabled="!project_id">Abrir en nueva pestaña</button>
+                                                        </div>
+                                                </div>
+                                                <div class="logs-body">
+                                                        <iframe
+                                                                v-if="project_id && !logsCollapsed"
+                                                                :key="logsEmbedKey"
+                                                                :src="logsUrl"
+                                                        ></iframe>
+                                                        <div v-else-if="logsCollapsed" class="logs-placeholder">
+                                                                Vista contraída. Pulsa «Expandir» para ver los logs.
+                                                        </div>
+                                                        <div v-else class="logs-placeholder">
+                                                                Selecciona un proyecto para comenzar a recibir logs en vivo.
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </div>
 
-						<div style="background-color: #252526; height: 42px;">
-							<div class="tab tab-active">
-								<img src="img/icon-logs.png" alt="">
-								Logs
-								<img src="img/icon-x.png" alt="">
-							</div>
-						</div>
-						<div style="background-color: #1e1e1e; position: absolute; left: 0; right: 0; bottom: 0; top: 42px;">
-							<iframe class="tob tob-active" :src="'https://instantlogs.hola.cloud/?embed&project='+project_id"></iframe>
-						</div>
-					</div>
-				</div>
-
-		</div>
+                </div>
 
 
 
@@ -679,11 +853,14 @@
                                 projectDetails: null,
                                 projectDetailsLoading: false,
                                 projectDetailsError: null,
+                                logsCollapsed: false,
+                                logsEmbedKey: 0,
+                                logsUrl: '',
                                 tree: {
                                         databases: [
-						{
-							"id":"111",
-							"name": "db1",
+                                                {
+                                                        "id":"111",
+                                                        "name": "db1",
 							"collections":[
 								{"name":"users"},
 								{"name":"products"},
@@ -756,6 +933,7 @@
                                 }
                                 this.updateCoreTabUrls();
                                 this.refreshProjectDetails();
+                                this.refreshLogsPanel();
                         },
                         refreshProjectDetails() {
                                 if (!this.project_id) {
@@ -832,9 +1010,9 @@
                                                                         }
                                                                         this.loading.fetch--;
                                                                 })
-								.catch(function (){
-									this.loading.fetch--;
-								});
+                                                                .catch(() => {
+                                                                        this.loading.fetch--;
+                                                                });
 			},
 			fetchDatabases() {
 				console.log('fetching databases...');
@@ -905,6 +1083,7 @@
                                 if (projectTabIndex !== -1) {
                                         this.tab = projectTabIndex;
                                 }
+                                this.refreshLogsPanel();
                         },
                         closeTab(i) {
                                 this.tabs.splice(i,1);
@@ -956,6 +1135,13 @@
                                                                         this.projectDetailsError = err.message || 'Error desconocido al eliminar el proyecto';
                                                                 });
                         },
+                        openProjectInNewTab() {
+                                if (!this.projectDetails || !this.projectDetails.id) {
+                                        return;
+                                }
+                                const url = 'https://projects.hola.cloud/?project=' + encodeURIComponent(this.projectDetails.id);
+                                window.open(url, '_blank');
+                        },
                         updateCoreTabUrls() {
                                 const projectId = this.project_id;
                                 const databaseTab = this.tabs.find(tab => tab.type === 'database');
@@ -974,6 +1160,25 @@
                                 if (filesTab) {
                                         filesTab.url = projectId ? 'https://files.hola.cloud/?embed&project='+projectId : '';
                                 }
+                                this.logsUrl = projectId ? 'https://instantlogs.hola.cloud/?embed&project='+projectId : '';
+                        },
+                        toggleLogsPanel() {
+                                this.logsCollapsed = !this.logsCollapsed;
+                                if (!this.logsCollapsed && this.project_id) {
+                                        this.refreshLogsPanel();
+                                }
+                        },
+                        refreshLogsPanel() {
+                                if (!this.project_id) {
+                                        return;
+                                }
+                                this.logsEmbedKey++;
+                        },
+                        openLogsInNewTab() {
+                                if (!this.project_id) {
+                                        return;
+                                }
+                                window.open('https://instantlogs.hola.cloud/?project='+encodeURIComponent(this.project_id), '_blank');
                         },
                         formatTimestamp(value) {
                                 if (!value) return '';
@@ -1032,18 +1237,20 @@
 					name: this.inputs.name,
 				}
 				let that = this;
-				return fetch(baseprojects+'/v0/projects', {
-					method: 'POST',
-					headers: {},
-					credentials: 'include',
-					body: JSON.stringify(body),
-				})
-								.then(resp => resp.json())
-								.then(function(project) {
-									that.projects.push(project);
-									that.selectProject(project);
-								});
-			},
+                                return fetch(baseprojects+'/v0/projects', {
+                                        method: 'POST',
+                                        headers: {},
+                                        credentials: 'include',
+                                        body: JSON.stringify(body),
+                                })
+                                                                .then(resp => resp.json())
+                                                                .then(function(project) {
+                                                                        that.projects.push(project);
+                                                                        that.selectProject(project);
+                                                                        that.inputs.name = '';
+                                                                        that.inputs.showNewProject = false;
+                                                                });
+                        },
 			// patch(k,v) {
 			// 	let payload = {};
 			// 	payload[k]=v;
