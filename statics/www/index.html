@@ -1,815 +1,1462 @@
-<meta http-equiv="Content-Type" CONTENT="text/html; charset=UTF-8">
-<title>hola.cloud</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<script src="lib/vue.2.7.14.js"></script>
-
-<style>
-	body, html {
-		font-family: sans-serif;
-		color: #ffffff;
-		background-color: #2c2c2c;
-	}
-
-	a {
-		color: dodgerblue;
-	}
-
-	#app {
-		max-width: 900px;
-		margin: 0 auto;
-	}
-
-	.projects-list {
-		max-width: 500px;
-		margin: 0 auto;
-		padding: 8px;
-	}
-
-	/** inputs ********************************************************************/
-	.pretty-input {
-		min-height: 29px;
-		font-family: monospace;
-		padding: 6px 4px;
-		background-color: transparent;
-		border-radius: 3px;
-		border: solid silver 1px;
-		resize: vertical;
-	}
-
-	.pretty-input { /* embed */
-		color: white;
-		background-color: transparent;
-	}
-
-	.pretty-input option { /* embed */
-		background-color: #2c2c2c;
-	}
-
-	/**************************************************************** buttons */
-
-	.button {
-		color: white;
-		background-color: dodgerblue;
-		padding: 8px 32px;
-		font-weight: bold;
-		border-radius: 3px;
-		text-decoration: none;
-		border: solid transparent 2px;
-		transition: opacity 0.2s ease-in;
-	}
-
-	.button:hover {
-		box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-		cursor: pointer;
-		border-color: blue;
-	}
-
-	.button-small {
-		padding: 8px;
-		font-size: 90%;
-	}
-
-	.button-white {
-		color: silver;
-		border-color: silver;
-		background-color: white;
-	}
-
-	.button-white:hover {
-		color: #333333;
-		border-color: #333333;
-	}
-
-	.button-text {
-		display: inline-block;
-		padding: 2px 8px;
-		margin:0 8px;
-		border: solid 1px;
-		border-radius: 3px;
-		font-size: 90%;
-	}
-
-	.button-text:hover {
-		cursor: pointer;
-		border-width: 2px;
-		padding: 1px 7px;
-	}
-
-	.button-red {
-		color: red;
-	}
-
-	.button-no-bg {
-		background-color: transparent;
-	}
-
-	.buttons-bar  {
-		padding: 16px 4px;
-		text-align: center;
-	}
-
-	.buttons-bar > * {
-		vertical-align: top;
-	}
-
-	.button:disabled {
-		opacity: 30%;
-	}
-
-	/***************************************************************** tree */
-
-	.tree {
-		display: none;
-	}
-
-	.tree .item:hover {
-		cursor: pointer;
-		background-color: rgba(255,255,255,0.05);
-	}
-
-	.showtree .tree {
-		display: block;
-	}
-
-	.showtree .notree {
-		left: 300px !important;
-	}
-
-
-	/***************************************************************** banner */
-
-	.banner {
-	padding: 16px;
-	margin: 4px;
-	border-radius: 4px;
-	border: solid 1px dodgerblue;
-	background-color: rgba(30, 144, 255, 0.18);
-}
-
-	/*source: https://cssloaders.github.io/*/
-	.loader:before {
-		content: '';
-		width: 24px;
-		height: 24px;
-		border: 4px solid dodgerblue;
-		border-bottom-color: transparent;
-		border-radius: 50%;
-		display: inline-block;
-		box-sizing: border-box;
-		animation: rotation 1s linear infinite;
-		vertical-align: middle;
-		margin-right: 12px;
-	}
-
-	@keyframes rotation {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(360deg);
-		}
-	}
-
-	.projects-list .item {
-		padding: 4px;
-		border: solid 1px silver;
-		margin: 4px;
-		border-radius: 3px;
-		cursor: pointer;
-	}
-
-	.projects-list .item:hover {
-		border-color: dodgerblue;
-	}
-
-	.tab {
-		padding: 11px;
-		display: inline-block;
-		margin-right: 1px;
-		color: #8e8e8e;
-		background-color: transparent;
-		cursor: pointer;
-	}
-
-	.tob {
-		/*opacity: 0;*/
-		position: absolute;
-		width: 0;
-		height: 0;
-		border: none;
-	}
-
-	.tob.tob-active {
-		opacity: 1;
-		width: 100%;
-		height: 100%;
-	}
-
-
-	.tab .tab-close {
-		opacity: 0;
-	}
-
-	.tab:hover,
-	.tab-active {
-		color: white;
-		background-color: #1e1e1e;
-	}
-
-	.tab:hover .tab-close,
-	.tab.tab-active .tab-close {
-		opacity: 1;
-	}
-
-
-	#logo {
-		display: none;
-	}
-
-	@media screen and (min-width: 350px) {
-		#logo {
-			display: inline-block;
-		}
-
-		#logo-short {
-			display: none;
-		}
-	}
-</style>
-
-<div id="app">
-
-	<div v-if="user === 'loading'" style="text-align: center;">
-		<span class="loader">Loading...</span>
-	</div>
-
-	<div
-		v-if="user === null"
-	 	style="
-	 		max-width: 400px;
-	 		margin: 100px auto;
-	 		border: solid silver 1px;
-	 		box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-	 		padding:16px;
-		"
-	>
-		<h1>Bienvenido a Hola Cloud!</h1>
-		<p>
-			Esta es la mejor experiencia para la cloud. <br>
-			Para empezar, debes identificarte de alguna forma. <br>
-			No te preocupes, es gratis. :D
-		</p>
-		<div style="text-align: center; padding: 24px 0;">
-			<a
-				href="https://hola.cloud/auth/login"
-				class="button"
-			>Login</a>
-		</div>
-	</div>
-
-	<div v-if="user !== null && user !== 'loading'">
-
-		<div style="height: 40px; position: absolute; top: 0; left: 0; right: 0;">
-			<div style="float: right;">
-				<div id="login" v-if="user === null">
-					<a href="/auth/login">Login</a>
-				</div>
-				<div id="logout" v-if="user !== null && user !== 'loading'">
-					<img id="user_picture" :src="user.picture" style="border-radius: 50%; height: 32px; vertical-align: -9px;">
-					<span id="user_nick" style="font-weight: bold; display: none;">{{ user.nick }}</span>
-					<a href="/auth/logout" class="button button-no-bg button-small">Logout</a>
-				</div>
-			</div>
-
-			<img id="logo" src="img/logo.png" alt="hola.cloud" style="height: 40px; vertical-align: middle;">
-			<img id="logo-short" src="img/logo-short.png" alt="hola.cloud" style="height: 40px; vertical-align: middle;">
-
-			<select
-						class="pretty-input"
-						v-model="project_id"
-						style="color: white"
-						v-if="project_id !== null"
-						@change="fetchTree"
-			>
-				<option
-						v-for="p in projects"
-						:value="p.id"
-				>{{ p.name }}</option>
-				<option
-						value=""
-				>&lt;{{ user.nick }}&gt;</option>
-			</select>
-
-		</div>
-
-		<div style="position: absolute; top: 40px; left: 0; right: 0; bottom: 0;">
-
-			<div v-if="loading.fetch" style="text-align: center;">
-				<span class="loader">Loading projects...</span>
-			</div>
-
-			<div v-if="!loading.fetch && projects.length == 0">
-				<div class="banner" style="text-align: center; margin: 40px 20px;">
-					Todavía no tienes ningún proyecto! Empieza creando uno ya mismo :)
-				</div>
-				<form @submit.prevent="createProject()" style="text-align: center;">
-					Nombre del proyecto: <br><br>
-					<input class="pretty-input" type="text" v-model="inputs.name" autofocus><br><br><br>
-					<button class="button" type="submit" :disabled="!inputs.name">Crear proyecto</button>
-				</form>
-			</div>
-
-			<div
-				class="projects-list"
-				v-if="!loading.fetch && projects.length > 0 && project === null"
-			>
-				<div
-								class="item"
-								v-for="p in projects"
-								@click="selectProject(p)"
-				>
-					<div
-							style="float: right;"
-					>
-						<a :href="'https://'+p.host" v-if="p.host" target="_blank">{{p.host}}</a>
-						<span v-if="p.owners && p.owners.length > 1" style="margin-left: 4px;">{{p.owners.length}} 👤</span>
-					</div>
-					<div style="font-weight: bold;">
-						{{ p.name }}
-					</div>
-					<div style="font-size: 80%; font-family: monospace;">
-						{{ p.id }}
-					</div>
-				</div>
-
-				<div style="text-align: center; padding: 20px;">
-					<form v-if="inputs.showNewProject" @submit.prevent="createProject()" style="text-align: center;">
-						Nombre del proyecto: <br><br>
-						<input class="pretty-input" type="text" v-model="inputs.name" autofocus><br><br><br>
-						<button class="button" type="submit" :disabled="!inputs.name">Crear proyecto</button>
-					</form>
-					<div v-else>
-						<button class="button" @click="inputs.showNewProject = true;">Nuevo proyecto</button>
-					</div>
-				</div>
-
-
-			</div>
-
-			<div v-if="project !== null" :class="{showtree:tricks.showtree}">
-
-				<div
-					class="tree"
-					style="width: 300px; padding: 8px; position: absolute; top: 0; left: 0; right: 0; overflow: auto; box-sizing: content-box; overflow-y: scroll; scrollbar-color: silver transparent;"
-				>
-					<div v-if="false">
-						<img src="img/icon-db.png" alt=""> Databases
-					</div>
-					<div
-						v-for="database in tree.databases"
-					>
-						<div
-							class="item"
-							@click="expandDatabase(database)"
-						>
-							<img src="img/icon-db.png" alt=""> {{ database.name }}
-						</div>
-						<div
-							v-if="database.open"
-							class="children"
-							style="padding-left: 16px;"
-						>
-							<div
-								class="item"
-								v-for="collection in database.collections"
-								@click="openCollection(database, collection)"
-							><img src="https://inceptiondb.hola.cloud/v2/img/icon-collection.svg" style="height: 16px; filter: contrast(0.1); vertical-align: middle;">  {{ collection.name }}</div>
-						</div>
-					</div>
-					<div
-						v-for="lambda in tree.lambdas"
-					>
-						<div
-										class="item"
-										@click="openLambda(lambda)"
-										:title="lambda.name"
-						>
-							<img src="img/icon-lambda.png" alt=""> {{ lambda.method }} {{ lambda.path }}
-						</div>
-					</div>
-				</div>
-
-				<div
-					class="notree"
-					style="position: absolute; top: 0; right: 0; bottom: 0; left: 0;"
-				>
-					<div style="background-color: #252526; height: 42px;">
-						<div class="tab" v-for="(t, i) in tabs" :class="{'tab-active': tab==i}" @click="tab=i">
-							<img :src="t.icon" alt="">
-							{{ t.name }}
-							<img src="img/icon-x.png" alt="" v-if="t.hideClose !== true" @click="closeTab(i)">
-						</div>
-					</div>
-					<div style="background-color: #1e1e1e; position: absolute; left: 0; right: 0; bottom: 300px; border-bottom: solid 1px #444444; top: 42px;">
-						<iframe
-							v-for="(t, i) in tabs"
-							class="tob"
-							:class="{'tob-active': tab==i}"
-							:src="t.url"
-						></iframe>
-
-						<iframe class="tob" :class="{'tob-active': tab==0}" :src="tabs[0].url"></iframe>
-						<iframe id="tob1" class="tob" :class="{'tob-active': tab==1}" :src="tabs[1].url"></iframe>
-						<iframe class="tob" :class="{'tob-active': tab==2}" :src="'https://config.hola.cloud/?embed&project='+project_id"></iframe>
-						<iframe class="tob" :class="{'tob-active': tab==3}" :src="'https://files.hola.cloud/?embed&project='+project_id"></iframe>
-					</div>
-					<div style="background: orange; position: absolute; left: 0; right: 0; bottom: 0; height: 300px;">
-
-						<div style="background-color: #252526; height: 42px;">
-							<div class="tab tab-active">
-								<img src="img/icon-logs.png" alt="">
-								Logs
-								<img src="img/icon-x.png" alt="">
-							</div>
-						</div>
-						<div style="background-color: #1e1e1e; position: absolute; left: 0; right: 0; bottom: 0; top: 42px;">
-							<iframe class="tob tob-active" :src="'https://instantlogs.hola.cloud/?embed&project='+project_id"></iframe>
-						</div>
-					</div>
-				</div>
-
-		</div>
-
-
-
-	</div>
-
-</div>
-
-<script>
-
-	let localdev = document.location.hostname === 'localhost';
-
-	let fakeHeaders = {};
-	if (localdev) {
-		fakeHeaders['X-Glue-Authentication'] = '{"user":{"id":"user1"}}';
-	}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>hola.cloud Console</title>
+  <link rel="icon" href="favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="ds/styles.css" />
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top left, rgba(86, 102, 245, 0.16), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(255, 122, 89, 0.14), transparent 52%),
+        var(--color-background);
+      color: var(--color-text-strong);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-header {
+      background: linear-gradient(135deg, var(--color-brand-500), var(--color-brand-700));
+      color: var(--color-text-inverse);
+      padding: 1.8rem 0 1.6rem;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-header::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.16), transparent 55%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .app-header__content {
+      position: relative;
+      z-index: 1;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand img {
+      height: 44px;
+    }
+
+    .brand span {
+      display: block;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 1.6rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(12px);
+    }
+
+    .user-chip img {
+      height: 36px;
+      width: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.45);
+    }
+
+    .user-chip__text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .user-chip__name {
+      font-weight: 600;
+    }
+
+    .user-chip__meta {
+      font-size: 0.8rem;
+      opacity: 0.75;
+    }
+
+    .logout-button,
+    .login-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border-radius: 999px;
+      padding: 0.55rem 1.2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      background: rgba(255, 255, 255, 0.16);
+      color: var(--color-text-inverse);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .logout-button:hover,
+    .login-button:hover {
+      background: rgba(255, 255, 255, 0.26);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .app-main {
+      flex: 1;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 3.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .hero-panel {
+      background: linear-gradient(145deg, rgba(86, 102, 245, 0.12), rgba(255, 255, 255, 0));
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-panel h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-panel p {
+      margin: 0;
+      max-width: 540px;
+      color: var(--color-text-muted);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border-subtle);
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(86, 102, 245, 0.45);
+      box-shadow: var(--shadow-md);
+      cursor: pointer;
+    }
+
+    .project-card__header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .project-card__name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .project-card__meta {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .project-card__id {
+      font-family: "JetBrains Mono", SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.85rem;
+      color: var(--color-brand-700);
+      word-break: break-all;
+      background: rgba(86, 102, 245, 0.08);
+      padding: 0.45rem 0.6rem;
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .project-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .project-card__members {
+      background: rgba(86, 102, 245, 0.1);
+      color: var(--color-brand-600);
+      border-radius: 999px;
+      padding: 0.25rem 0.7rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .new-project-card {
+      border: 1px dashed rgba(86, 102, 245, 0.45);
+      background: rgba(86, 102, 245, 0.06);
+      text-align: center;
+      justify-content: center;
+      gap: 1rem;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .new-project-card:hover {
+      background: rgba(86, 102, 245, 0.12);
+    }
+
+    .new-project-actions {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .workspace-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .workspace-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .workspace-meta__item {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border-subtle);
+      padding: 1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .workspace-meta__label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+    }
+
+    .workspace-meta__value {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 1.5rem;
+    }
+
+    .workspace--collapsed {
+      grid-template-columns: 1fr;
+    }
+
+    .resource-panel {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border-subtle);
+      box-shadow: var(--shadow-sm);
+      padding: 1.4rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+
+    .resource-panel__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+    }
+
+    .resource-panel__title {
+      font-weight: 600;
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .resource-panel__content {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      overflow-y: auto;
+      max-height: 520px;
+      padding-right: 0.3rem;
+    }
+
+    .tree-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .tree-group__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(86, 102, 245, 0.08);
+      color: var(--color-brand-700);
+      padding: 0.6rem 0.75rem;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(86, 102, 245, 0.18);
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s ease;
+    }
+
+    .tree-group__header:hover {
+      background: rgba(86, 102, 245, 0.15);
+    }
+
+    .tree-group__header span {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .tree-group__body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding-left: 0.4rem;
+    }
+
+    .tree-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.55rem 0.65rem;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+      background: rgba(15, 23, 42, 0.02);
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+
+    .tree-item:hover {
+      border-color: rgba(86, 102, 245, 0.35);
+      background: rgba(86, 102, 245, 0.12);
+      transform: translateX(4px);
+    }
+
+    .tree-item__name {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 500;
+    }
+
+    .tree-item__meta {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      white-space: nowrap;
+    }
+
+    .workspace-main {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .workspace-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .workspace-toolbar__title {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .tabstrip {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 0.4rem 0.5rem;
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+    }
+
+    .tabstrip::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .tabstrip::-webkit-scrollbar-thumb {
+      background: rgba(86, 102, 245, 0.3);
+      border-radius: 999px;
+    }
+
+    .tab-item {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: var(--radius-md);
+      background: transparent;
+      border: 1px solid transparent;
+      padding: 0.45rem 0.75rem;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      font-weight: 500;
+      color: var(--color-text-muted);
+    }
+
+    .tab-item.is-active {
+      background: rgba(86, 102, 245, 0.1);
+      border-color: rgba(86, 102, 245, 0.28);
+      color: var(--color-brand-700);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tab-item__icon img {
+      height: 18px;
+      width: 18px;
+    }
+
+    .tab-item__close {
+      border: none;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      padding: 0.1rem 0.25rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+
+    .tab-item__close:hover {
+      opacity: 1;
+    }
+
+    .tab-content {
+      position: relative;
+      min-height: 360px;
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border-subtle);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .tab-content iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: var(--color-surface);
+    }
+
+    .tab-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      color: var(--color-text-muted);
+    }
+
+    .logs-panel {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border-subtle);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logs-panel header {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--color-border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .logs-panel header h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .logs-panel iframe {
+      border: none;
+      width: 100%;
+      height: 260px;
+      background: var(--color-surface);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(22, 163, 74, 0.15);
+      color: var(--color-success);
+      font-weight: 600;
+    }
+
+    .loader {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+    }
+
+    .loader::before {
+      content: "";
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 3px solid rgba(86, 102, 245, 0.35);
+      border-top-color: var(--color-brand-600);
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 3rem 1rem;
+      text-align: center;
+      color: var(--color-text-muted);
+    }
+
+    .empty-state strong {
+      color: var(--color-text-strong);
+      font-size: 1.1rem;
+    }
+
+    .auth-card {
+      max-width: 420px;
+      margin: 4rem auto;
+      padding: 2.5rem;
+      border-radius: var(--radius-lg);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border-subtle);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      text-align: center;
+    }
+
+    .auth-card h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .auth-card p {
+      margin: 0;
+      color: var(--color-text-muted);
+    }
+
+    .hc-button--layout {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+    }
+
+    .hc-card__header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .hc-card__title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .hc-card__actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .hc-card__footer {
+      border-top: 1px solid var(--color-border-subtle);
+      padding-top: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .hc-required-indicator {
+      margin-left: 0.35rem;
+      color: var(--color-danger);
+    }
+
+    @media (max-width: 1024px) {
+      .app-header__content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .user-actions {
+        align-self: stretch;
+        justify-content: space-between;
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .app-main {
+        padding: 2rem 1.1rem 3rem;
+      }
+
+      .auth-card {
+        margin: 2.5rem 1rem;
+        padding: 2rem 1.5rem;
+      }
+
+      .tab-item {
+        padding: 0.4rem 0.6rem;
+      }
+    }
+
+    @media (min-width: 640px) {
+      .hc-card__header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <template id="app-template">
+    <div class="app-shell">
+      <header class="app-header">
+        <div class="app-header__content">
+          <div class="brand">
+            <img src="img/logo.png" alt="hola.cloud" />
+            <div>
+              <span>Cloud Console</span>
+              <strong>hola.cloud</strong>
+            </div>
+          </div>
+          <div class="user-actions">
+            <template v-if="user && user !== 'loading'">
+              <div class="user-chip" v-if="user">
+                <img :src="user.picture" alt="Avatar" />
+                <div class="user-chip__text">
+                  <span class="user-chip__name">{{ user.nick }}</span>
+                  <span class="user-chip__meta">{{ user.email }}</span>
+                </div>
+              </div>
+              <a href="/auth/logout" class="logout-button">Cerrar sesión</a>
+            </template>
+            <template v-else-if="user === null">
+              <a href="https://hola.cloud/auth/login" class="login-button">Iniciar sesión</a>
+            </template>
+          </div>
+        </div>
+      </header>
+
+      <main class="app-main">
+        <div v-if="user === 'loading'" class="empty-state">
+          <span class="loader">Preparando tu espacio</span>
+        </div>
+
+        <div v-else-if="user === null">
+          <div class="auth-card">
+            <img src="img/logo.png" alt="hola.cloud" style="height: 64px; margin: 0 auto;" />
+            <h1>Bienvenido a hola.cloud</h1>
+            <p>
+              La consola unificada para desplegar, gestionar y monitorear tus proyectos en segundos.
+              Identifícate para comenzar a crear.
+            </p>
+            <a href="https://hola.cloud/auth/login" class="logout-button">Acceder</a>
+          </div>
+        </div>
+
+        <div v-else class="workspace-section">
+          <section class="hero-panel">
+            <h1>Tu plataforma, a un clic de distancia</h1>
+            <p>
+              Centraliza bases de datos, funciones y archivos en una experiencia fluida pensada para equipos modernos.
+              Configura, observa y despliega sin fricciones.
+            </p>
+            <div v-if="projectOptions.length" style="max-width: 360px;">
+              <label class="hc-form-label" for="project-selector">Proyecto activo</label>
+              <HcSelect
+                id="project-selector"
+                v-model="projectId"
+                :options="projectOptions"
+                placeholder="Selecciona un proyecto"
+              />
+            </div>
+          </section>
+
+          <section v-if="isLoadingProjects" class="empty-state">
+            <span class="loader">Cargando tus proyectos…</span>
+          </section>
+
+          <section v-else-if="!hasProjects" class="workspace-meta">
+            <HcCard title="Crea tu primer proyecto" description="Despliega una nueva experiencia en segundos">
+              <form @submit.prevent="createProject" class="hc-card__body" style="gap: 1rem;">
+                <HcInput label="Nombre del proyecto" v-model="inputs.name" required placeholder="ej. hola-production" />
+                <div class="hc-card__actions" style="justify-content: flex-end;">
+                  <HcButton variant="secondary" type="button" @click="inputs.name = ''">Limpiar</HcButton>
+                  <HcButton type="submit" :disabled="!inputs.name || loadingStates.creating">Crear proyecto</HcButton>
+                </div>
+              </form>
+            </HcCard>
+          </section>
+
+          <section v-else-if="!project" class="projects-grid">
+            <article
+              class="project-card"
+              v-for="p in projects"
+              :key="p.id"
+              @click="selectProject(p)"
+            >
+              <div class="project-card__header">
+                <p class="project-card__name">{{ p.name }}</p>
+                <div class="project-card__meta">
+                  <span v-if="p.host">{{ p.host }}</span>
+                  <span class="project-card__members" v-if="p.owners && p.owners.length > 1">
+                    <span aria-hidden="true">👥</span>
+                    {{ p.owners.length }} miembros
+                  </span>
+                </div>
+              </div>
+              <div class="project-card__id">
+                <span aria-hidden="true">#</span> {{ p.id }}
+              </div>
+              <div class="project-card__footer">
+                <span class="status-badge">
+                  <span aria-hidden="true">●</span>
+                  Operativo
+                </span>
+                <HcButton variant="secondary" type="button">Abrir</HcButton>
+              </div>
+            </article>
+
+            <article
+              v-if="!inputs.showNewProject"
+              class="project-card new-project-card"
+              @click="inputs.showNewProject = true"
+            >
+              <div>
+                <h3 style="margin: 0; font-size: 1.2rem;">Nuevo proyecto</h3>
+                <p style="margin: 0; color: var(--color-text-muted);">
+                  Agrupa recursos, configura entornos y comparte con tu equipo.
+                </p>
+              </div>
+              <div class="new-project-actions">
+                <HcButton variant="subtle" type="button">Crear proyecto</HcButton>
+              </div>
+            </article>
+          </section>
+
+          <section v-if="inputs.showNewProject && project === null">
+            <HcCard title="Crear un nuevo proyecto">
+              <form @submit.prevent="createProject" class="hc-card__body" style="gap: 1rem;">
+                <HcInput label="Nombre del proyecto" v-model="inputs.name" required />
+                <div class="hc-card__actions" style="justify-content: flex-end;">
+                  <HcButton variant="secondary" type="button" @click="cancelCreate">Cancelar</HcButton>
+                  <HcButton type="submit" :disabled="!inputs.name || loadingStates.creating">
+                    {{ loadingStates.creating ? 'Creando…' : 'Crear' }}
+                  </HcButton>
+                </div>
+              </form>
+            </HcCard>
+          </section>
+
+          <section v-if="project" class="workspace-meta">
+            <div class="workspace-meta__item">
+              <span class="workspace-meta__label">Proyecto</span>
+              <span class="workspace-meta__value">{{ project.name }}</span>
+            </div>
+            <div class="workspace-meta__item">
+              <span class="workspace-meta__label">Dominio</span>
+              <span class="workspace-meta__value" v-if="project.host">
+                <a :href="'https://' + project.host" target="_blank" rel="noopener">{{ project.host }}</a>
+              </span>
+              <span class="workspace-meta__value" v-else>No publicado</span>
+            </div>
+            <div class="workspace-meta__item">
+              <span class="workspace-meta__label">Colaboradores</span>
+              <span class="workspace-meta__value">
+                {{ project.owners && project.owners.length ? project.owners.length : 1 }} miembros
+              </span>
+            </div>
+          </section>
+
+          <section v-if="project" class="workspace" :class="{'workspace--collapsed': !showTreePanel}">
+            <aside class="resource-panel" v-if="showTreePanel">
+              <div class="resource-panel__header">
+                <h2 class="resource-panel__title">Recursos del proyecto</h2>
+                <button class="tab-item" type="button" style="padding: 0.35rem 0.6rem;" @click="toggleTree">
+                  {{ showTreePanel ? 'Ocultar' : 'Mostrar' }}
+                </button>
+              </div>
+              <div v-if="isTreeLoading" class="empty-state" style="padding: 2rem 0;">
+                <span class="loader">Sincronizando recursos…</span>
+              </div>
+              <div v-else class="resource-panel__content">
+                <div class="tree-group">
+                  <button class="tree-group__header" @click="toggleDatabase" type="button">
+                    <span>
+                      <img src="img/icon-db.png" alt="DB" style="height: 20px; width: 20px;" />
+                      Bases de datos
+                    </span>
+                    <span aria-hidden="true">{{ tree.databases.some(db => db.open) ? '▲' : '▼' }}</span>
+                  </button>
+                  <div class="tree-group__body">
+                    <div
+                      v-for="db in tree.databases"
+                      :key="db.id"
+                    >
+                      <div class="tree-item" @click="expandDatabase(db)">
+                        <div class="tree-item__name">
+                          <img src="img/icon-db.png" alt="" style="height: 18px; width: 18px;" />
+                          {{ db.name }}
+                        </div>
+                        <div class="tree-item__meta" v-if="db.collections && db.collections.length">
+                          {{ db.collections.length }} colecciones
+                        </div>
+                      </div>
+                      <div v-if="db.open" class="tree-group__body" style="margin-left: 1.2rem;">
+                        <div
+                          v-for="collection in db.collections"
+                          :key="collection.name"
+                          class="tree-item"
+                          @click.stop="openCollection(db, collection)"
+                        >
+                          <div class="tree-item__name">
+                            <img
+                              src="https://inceptiondb.hola.cloud/v2/img/icon-collection.svg"
+                              alt="Colección"
+                              style="height: 16px; width: 16px; filter: contrast(0.2);"
+                            />
+                            {{ collection.name }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="tree-group">
+                  <button class="tree-group__header" type="button">
+                    <span>
+                      <img src="img/icon-lambda.png" alt="Lambdas" style="height: 18px; width: 18px;" />
+                      Funciones Lambda
+                    </span>
+                    <span aria-hidden="true">⚡</span>
+                  </button>
+                  <div class="tree-group__body">
+                    <div
+                      v-for="lambda in tree.lambdas"
+                      :key="lambda.id"
+                      class="tree-item"
+                      @click="openLambda(lambda)"
+                    >
+                      <div class="tree-item__name">
+                        <img src="img/icon-lambda.png" alt="" style="height: 18px; width: 18px;" />
+                        {{ lambda.method }} {{ lambda.path }}
+                      </div>
+                    </div>
+                    <p v-if="!tree.lambdas.length" style="margin: 0; color: var(--color-text-muted);">
+                      Aún no hay funciones desplegadas.
+                    </p>
+                  </div>
+                </div>
+                <p
+                  v-if="!tree.databases.length && !tree.lambdas.length"
+                  style="margin: 0; color: var(--color-text-muted); text-align: center;"
+                >
+                  Este proyecto todavía no tiene recursos creados.
+                </p>
+              </div>
+            </aside>
+
+            <div class="workspace-main">
+              <div class="workspace-toolbar">
+                <h2 class="workspace-toolbar__title">Experiencias integradas</h2>
+                <button class="tab-item" type="button" style="padding: 0.35rem 0.6rem;" @click="toggleTree">
+                  {{ showTreePanel ? 'Ocultar árbol' : 'Mostrar árbol' }}
+                </button>
+              </div>
+
+              <div class="tabstrip">
+                <div
+                  v-for="(t, index) in tabs"
+                  :key="t.name + '-' + index"
+                  :class="['tab-item', { 'is-active': activeTab === index }]"
+                  @click="activeTab = index"
+                >
+                  <span class="tab-item__icon" v-if="t.icon">
+                    <img :src="t.icon" :alt="t.name" />
+                  </span>
+                  <span>{{ t.name }}</span>
+                  <button
+                    v-if="!t.hideClose"
+                    class="tab-item__close"
+                    type="button"
+                    @click.stop="closeTab(index)"
+                    aria-label="Cerrar pestaña"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+
+              <div class="tab-content">
+                <div v-if="!tabs.length" class="tab-placeholder">Sin pestañas abiertas</div>
+                <iframe
+                  v-for="(t, index) in tabs"
+                  :key="t.url + '-' + index"
+                  v-show="activeTab === index"
+                  :src="t.url"
+                ></iframe>
+              </div>
+
+              <div class="logs-panel">
+                <header>
+                  <h3>Logs en tiempo real</h3>
+                  <span class="status-badge" style="background: rgba(86, 102, 245, 0.12); color: var(--color-brand-600);">
+                    <span aria-hidden="true">●</span>
+                    Activo
+                  </span>
+                </header>
+                <iframe v-if="logsUrl" :src="logsUrl"></iframe>
+                <div v-else class="tab-placeholder" style="position: static; min-height: 220px;">
+                  Selecciona un proyecto para ver los logs.
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </template>
+</body>
+
+<script type="module">
+  import {
+    computed,
+    createApp,
+    onBeforeUnmount,
+    onMounted,
+    reactive,
+    ref,
+    watch,
+  } from './lib/vue.esm-browser.prod.js';
+  import HcButton from './ds/components/HcButton.js';
+  import HcCard from './ds/components/HcCard.js';
+  import HcInput from './ds/components/HcInput.js';
+  import HcSelect from './ds/components/HcSelect.js';
+
+  const localdev = window.location.hostname === 'localhost';
+  const fakeHeaders = {};
+  if (localdev) {
+    fakeHeaders['X-Glue-Authentication'] = JSON.stringify({ user: { id: 'user1' } });
+  }
+
+  let base = '';
+  let baseprojects = 'https://projects.hola.cloud';
+  let baseinception = 'https://inceptiondb.hola.cloud';
+  let baselambdas = 'https://lambda.hola.cloud';
+  if (localdev) {
+    base = '/fakeapi/authapi';
+    baseprojects = '/fakeapi/projectsapi';
+    baseinception = '/fakeapi/inceptionapi';
+    baselambdas = '/fakeapi/lambdasapi';
+  }
+
+  const compare = (a, b) => {
+    if (a < b) return -1;
+    if (a > b) return 1;
+    return 0;
+  };
+
+  createApp({
+    template: '#app-template',
+    components: { HcButton, HcCard, HcInput, HcSelect },
+    setup() {
+      const user = ref('loading');
+      const projects = ref([]);
+      const project = ref(null);
+      const projectId = ref(null);
+      const loadingStates = reactive({ projects: 0, creating: false });
+      const inputs = reactive({ name: '', showNewProject: false });
+      const tabs = reactive([
+        {
+          icon: 'img/icon-db.png',
+          name: 'Database',
+          url: '',
+          hideClose: true,
+        },
+        {
+          icon: 'img/icon-lambda.png',
+          name: 'Lambdas',
+          url: '',
+          hideClose: true,
+        },
+        {
+          icon: 'img/icon-config.png',
+          name: 'Config',
+          url: '',
+          hideClose: true,
+        },
+        {
+          icon: 'img/icon-files.png',
+          name: 'Archivos',
+          url: '',
+          hideClose: true,
+        },
+      ]);
+      const activeTab = ref(0);
+      const tree = reactive({ databases: [], lambdas: [] });
+      const showTreePanel = ref(false);
+      const isTreeLoading = ref(false);
+      const keystrokeBuffer = ref('');
+
+      const projectOptions = computed(() => {
+        const options = projects.value.map((p) => ({
+          value: p.id,
+          label: p.name,
+          description: p.host || undefined,
+          meta:
+            p.owners && p.owners.length > 1 ? `${p.owners.length} miembros` : undefined,
+        }));
+        if (user.value && user.value !== 'loading') {
+          options.push({
+            value: '',
+            label: `<${user.value.nick}>`,
+            description: 'Tu espacio personal',
+          });
+        }
+        return options;
+      });
+
+      const isLoadingProjects = computed(() => loadingStates.projects > 0);
+      const hasProjects = computed(() => projects.value.length > 0);
+      const logsUrl = computed(() =>
+        projectId.value ? `https://instantlogs.hola.cloud/?embed&project=${projectId.value}` : null,
+      );
+
+      const updateTabUrls = (id) => {
+        tabs[0].url = `https://inceptiondb.hola.cloud/?embed&project=${id}`;
+        tabs[1].url = `https://lambda.hola.cloud/?embed&project=${id}`;
+        tabs[2].url = `https://config.hola.cloud/?embed&project=${id}`;
+        tabs[3].url = `https://files.hola.cloud/?embed&project=${id}`;
+      };
+
+      const fetchProjects = async () => {
+        loadingStates.projects += 1;
+        try {
+          const response = await fetch(`${baseprojects}/v0/projects`, {
+            headers: {},
+            credentials: 'include',
+          });
+          const values = await response.json();
+          values.sort((a, b) => compare(a.name, b.name));
+          projects.value = values;
+        } catch (error) {
+          console.error('No fue posible cargar los proyectos', error);
+        } finally {
+          loadingStates.projects = Math.max(0, loadingStates.projects - 1);
+        }
+      };
+
+      const fetchUser = async () => {
+        try {
+          const response = await fetch(`${base}/auth/me`, { credentials: 'include' });
+          const data = await response.json();
+          if (data.error) {
+            user.value = null;
+            return;
+          }
+          user.value = data;
+          if (localdev) {
+            fakeHeaders['X-Glue-Authentication'] = JSON.stringify({ user: data });
+          }
+        } catch (error) {
+          console.warn('No se pudo obtener el usuario', error);
+          user.value = null;
+        }
+      };
+
+      const fetchDatabases = async () => {
+        try {
+          const response = await fetch(`${baseinception}/v1/databases`, {
+            headers: fakeHeaders,
+            credentials: 'include',
+          });
+          const values = await response.json();
+          values.forEach((db) => {
+            db.collections = db.collections || [];
+            db.open = false;
+            db.loaded = false;
+          });
+          values.sort((a, b) => compare(a.name, b.name));
+          tree.databases = values;
+        } catch (error) {
+          console.error('No se pudieron sincronizar las bases', error);
+          tree.databases = [];
+        }
+      };
+
+      const fetchLambdas = async () => {
+        try {
+          const response = await fetch(`${baselambdas}/api/v0/lambdas`, {
+            headers: fakeHeaders,
+            credentials: 'include',
+          });
+          const values = await response.json();
+          values.sort((a, b) => compare(`${a.path} ${a.method}`, `${b.path} ${b.method}`));
+          tree.lambdas = values;
+        } catch (error) {
+          console.error('No se pudieron sincronizar las lambdas', error);
+          tree.lambdas = [];
+        }
+      };
+
+      const fetchTree = async () => {
+        if (!project.value) return;
+        fakeHeaders['X-Project'] = project.value.id;
+        isTreeLoading.value = true;
+        try {
+          await Promise.all([fetchDatabases(), fetchLambdas()]);
+        } finally {
+          isTreeLoading.value = false;
+        }
+      };
+
+      const selectProject = (p) => {
+        projectId.value = p ? p.id : null;
+        inputs.showNewProject = false;
+      };
+
+      const createProject = async () => {
+        if (!inputs.name) return;
+        loadingStates.creating = true;
+        try {
+          const body = { name: inputs.name };
+          const response = await fetch(`${baseprojects}/v0/projects`, {
+            method: 'POST',
+            headers: {},
+            credentials: 'include',
+            body: JSON.stringify(body),
+          });
+          const projectCreated = await response.json();
+          projects.value.push(projectCreated);
+          projects.value.sort((a, b) => compare(a.name, b.name));
+          inputs.name = '';
+          inputs.showNewProject = false;
+          selectProject(projectCreated);
+        } catch (error) {
+          console.error('No se pudo crear el proyecto', error);
+        } finally {
+          loadingStates.creating = false;
+        }
+      };
+
+      const cancelCreate = () => {
+        inputs.name = '';
+        inputs.showNewProject = false;
+      };
+
+      const closeTab = (index) => {
+        tabs.splice(index, 1);
+        if (activeTab.value >= tabs.length) {
+          activeTab.value = Math.max(0, tabs.length - 1);
+        }
+      };
+
+      const openLambda = (lambda) => {
+        if (!projectId.value) return;
+        const url = `https://lambda.hola.cloud/?embed&project=${projectId.value}#/lambdas/${lambda.id}`;
+        const existingIndex = tabs.findIndex((tab) => tab.url === url);
+        if (existingIndex >= 0) {
+          activeTab.value = existingIndex;
+          return;
+        }
+        tabs.push({
+          icon: 'img/icon-lambda.png',
+          name: `${lambda.method} ${lambda.path}`,
+          url,
+        });
+        activeTab.value = tabs.length - 1;
+      };
+
+      const openCollection = (database, collection) => {
+        if (!projectId.value) return;
+        const url = `https://inceptiondb.hola.cloud/?embed&project=${projectId.value}#/databases/${database.id}/collections/${collection.name}`;
+        const existingIndex = tabs.findIndex((tab) => tab.url === url);
+        if (existingIndex >= 0) {
+          activeTab.value = existingIndex;
+          return;
+        }
+        tabs.push({
+          icon: 'img/icon-db.png',
+          name: collection.name,
+          url,
+        });
+        activeTab.value = tabs.length - 1;
+      };
+
+      const expandDatabase = async (db, desiredState = null) => {
+        if (desiredState === null) {
+          db.open = !db.open;
+        } else {
+          db.open = desiredState;
+        }
+        if (!db.open) return;
+        if (db.loaded) return;
+        try {
+          const response = await fetch(`${baseinception}/v1/databases/${db.id}/collections`, {
+            headers: fakeHeaders,
+            credentials: 'include',
+          });
+          const values = await response.json();
+          db.collections = values;
+          db.loaded = true;
+        } catch (error) {
+          console.error('No se pudieron cargar las colecciones', error);
+        }
+      };
+
+      const toggleTree = () => {
+        showTreePanel.value = !showTreePanel.value;
+      };
+
+      const toggleDatabase = () => {
+        const shouldClose = tree.databases.some((db) => db.open);
+        if (shouldClose) {
+          tree.databases.forEach((db) => {
+            db.open = false;
+          });
+          return;
+        }
+        tree.databases.forEach((db) => {
+          expandDatabase(db, true);
+        });
+      };
+
+      const handleKeyup = (event) => {
+        keystrokeBuffer.value += event.key;
+        if (keystrokeBuffer.value.length > 20) {
+          keystrokeBuffer.value = keystrokeBuffer.value.slice(-20);
+        }
+        if (keystrokeBuffer.value.endsWith('showtree')) {
+          toggleTree();
+          keystrokeBuffer.value = '';
+        }
+      };
+
+      watch(projectId, async (id) => {
+        if (!id) {
+          project.value = null;
+          tree.databases = [];
+          tree.lambdas = [];
+          return;
+        }
+        const found = projects.value.find((p) => p.id === id);
+        if (found) {
+          project.value = found;
+          updateTabUrls(found.id);
+          if (tabs.length > 4) {
+            tabs.splice(4);
+          }
+          await fetchTree();
+          showTreePanel.value = true;
+          activeTab.value = 0;
+        }
+      });
+
+      watch(
+        () => projects.value.length,
+        (length) => {
+          if (length === 0) {
+            project.value = null;
+            projectId.value = null;
+          }
+        },
+      );
+
+      watch(
+        () => projects.value,
+        (list) => {
+          if (!projectId.value) return;
+          const found = list.find((p) => p.id === projectId.value);
+          if (found) {
+            project.value = found;
+          } else {
+            projectId.value = null;
+          }
+        },
+        { deep: true },
+      );
+
+      onMounted(() => {
+        fetchUser().then(() => {
+          if (user.value) {
+            fetchProjects().then(() => {
+              if (projects.value.length === 1) {
+                selectProject(projects.value[0]);
+              }
+            });
+          }
+        });
+        if (!user.value || user.value === 'loading') {
+          fetchProjects();
+        }
+        document.addEventListener('keyup', handleKeyup, true);
+      });
+
+      onBeforeUnmount(() => {
+        document.removeEventListener('keyup', handleKeyup, true);
+      });
+
+      return {
+        user,
+        projects,
+        project,
+        projectId,
+        loadingStates,
+        inputs,
+        tabs,
+        activeTab,
+        tree,
+        showTreePanel,
+        isTreeLoading,
+        projectOptions,
+        isLoadingProjects,
+        hasProjects,
+        logsUrl,
+        selectProject,
+        createProject,
+        cancelCreate,
+        closeTab,
+        openLambda,
+        openCollection,
+        expandDatabase,
+        toggleTree,
+        toggleDatabase,
+      };
+    },
+  }).mount('#app');
 </script>
-
-<script>
-
-	function newEntry(k,v) {
-
-		const isJson = !(typeof v == 'string');
-		if (isJson) {
-			let s = JSON.stringify(v);
-			if (s.length > 50) {
-				s = JSON.stringify(v, '', '  ');
-			}
-			v = s;
-		}
-
-		return {
-			key: k,
-			value: v,
-			valueOriginal:v,
-			removed: false,
-			isJson: isJson,
-			lines: (v.match(/\n/g) || '').length + 1,
-		};
-	}
-
-	function compare( a, b ) {
-		if ( a < b ) return -1;
-		if ( a > b ) return 1;
-		return 0;
-	}
-
-	// let hostname = document.location.hostname;
-	let base = '';
-	let baseprojects = 'https://projects.hola.cloud';
-	let baseinception = 'https://inceptiondb.hola.cloud';
-	let baselambdas = 'https://lambda.hola.cloud';
-	if (localdev) {
-		baseprojects = '/fakeapi/projectsapi';
-		baseinception = '/fakeapi/inceptionapi';
-		baselambdas = '/fakeapi/lambdasapi';
-		base = '/fakeapi/authapi';
-	}
-
-	new Vue({
-		el: "#app",
-		data() {
-			return {
-				projects: [],
-				project: null, // is the selected project
-				// project: {"id": "123", "name": "lalal"}, // todo: just during development
-				user: 'loading',
-				loading: {
-					fetch: 0,
-				},
-				inputs: {
-					name: '',
-					showNewProject: false,
-				},
-				tabs:[
-					{
-						icon: 'img/icon-db.png',
-						name: 'Database',
-						url: 'https://inceptiondb.hola.cloud/?embed&project=+project_id',
-						hideClose: true,
-					},
-					{
-						icon: 'img/icon-lambda.png',
-						name: 'Lambda',
-						url: 'https://lambda.hola.cloud/?embed&project=+project_id',
-						hideClose: true,
-					},
-					{
-						icon: 'img/icon-config.png',
-						name: 'Config',
-						url: 'https://config.hola.cloud/?embed&project=+project_id',
-						hideClose: true,
-					},
-					{
-						icon: 'img/icon-files.png',
-						name: 'Files',
-						url: 'https://files.hola.cloud/?embed&project=+project_id',
-						hideClose: true,
-					},
-				],
-				tab: 0,
-				tabLambdaTitle: 'Lambdas',
-				project_id: null,
-				tree: {
-					databases: [
-						{
-							"id":"111",
-							"name": "db1",
-							"collections":[
-								{"name":"users"},
-								{"name":"products"},
-							],
-							open: true,
-						}
-					],
-					lambdas: [],
-				},
-				tricks: {
-					showtree: false, // todo: restore to false!!!
-				},
-			};
-		},
-		created() {
-			let that = this;
-
-			this.fetchProjects();
-
-			// todo: just for testing
-			fetch(base+"/auth/me").then(resp => resp.json()).then(user => {
-				if (user.error) {
-					this.user = null;
-					return;
-				}
-				this.user = user;
-				if (localdev) {
-					fakeHeaders['X-Glue-Authentication'] = JSON.stringify({"user":user});
-				}
-				this.fetchProjects();
-				this.fetchTree();
-			});
-
-			// tricks:
-			let letters = '';
-			document.addEventListener('keyup', function(e) {
-				letters += e.key;
-				if (letters.length > 20) {
-					letters = letters.substring(letters.length - 20);
-				}
-				if (letters.endsWith('showtree')) {
-					that.tricks.showtree = !that.tricks.showtree;
-				}
-				console.log(letters);
-			}, true);
-
-
-
-			// setInterval(function (){
-			// 	let title = document.getElementById('tob1').contentWindow.document.title;
-			// 	console.log(title);
-			// 	that.tabLambdaTitle = title;
-			// }, 1000);
-		},
-		methods: {
-			fetchTree() {
-				fakeHeaders['X-Project'] = this.project_id;
-				this.fetchDatabases();
-				this.fetchLambdas();
-			},
-			fetchProjects() {
-				this.loading.fetch++;
-				fetch(baseprojects+'/v0/projects', {headers: {}, credentials: 'include'})
-								.then(resp => resp.json())
-								.then(values => {
-									this.projects = values;
-									this.projects.sort((a,b) => compare(a.name, b.name));
-									this.loading.fetch--;
-								})
-								.catch(function (){
-									this.loading.fetch--;
-								});
-			},
-			fetchDatabases() {
-				console.log('fetching databases...');
-				fetch(baseinception+'/v1/databases', {
-					headers: fakeHeaders,
-					credentials: "include",
-					// crossDomain: true,
-					// withCredentials: true,
-				})
-								.then(resp => resp.json())
-								.then(values => {
-									values.map(db => {
-										db.collections = [];
-										db.open = false;
-									})
-									values.sort((a,b) => compare(a.name, b.name));
-									this.tree.databases = values;
-									// this.projects.sort((a,b) => compare(a.name, b.name));
-								})
-								.catch(function (){
-								});
-			},
-			fetchLambdas() {
-				console.log('fetching lambdas...');
-				fetch(baselambdas+'/api/v0/lambdas', {
-					headers: fakeHeaders,
-					credentials: "include",
-					// crossDomain: true,
-					// withCredentials: true,
-				})
-								.then(resp => resp.json())
-								.then(values => {
-									values.sort((a,b) => compare(a.path+' '+a.method, b.path+' '+b.method));
-									this.tree.lambdas = values;
-								})
-								.catch(function (){
-								});
-			},
-			expandDatabase(db) {
-				db.open = !db.open;
-				if (!db.open) return;
-				fetch(baseinception+'/v1/databases/'+db.id+'/collections', {
-					headers: fakeHeaders,
-					credentials: "include",
-					// crossDomain: true,
-					// withCredentials: true,
-				})
-								.then(resp => resp.json())
-								.then(values => {
-									db.collections = values;
-								})
-								.catch(function (){
-								});
-
-			},
-			selectProject(p) {
-				this.project = p;
-				this.project_id = this.project.id;
-				if (localdev) {
-					fakeHeaders['X-Project'] = this.project.id;
-				}
-				this.fetchDatabases();
-				this.tabs[0].url = 'https://inceptiondb.hola.cloud/?embed&project='+this.project.id;
-				this.tabs[1].url = 'https://lambda.hola.cloud/?embed&project='+this.project.id;
-			},
-			closeTab(i) {
-				this.tabs.splice(i,1);
-				if (this.tabs.length <= this.tab) {
-					this.tab = this.tabs.length - 1;
-				}
-			},
-			openLambda(lambda) {
-				let url = 'https://lambda.hola.cloud/?embed&project='+this.project_id+'#/lambdas/'+lambda.id;
-
-				for (let i in this.tabs) {
-					if (this.tabs[i].url == url) {
-						this.tab = i;
-						return;
-					}
-				}
-
-				this.tabs.push({
-					icon: 'img/icon-lambda.png',
-					name: lambda.method + ' ' + lambda.path,
-					url: url,
-				})
-
-				this.tab = this.tabs.length-1;
-			},
-			openCollection(database, collection) {
-				let url = 'https://inceptiondb.hola.cloud/?embed&project='+this.project_id+'#/databases/'+database.id+'/collections/'+collection.name;
-
-				for (let i in this.tabs) {
-					if (this.tabs[i].url == url) {
-						this.tab = i;
-						return;
-					}
-				}
-
-				this.tabs.push({
-					icon: 'img/icon-db.png',
-					name: collection.name,
-					url: url,
-				})
-
-				this.tab = this.tabs.length-1;
-			},
-			createProject() {
-				let body = {
-					name: this.inputs.name,
-				}
-				let that = this;
-				return fetch(baseprojects+'/v0/projects', {
-					method: 'POST',
-					headers: {},
-					credentials: 'include',
-					body: JSON.stringify(body),
-				})
-								.then(resp => resp.json())
-								.then(function(project) {
-									that.projects.push(project);
-									that.selectProject(project);
-								});
-			},
-			// patch(k,v) {
-			// 	let payload = {};
-			// 	payload[k]=v;
-			// 	return fetch('/v0/projects', {
-			// 		method: 'PATCH',
-			// 		headers: fakeHeaders,
-			// 		body: JSON.stringify(payload),
-			// 	});
-			// },
-			// add(k,v) {
-			// 	return this.patch(k,v).then(value => {
-			// 		this.projects.push(newEntry(k,v));
-			// 		this.wizard.key = '';
-			// 		this.wizard.value = '';
-			// 	});
-			// },
-			// remove(item) {
-			// 	return this.patch(item.key, null).then(value => {
-			// 		item.removed = true;
-			// 	});
-			// },
-			// save(item) {
-			// 	let v = item.value;
-			// 	try {
-			// 		if (item.isJson) v = JSON.parse(item.value);
-			// 	} catch(err) {
-			// 		alert(err);
-			// 	}
-			// 	return this.patch(item.key, v).then(value => {
-			// 		item.valueOriginal = item.value;
-			// 	});
-			// },
-			// wizardAdd() {
-			// 	let wizard = this.wizard;
-			// 	wizard.step = 3;
-			// 	let value = wizard.value;
-			// 	try {
-			// 		value = wizard.isJson ?  JSON.parse(value) : value;
-			// 	} catch(err) {
-			// 		wizard.step = 2;
-			// 		alert(err);
-			// 		return
-			// 	}
-			// 	this.add(wizard.key, value).then(function() {
-			// 		wizard.step = 0;
-			// 	}).catch(function(err) {
-			// 		alert(err);
-			// 		wizard.step = 2;
-			// 	});
-			// },
-		},
-	});
-
-</script>
-
-
-
-<script>
-	function id(s) {
-		return document.getElementById(s);
-	}
-
-	fetch(base+'/auth/me').then(resp => resp.json()).then(me => {
-		if (me.error) return;
-		id('login').style.display = 'none';
-		id('logout').style.display = 'block';
-		id('user_picture').setAttribute('src', me.picture);
-		id('user_nick').innerText = me.nick;
-	})
-</script>
+</html>
