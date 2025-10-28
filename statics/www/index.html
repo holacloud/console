@@ -1,815 +1,414 @@
-<meta http-equiv="Content-Type" CONTENT="text/html; charset=UTF-8">
-<title>hola.cloud</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<script src="lib/vue.2.7.14.js"></script>
-
-<style>
-	body, html {
-		font-family: sans-serif;
-		color: #ffffff;
-		background-color: #2c2c2c;
-	}
-
-	a {
-		color: dodgerblue;
-	}
-
-	#app {
-		max-width: 900px;
-		margin: 0 auto;
-	}
-
-	.projects-list {
-		max-width: 500px;
-		margin: 0 auto;
-		padding: 8px;
-	}
-
-	/** inputs ********************************************************************/
-	.pretty-input {
-		min-height: 29px;
-		font-family: monospace;
-		padding: 6px 4px;
-		background-color: transparent;
-		border-radius: 3px;
-		border: solid silver 1px;
-		resize: vertical;
-	}
-
-	.pretty-input { /* embed */
-		color: white;
-		background-color: transparent;
-	}
-
-	.pretty-input option { /* embed */
-		background-color: #2c2c2c;
-	}
-
-	/**************************************************************** buttons */
-
-	.button {
-		color: white;
-		background-color: dodgerblue;
-		padding: 8px 32px;
-		font-weight: bold;
-		border-radius: 3px;
-		text-decoration: none;
-		border: solid transparent 2px;
-		transition: opacity 0.2s ease-in;
-	}
-
-	.button:hover {
-		box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-		cursor: pointer;
-		border-color: blue;
-	}
-
-	.button-small {
-		padding: 8px;
-		font-size: 90%;
-	}
-
-	.button-white {
-		color: silver;
-		border-color: silver;
-		background-color: white;
-	}
-
-	.button-white:hover {
-		color: #333333;
-		border-color: #333333;
-	}
-
-	.button-text {
-		display: inline-block;
-		padding: 2px 8px;
-		margin:0 8px;
-		border: solid 1px;
-		border-radius: 3px;
-		font-size: 90%;
-	}
-
-	.button-text:hover {
-		cursor: pointer;
-		border-width: 2px;
-		padding: 1px 7px;
-	}
-
-	.button-red {
-		color: red;
-	}
-
-	.button-no-bg {
-		background-color: transparent;
-	}
-
-	.buttons-bar  {
-		padding: 16px 4px;
-		text-align: center;
-	}
-
-	.buttons-bar > * {
-		vertical-align: top;
-	}
-
-	.button:disabled {
-		opacity: 30%;
-	}
-
-	/***************************************************************** tree */
-
-	.tree {
-		display: none;
-	}
-
-	.tree .item:hover {
-		cursor: pointer;
-		background-color: rgba(255,255,255,0.05);
-	}
-
-	.showtree .tree {
-		display: block;
-	}
-
-	.showtree .notree {
-		left: 300px !important;
-	}
-
-
-	/***************************************************************** banner */
-
-	.banner {
-	padding: 16px;
-	margin: 4px;
-	border-radius: 4px;
-	border: solid 1px dodgerblue;
-	background-color: rgba(30, 144, 255, 0.18);
-}
-
-	/*source: https://cssloaders.github.io/*/
-	.loader:before {
-		content: '';
-		width: 24px;
-		height: 24px;
-		border: 4px solid dodgerblue;
-		border-bottom-color: transparent;
-		border-radius: 50%;
-		display: inline-block;
-		box-sizing: border-box;
-		animation: rotation 1s linear infinite;
-		vertical-align: middle;
-		margin-right: 12px;
-	}
-
-	@keyframes rotation {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(360deg);
-		}
-	}
-
-	.projects-list .item {
-		padding: 4px;
-		border: solid 1px silver;
-		margin: 4px;
-		border-radius: 3px;
-		cursor: pointer;
-	}
-
-	.projects-list .item:hover {
-		border-color: dodgerblue;
-	}
-
-	.tab {
-		padding: 11px;
-		display: inline-block;
-		margin-right: 1px;
-		color: #8e8e8e;
-		background-color: transparent;
-		cursor: pointer;
-	}
-
-	.tob {
-		/*opacity: 0;*/
-		position: absolute;
-		width: 0;
-		height: 0;
-		border: none;
-	}
-
-	.tob.tob-active {
-		opacity: 1;
-		width: 100%;
-		height: 100%;
-	}
-
-
-	.tab .tab-close {
-		opacity: 0;
-	}
-
-	.tab:hover,
-	.tab-active {
-		color: white;
-		background-color: #1e1e1e;
-	}
-
-	.tab:hover .tab-close,
-	.tab.tab-active .tab-close {
-		opacity: 1;
-	}
-
-
-	#logo {
-		display: none;
-	}
-
-	@media screen and (min-width: 350px) {
-		#logo {
-			display: inline-block;
-		}
-
-		#logo-short {
-			display: none;
-		}
-	}
-</style>
-
-<div id="app">
-
-	<div v-if="user === 'loading'" style="text-align: center;">
-		<span class="loader">Loading...</span>
-	</div>
-
-	<div
-		v-if="user === null"
-	 	style="
-	 		max-width: 400px;
-	 		margin: 100px auto;
-	 		border: solid silver 1px;
-	 		box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-	 		padding:16px;
-		"
-	>
-		<h1>Bienvenido a Hola Cloud!</h1>
-		<p>
-			Esta es la mejor experiencia para la cloud. <br>
-			Para empezar, debes identificarte de alguna forma. <br>
-			No te preocupes, es gratis. :D
-		</p>
-		<div style="text-align: center; padding: 24px 0;">
-			<a
-				href="https://hola.cloud/auth/login"
-				class="button"
-			>Login</a>
-		</div>
-	</div>
-
-	<div v-if="user !== null && user !== 'loading'">
-
-		<div style="height: 40px; position: absolute; top: 0; left: 0; right: 0;">
-			<div style="float: right;">
-				<div id="login" v-if="user === null">
-					<a href="/auth/login">Login</a>
-				</div>
-				<div id="logout" v-if="user !== null && user !== 'loading'">
-					<img id="user_picture" :src="user.picture" style="border-radius: 50%; height: 32px; vertical-align: -9px;">
-					<span id="user_nick" style="font-weight: bold; display: none;">{{ user.nick }}</span>
-					<a href="/auth/logout" class="button button-no-bg button-small">Logout</a>
-				</div>
-			</div>
-
-			<img id="logo" src="img/logo.png" alt="hola.cloud" style="height: 40px; vertical-align: middle;">
-			<img id="logo-short" src="img/logo-short.png" alt="hola.cloud" style="height: 40px; vertical-align: middle;">
-
-			<select
-						class="pretty-input"
-						v-model="project_id"
-						style="color: white"
-						v-if="project_id !== null"
-						@change="fetchTree"
-			>
-				<option
-						v-for="p in projects"
-						:value="p.id"
-				>{{ p.name }}</option>
-				<option
-						value=""
-				>&lt;{{ user.nick }}&gt;</option>
-			</select>
-
-		</div>
-
-		<div style="position: absolute; top: 40px; left: 0; right: 0; bottom: 0;">
-
-			<div v-if="loading.fetch" style="text-align: center;">
-				<span class="loader">Loading projects...</span>
-			</div>
-
-			<div v-if="!loading.fetch && projects.length == 0">
-				<div class="banner" style="text-align: center; margin: 40px 20px;">
-					Todavía no tienes ningún proyecto! Empieza creando uno ya mismo :)
-				</div>
-				<form @submit.prevent="createProject()" style="text-align: center;">
-					Nombre del proyecto: <br><br>
-					<input class="pretty-input" type="text" v-model="inputs.name" autofocus><br><br><br>
-					<button class="button" type="submit" :disabled="!inputs.name">Crear proyecto</button>
-				</form>
-			</div>
-
-			<div
-				class="projects-list"
-				v-if="!loading.fetch && projects.length > 0 && project === null"
-			>
-				<div
-								class="item"
-								v-for="p in projects"
-								@click="selectProject(p)"
-				>
-					<div
-							style="float: right;"
-					>
-						<a :href="'https://'+p.host" v-if="p.host" target="_blank">{{p.host}}</a>
-						<span v-if="p.owners && p.owners.length > 1" style="margin-left: 4px;">{{p.owners.length}} 👤</span>
-					</div>
-					<div style="font-weight: bold;">
-						{{ p.name }}
-					</div>
-					<div style="font-size: 80%; font-family: monospace;">
-						{{ p.id }}
-					</div>
-				</div>
-
-				<div style="text-align: center; padding: 20px;">
-					<form v-if="inputs.showNewProject" @submit.prevent="createProject()" style="text-align: center;">
-						Nombre del proyecto: <br><br>
-						<input class="pretty-input" type="text" v-model="inputs.name" autofocus><br><br><br>
-						<button class="button" type="submit" :disabled="!inputs.name">Crear proyecto</button>
-					</form>
-					<div v-else>
-						<button class="button" @click="inputs.showNewProject = true;">Nuevo proyecto</button>
-					</div>
-				</div>
-
-
-			</div>
-
-			<div v-if="project !== null" :class="{showtree:tricks.showtree}">
-
-				<div
-					class="tree"
-					style="width: 300px; padding: 8px; position: absolute; top: 0; left: 0; right: 0; overflow: auto; box-sizing: content-box; overflow-y: scroll; scrollbar-color: silver transparent;"
-				>
-					<div v-if="false">
-						<img src="img/icon-db.png" alt=""> Databases
-					</div>
-					<div
-						v-for="database in tree.databases"
-					>
-						<div
-							class="item"
-							@click="expandDatabase(database)"
-						>
-							<img src="img/icon-db.png" alt=""> {{ database.name }}
-						</div>
-						<div
-							v-if="database.open"
-							class="children"
-							style="padding-left: 16px;"
-						>
-							<div
-								class="item"
-								v-for="collection in database.collections"
-								@click="openCollection(database, collection)"
-							><img src="https://inceptiondb.hola.cloud/v2/img/icon-collection.svg" style="height: 16px; filter: contrast(0.1); vertical-align: middle;">  {{ collection.name }}</div>
-						</div>
-					</div>
-					<div
-						v-for="lambda in tree.lambdas"
-					>
-						<div
-										class="item"
-										@click="openLambda(lambda)"
-										:title="lambda.name"
-						>
-							<img src="img/icon-lambda.png" alt=""> {{ lambda.method }} {{ lambda.path }}
-						</div>
-					</div>
-				</div>
-
-				<div
-					class="notree"
-					style="position: absolute; top: 0; right: 0; bottom: 0; left: 0;"
-				>
-					<div style="background-color: #252526; height: 42px;">
-						<div class="tab" v-for="(t, i) in tabs" :class="{'tab-active': tab==i}" @click="tab=i">
-							<img :src="t.icon" alt="">
-							{{ t.name }}
-							<img src="img/icon-x.png" alt="" v-if="t.hideClose !== true" @click="closeTab(i)">
-						</div>
-					</div>
-					<div style="background-color: #1e1e1e; position: absolute; left: 0; right: 0; bottom: 300px; border-bottom: solid 1px #444444; top: 42px;">
-						<iframe
-							v-for="(t, i) in tabs"
-							class="tob"
-							:class="{'tob-active': tab==i}"
-							:src="t.url"
-						></iframe>
-
-						<iframe class="tob" :class="{'tob-active': tab==0}" :src="tabs[0].url"></iframe>
-						<iframe id="tob1" class="tob" :class="{'tob-active': tab==1}" :src="tabs[1].url"></iframe>
-						<iframe class="tob" :class="{'tob-active': tab==2}" :src="'https://config.hola.cloud/?embed&project='+project_id"></iframe>
-						<iframe class="tob" :class="{'tob-active': tab==3}" :src="'https://files.hola.cloud/?embed&project='+project_id"></iframe>
-					</div>
-					<div style="background: orange; position: absolute; left: 0; right: 0; bottom: 0; height: 300px;">
-
-						<div style="background-color: #252526; height: 42px;">
-							<div class="tab tab-active">
-								<img src="img/icon-logs.png" alt="">
-								Logs
-								<img src="img/icon-x.png" alt="">
-							</div>
-						</div>
-						<div style="background-color: #1e1e1e; position: absolute; left: 0; right: 0; bottom: 0; top: 42px;">
-							<iframe class="tob tob-active" :src="'https://instantlogs.hola.cloud/?embed&project='+project_id"></iframe>
-						</div>
-					</div>
-				</div>
-
-		</div>
-
-
-
-	</div>
-
-</div>
-
-<script>
-
-	let localdev = document.location.hostname === 'localhost';
-
-	let fakeHeaders = {};
-	if (localdev) {
-		fakeHeaders['X-Glue-Authentication'] = '{"user":{"id":"user1"}}';
-	}
-</script>
-
-<script>
-
-	function newEntry(k,v) {
-
-		const isJson = !(typeof v == 'string');
-		if (isJson) {
-			let s = JSON.stringify(v);
-			if (s.length > 50) {
-				s = JSON.stringify(v, '', '  ');
-			}
-			v = s;
-		}
-
-		return {
-			key: k,
-			value: v,
-			valueOriginal:v,
-			removed: false,
-			isJson: isJson,
-			lines: (v.match(/\n/g) || '').length + 1,
-		};
-	}
-
-	function compare( a, b ) {
-		if ( a < b ) return -1;
-		if ( a > b ) return 1;
-		return 0;
-	}
-
-	// let hostname = document.location.hostname;
-	let base = '';
-	let baseprojects = 'https://projects.hola.cloud';
-	let baseinception = 'https://inceptiondb.hola.cloud';
-	let baselambdas = 'https://lambda.hola.cloud';
-	if (localdev) {
-		baseprojects = '/fakeapi/projectsapi';
-		baseinception = '/fakeapi/inceptionapi';
-		baselambdas = '/fakeapi/lambdasapi';
-		base = '/fakeapi/authapi';
-	}
-
-	new Vue({
-		el: "#app",
-		data() {
-			return {
-				projects: [],
-				project: null, // is the selected project
-				// project: {"id": "123", "name": "lalal"}, // todo: just during development
-				user: 'loading',
-				loading: {
-					fetch: 0,
-				},
-				inputs: {
-					name: '',
-					showNewProject: false,
-				},
-				tabs:[
-					{
-						icon: 'img/icon-db.png',
-						name: 'Database',
-						url: 'https://inceptiondb.hola.cloud/?embed&project=+project_id',
-						hideClose: true,
-					},
-					{
-						icon: 'img/icon-lambda.png',
-						name: 'Lambda',
-						url: 'https://lambda.hola.cloud/?embed&project=+project_id',
-						hideClose: true,
-					},
-					{
-						icon: 'img/icon-config.png',
-						name: 'Config',
-						url: 'https://config.hola.cloud/?embed&project=+project_id',
-						hideClose: true,
-					},
-					{
-						icon: 'img/icon-files.png',
-						name: 'Files',
-						url: 'https://files.hola.cloud/?embed&project=+project_id',
-						hideClose: true,
-					},
-				],
-				tab: 0,
-				tabLambdaTitle: 'Lambdas',
-				project_id: null,
-				tree: {
-					databases: [
-						{
-							"id":"111",
-							"name": "db1",
-							"collections":[
-								{"name":"users"},
-								{"name":"products"},
-							],
-							open: true,
-						}
-					],
-					lambdas: [],
-				},
-				tricks: {
-					showtree: false, // todo: restore to false!!!
-				},
-			};
-		},
-		created() {
-			let that = this;
-
-			this.fetchProjects();
-
-			// todo: just for testing
-			fetch(base+"/auth/me").then(resp => resp.json()).then(user => {
-				if (user.error) {
-					this.user = null;
-					return;
-				}
-				this.user = user;
-				if (localdev) {
-					fakeHeaders['X-Glue-Authentication'] = JSON.stringify({"user":user});
-				}
-				this.fetchProjects();
-				this.fetchTree();
-			});
-
-			// tricks:
-			let letters = '';
-			document.addEventListener('keyup', function(e) {
-				letters += e.key;
-				if (letters.length > 20) {
-					letters = letters.substring(letters.length - 20);
-				}
-				if (letters.endsWith('showtree')) {
-					that.tricks.showtree = !that.tricks.showtree;
-				}
-				console.log(letters);
-			}, true);
-
-
-
-			// setInterval(function (){
-			// 	let title = document.getElementById('tob1').contentWindow.document.title;
-			// 	console.log(title);
-			// 	that.tabLambdaTitle = title;
-			// }, 1000);
-		},
-		methods: {
-			fetchTree() {
-				fakeHeaders['X-Project'] = this.project_id;
-				this.fetchDatabases();
-				this.fetchLambdas();
-			},
-			fetchProjects() {
-				this.loading.fetch++;
-				fetch(baseprojects+'/v0/projects', {headers: {}, credentials: 'include'})
-								.then(resp => resp.json())
-								.then(values => {
-									this.projects = values;
-									this.projects.sort((a,b) => compare(a.name, b.name));
-									this.loading.fetch--;
-								})
-								.catch(function (){
-									this.loading.fetch--;
-								});
-			},
-			fetchDatabases() {
-				console.log('fetching databases...');
-				fetch(baseinception+'/v1/databases', {
-					headers: fakeHeaders,
-					credentials: "include",
-					// crossDomain: true,
-					// withCredentials: true,
-				})
-								.then(resp => resp.json())
-								.then(values => {
-									values.map(db => {
-										db.collections = [];
-										db.open = false;
-									})
-									values.sort((a,b) => compare(a.name, b.name));
-									this.tree.databases = values;
-									// this.projects.sort((a,b) => compare(a.name, b.name));
-								})
-								.catch(function (){
-								});
-			},
-			fetchLambdas() {
-				console.log('fetching lambdas...');
-				fetch(baselambdas+'/api/v0/lambdas', {
-					headers: fakeHeaders,
-					credentials: "include",
-					// crossDomain: true,
-					// withCredentials: true,
-				})
-								.then(resp => resp.json())
-								.then(values => {
-									values.sort((a,b) => compare(a.path+' '+a.method, b.path+' '+b.method));
-									this.tree.lambdas = values;
-								})
-								.catch(function (){
-								});
-			},
-			expandDatabase(db) {
-				db.open = !db.open;
-				if (!db.open) return;
-				fetch(baseinception+'/v1/databases/'+db.id+'/collections', {
-					headers: fakeHeaders,
-					credentials: "include",
-					// crossDomain: true,
-					// withCredentials: true,
-				})
-								.then(resp => resp.json())
-								.then(values => {
-									db.collections = values;
-								})
-								.catch(function (){
-								});
-
-			},
-			selectProject(p) {
-				this.project = p;
-				this.project_id = this.project.id;
-				if (localdev) {
-					fakeHeaders['X-Project'] = this.project.id;
-				}
-				this.fetchDatabases();
-				this.tabs[0].url = 'https://inceptiondb.hola.cloud/?embed&project='+this.project.id;
-				this.tabs[1].url = 'https://lambda.hola.cloud/?embed&project='+this.project.id;
-			},
-			closeTab(i) {
-				this.tabs.splice(i,1);
-				if (this.tabs.length <= this.tab) {
-					this.tab = this.tabs.length - 1;
-				}
-			},
-			openLambda(lambda) {
-				let url = 'https://lambda.hola.cloud/?embed&project='+this.project_id+'#/lambdas/'+lambda.id;
-
-				for (let i in this.tabs) {
-					if (this.tabs[i].url == url) {
-						this.tab = i;
-						return;
-					}
-				}
-
-				this.tabs.push({
-					icon: 'img/icon-lambda.png',
-					name: lambda.method + ' ' + lambda.path,
-					url: url,
-				})
-
-				this.tab = this.tabs.length-1;
-			},
-			openCollection(database, collection) {
-				let url = 'https://inceptiondb.hola.cloud/?embed&project='+this.project_id+'#/databases/'+database.id+'/collections/'+collection.name;
-
-				for (let i in this.tabs) {
-					if (this.tabs[i].url == url) {
-						this.tab = i;
-						return;
-					}
-				}
-
-				this.tabs.push({
-					icon: 'img/icon-db.png',
-					name: collection.name,
-					url: url,
-				})
-
-				this.tab = this.tabs.length-1;
-			},
-			createProject() {
-				let body = {
-					name: this.inputs.name,
-				}
-				let that = this;
-				return fetch(baseprojects+'/v0/projects', {
-					method: 'POST',
-					headers: {},
-					credentials: 'include',
-					body: JSON.stringify(body),
-				})
-								.then(resp => resp.json())
-								.then(function(project) {
-									that.projects.push(project);
-									that.selectProject(project);
-								});
-			},
-			// patch(k,v) {
-			// 	let payload = {};
-			// 	payload[k]=v;
-			// 	return fetch('/v0/projects', {
-			// 		method: 'PATCH',
-			// 		headers: fakeHeaders,
-			// 		body: JSON.stringify(payload),
-			// 	});
-			// },
-			// add(k,v) {
-			// 	return this.patch(k,v).then(value => {
-			// 		this.projects.push(newEntry(k,v));
-			// 		this.wizard.key = '';
-			// 		this.wizard.value = '';
-			// 	});
-			// },
-			// remove(item) {
-			// 	return this.patch(item.key, null).then(value => {
-			// 		item.removed = true;
-			// 	});
-			// },
-			// save(item) {
-			// 	let v = item.value;
-			// 	try {
-			// 		if (item.isJson) v = JSON.parse(item.value);
-			// 	} catch(err) {
-			// 		alert(err);
-			// 	}
-			// 	return this.patch(item.key, v).then(value => {
-			// 		item.valueOriginal = item.value;
-			// 	});
-			// },
-			// wizardAdd() {
-			// 	let wizard = this.wizard;
-			// 	wizard.step = 3;
-			// 	let value = wizard.value;
-			// 	try {
-			// 		value = wizard.isJson ?  JSON.parse(value) : value;
-			// 	} catch(err) {
-			// 		wizard.step = 2;
-			// 		alert(err);
-			// 		return
-			// 	}
-			// 	this.add(wizard.key, value).then(function() {
-			// 		wizard.step = 0;
-			// 	}).catch(function(err) {
-			// 		alert(err);
-			// 		wizard.step = 2;
-			// 	});
-			// },
-		},
-	});
-
-</script>
-
-
-
-<script>
-	function id(s) {
-		return document.getElementById(s);
-	}
-
-	fetch(base+'/auth/me').then(resp => resp.json()).then(me => {
-		if (me.error) return;
-		id('login').style.display = 'none';
-		id('logout').style.display = 'block';
-		id('user_picture').setAttribute('src', me.picture);
-		id('user_nick').innerText = me.nick;
-	})
-</script>
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>hola.cloud Console</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <div id="app" class="app-shell" v-cloak>
+      <div v-if="user === 'loading'" class="full-screen-state">
+        <div class="full-screen-state__content">
+          <div class="loading-spinner" aria-hidden="true"></div>
+          <p class="full-screen-state__title">Preparando tu consola…</p>
+          <p class="full-screen-state__subtitle">
+            Verificamos tu sesión para que puedas continuar donde lo dejaste.
+          </p>
+        </div>
+      </div>
+
+      <template v-else>
+        <header class="app-header">
+          <div class="app-header__brand">
+            <img src="img/logo-hola-cloud.svg" alt="hola.cloud" class="app-header__logo" />
+            <div class="app-header__brand-text">
+              <span class="app-header__brand-title">hola.cloud</span>
+              <span class="app-header__brand-subtitle">Console</span>
+            </div>
+          </div>
+
+          <div v-if="isLoggedIn" class="app-header__project">
+            <label class="hc-form-label" for="project-switcher">Proyecto</label>
+            <select
+              id="project-switcher"
+              class="hc-input app-header__project-select"
+              v-model="selectedProjectId"
+              :disabled="isLoadingProjects"
+            >
+              <option v-if="isLoadingProjects" disabled>Actualizando proyectos…</option>
+              <option
+                v-for="project in sortedProjects"
+                :key="project.id"
+                :value="project.id"
+              >
+                {{ project.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="app-header__actions">
+            <template v-if="isLoggedIn">
+              <div class="user-chip">
+                <div class="user-chip__avatar" aria-hidden="true">
+                  <img
+                    v-if="user.picture"
+                    :src="user.picture"
+                    alt=""
+                    referrerpolicy="no-referrer"
+                  />
+                  <span v-else>{{ userInitials }}</span>
+                </div>
+                <div class="user-chip__meta">
+                  <span class="user-chip__name">{{ user.nick }}</span>
+                  <span v-if="user.email" class="user-chip__email">{{ user.email }}</span>
+                </div>
+              </div>
+              <a href="/auth/logout" class="hc-button hc-btn-secondary">Cerrar sesión</a>
+            </template>
+            <template v-else>
+              <a href="https://hola.cloud/auth/login" class="hc-button">Iniciar sesión</a>
+            </template>
+          </div>
+        </header>
+
+        <main class="app-main">
+          <section v-if="!isLoggedIn" class="hero">
+            <div class="hero__content hc-card">
+              <div class="hero__text">
+                <h1 class="hc-heading-1">La nube que te saluda</h1>
+                <p class="hc-body hero__subtitle">
+                  Controla bases de datos, lambdas y archivos en un entorno unificado con estados en tiempo real.
+                </p>
+                <div class="hero__actions">
+                  <a href="https://hola.cloud/auth/login" class="hc-button">Iniciar sesión</a>
+                  <a href="https://hola.cloud" class="hc-button hc-btn-secondary" target="_blank" rel="noopener">Conoce hola.cloud</a>
+                </div>
+              </div>
+              <div class="hero__preview">
+                <div class="hero__glow"></div>
+                <div class="hero__cards">
+                  <div class="hero-card">
+                    <span class="hero-card__label">Provisionamiento</span>
+                    <span class="hero-card__value">Ágil y seguro</span>
+                  </div>
+                  <div class="hero-card">
+                    <span class="hero-card__label">Integraciones</span>
+                    <span class="hero-card__value">+20 servicios</span>
+                  </div>
+                  <div class="hero-card">
+                    <span class="hero-card__label">Latency promedio</span>
+                    <span class="hero-card__value">42 ms</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section v-else-if="showEmptyState" class="content-section">
+            <div class="hc-card empty-state">
+              <div class="empty-state__icon" aria-hidden="true">☁️</div>
+              <h2 class="hc-heading-2">Crea tu primer proyecto</h2>
+              <p class="hc-body empty-state__text">
+                Define un nombre memorable y comienza a desplegar tus recursos en segundos.
+              </p>
+              <form class="empty-state__form" @submit.prevent="createProject">
+                <div class="hc-input-wrapper">
+                  <label class="hc-form-label" for="project-name">Nombre del proyecto</label>
+                  <input
+                    id="project-name"
+                    class="hc-input"
+                    type="text"
+                    autocomplete="off"
+                    maxlength="80"
+                    placeholder="Ej. api-finanzas"
+                    v-model="newProjectName"
+                  />
+                </div>
+                <div class="empty-state__actions">
+                  <button class="hc-button" type="submit" :disabled="!newProjectName || loading.createProject">
+                    <span v-if="loading.createProject" class="button-spinner" aria-hidden="true"></span>
+                    Crear proyecto
+                  </button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <section v-else-if="!selectedProject" class="content-section">
+            <div class="project-board">
+              <div class="project-board__header">
+                <div>
+                  <p class="section-eyebrow">Bienvenido de vuelta</p>
+                  <h2 class="hc-heading-2">Elige un proyecto para continuar</h2>
+                  <p class="hc-body project-board__subtitle">
+                    Gestiona tus entornos desde un único panel. Puedes crear proyectos ilimitados para aislar recursos por equipo o producto.
+                  </p>
+                </div>
+                <button class="hc-button hc-btn-secondary" type="button" @click="toggleNewProjectForm">
+                  Nuevo proyecto
+                </button>
+              </div>
+
+              <div class="project-board__grid">
+                <article
+                  v-for="project in sortedProjects"
+                  :key="project.id"
+                  class="project-card"
+                  role="button"
+                  tabindex="0"
+                  @click="selectProject(project.id)"
+                  @keydown.enter.prevent="selectProject(project.id)"
+                >
+                  <div class="project-card__header">
+                    <h3 class="project-card__title">{{ project.name }}</h3>
+                    <span v-if="project.owners && project.owners.length" class="project-card__badge">
+                      {{ project.owners.length }} miembros
+                    </span>
+                  </div>
+                  <p class="project-card__id hc-mono">{{ project.id }}</p>
+                  <p v-if="project.host" class="project-card__host">
+                    <span>Dominio:</span>
+                    <a :href="'https://' + project.host" target="_blank" rel="noopener">{{ project.host }}</a>
+                  </p>
+                </article>
+
+                <button class="project-card project-card--cta" type="button" @click="toggleNewProjectForm">
+                  <span class="project-card__cta-icon">＋</span>
+                  <span class="project-card__cta-text">Crear nuevo proyecto</span>
+                </button>
+              </div>
+
+              <transition name="fade-slide">
+                <form
+                  v-if="showNewProjectForm"
+                  class="project-board__form hc-card"
+                  @submit.prevent="createProject"
+                >
+                  <div class="project-board__form-header">
+                    <div>
+                      <h3 class="hc-heading-3">Nuevo proyecto</h3>
+                      <p class="hc-body project-board__form-text">
+                        Asigna un nombre único. Podrás agregar miembros y configurar dominios más adelante.
+                      </p>
+                    </div>
+                    <button class="project-board__form-close" type="button" @click="toggleNewProjectForm">
+                      Cerrar
+                    </button>
+                  </div>
+                  <div class="hc-input-wrapper">
+                    <label class="hc-form-label" for="project-name-inline">Nombre</label>
+                    <input
+                      id="project-name-inline"
+                      class="hc-input"
+                      type="text"
+                      autocomplete="off"
+                      maxlength="80"
+                      placeholder="Ej. ecommerce-live"
+                      v-model="newProjectName"
+                    />
+                  </div>
+                  <div class="project-board__form-actions">
+                    <button class="hc-button" type="submit" :disabled="!newProjectName || loading.createProject">
+                      <span v-if="loading.createProject" class="button-spinner" aria-hidden="true"></span>
+                      Crear proyecto
+                    </button>
+                    <button class="hc-button hc-btn-secondary" type="button" @click="toggleNewProjectForm">Cancelar</button>
+                  </div>
+                </form>
+              </transition>
+            </div>
+          </section>
+
+          <section v-else class="content-section">
+            <div class="hc-card workspace-summary">
+              <div class="workspace-summary__main">
+                <div>
+                  <p class="section-eyebrow">Proyecto activo</p>
+                  <h1 class="hc-heading-2 workspace-summary__title">{{ selectedProject.name }}</h1>
+                  <p class="hc-body workspace-summary__description">
+                    Orquesta tus servicios con flujos auditables, métricas en tiempo real y herramientas listas para cada etapa del ciclo de vida.
+                  </p>
+                </div>
+                <div class="workspace-summary__metrics">
+                  <div class="metric-card">
+                    <span class="metric-card__label">Bases de datos</span>
+                    <span class="metric-card__value">{{ tree.databases.length }}</span>
+                  </div>
+                  <div class="metric-card">
+                    <span class="metric-card__label">Lambdas</span>
+                    <span class="metric-card__value">{{ tree.lambdas.length }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="workspace-summary__meta">
+                <div v-if="projectHost" class="workspace-summary__meta-item">
+                  <span class="workspace-summary__meta-label">Dominio público</span>
+                  <a :href="projectHost" target="_blank" rel="noopener" class="workspace-summary__meta-value">
+                    {{ projectHost.replace('https://', '') }}
+                  </a>
+                </div>
+                <div v-if="selectedProject.owners && selectedProject.owners.length" class="workspace-summary__meta-item">
+                  <span class="workspace-summary__meta-label">Colaboradores</span>
+                  <div class="workspace-summary__owners">
+                    <span
+                      v-for="owner in selectedProject.owners"
+                      :key="owner.id || owner.email || owner.nick || owner"
+                      class="workspace-summary__owner"
+                    >
+                      {{ owner.nick || owner.email || owner.name || 'Owner' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="workspace" :class="{'workspace--sidebar-hidden': !workspaceSidebarVisible && isCompactLayout}">
+              <aside class="workspace__sidebar">
+                <div class="workspace__sidebar-header">
+                  <h2>Recursos</h2>
+                  <button
+                    v-if="isCompactLayout"
+                    type="button"
+                    class="workspace__sidebar-close"
+                    @click="workspaceSidebarVisible = false"
+                    aria-label="Ocultar panel lateral"
+                  >
+                    ×
+                  </button>
+                </div>
+                <div class="workspace-tree">
+                  <div class="workspace-tree__group">
+                    <div class="workspace-tree__title">Bases de datos</div>
+                    <div v-if="treeLoading.databases" class="workspace-tree__loading">
+                      <span class="loading-spinner loading-spinner--inline" aria-hidden="true"></span>
+                      Cargando bases de datos…
+                    </div>
+                    <template v-else>
+                      <p v-if="!tree.databases.length" class="workspace-tree__empty">
+                        No hemos detectado bases de datos aún.
+                      </p>
+                      <div
+                        v-for="database in tree.databases"
+                        :key="database.id"
+                        class="workspace-tree__item"
+                      >
+                        <button type="button" class="workspace-tree__button" @click="expandDatabase(database)">
+                          <span class="workspace-tree__chevron" :class="{'workspace-tree__chevron--open': database.open}"></span>
+                          <span class="workspace-tree__label">{{ database.name }}</span>
+                          <span class="workspace-tree__meta" v-if="database.collections.length">{{ database.collections.length }}</span>
+                        </button>
+                        <div v-if="database.open" class="workspace-tree__children">
+                          <div v-if="database.collectionsLoading" class="workspace-tree__loading">
+                            <span class="loading-spinner loading-spinner--inline" aria-hidden="true"></span>
+                            Cargando colecciones…
+                          </div>
+                          <button
+                            v-for="collection in database.collections"
+                            :key="database.id + ':' + collection.name"
+                            type="button"
+                            class="workspace-tree__child"
+                            @click="openCollection(database, collection)"
+                          >
+                            {{ collection.name }}
+                          </button>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+
+                  <div class="workspace-tree__group">
+                    <div class="workspace-tree__title">Lambdas</div>
+                    <div v-if="treeLoading.lambdas" class="workspace-tree__loading">
+                      <span class="loading-spinner loading-spinner--inline" aria-hidden="true"></span>
+                      Cargando lambdas…
+                    </div>
+                    <template v-else>
+                      <p v-if="!tree.lambdas.length" class="workspace-tree__empty">
+                        Integra tu primera lambda para verla aquí.
+                      </p>
+                      <button
+                        v-for="lambda in tree.lambdas"
+                        :key="lambda.id"
+                        type="button"
+                        class="workspace-tree__lambda"
+                        @click="openLambda(lambda)"
+                      >
+                        <span class="workspace-lambda-method" :class="'workspace-lambda-method--' + lambda.method.toLowerCase()">
+                          {{ lambda.method }}
+                        </span>
+                        <span class="workspace-tree__label">{{ lambda.path }}</span>
+                      </button>
+                    </template>
+                  </div>
+                </div>
+              </aside>
+
+              <div class="workspace__content">
+                <div class="workspace__toolbar">
+                  <div class="workspace__breadcrumbs">
+                    <span class="workspace__breadcrumbs-pill">Proyecto</span>
+                    <span class="workspace__breadcrumbs-name">{{ selectedProject.name }}</span>
+                  </div>
+                  <div class="workspace__toolbar-actions">
+                    <button
+                      v-if="isCompactLayout"
+                      type="button"
+                      class="hc-button hc-btn-secondary hc-button--sm"
+                      @click="workspaceSidebarVisible = !workspaceSidebarVisible"
+                    >
+                      {{ workspaceSidebarVisible ? 'Ocultar panel' : 'Mostrar panel' }}
+                    </button>
+                  </div>
+                </div>
+
+                <div class="workspace-tabs">
+                  <template v-if="tabs.length">
+                    <button
+                      v-for="tab in tabs"
+                      :key="tab.id"
+                      type="button"
+                      class="workspace-tab"
+                      :class="{'workspace-tab--active': tab.id === activeTabId}"
+                      @click="setActiveTab(tab.id)"
+                    >
+                      <img :src="tab.icon" alt="" class="workspace-tab__icon" />
+                      <span class="workspace-tab__label">{{ tab.label }}</span>
+                      <button
+                        v-if="tab.closable"
+                        type="button"
+                        class="workspace-tab__close"
+                        @click.stop="closeTab(tab.id)"
+                        aria-label="Cerrar pestaña"
+                      >
+                        ×
+                      </button>
+                    </button>
+                  </template>
+                  <p v-else class="workspace-tabs__empty">
+                    Selecciona un recurso de la izquierda para abrirlo en la consola embebida.
+                  </p>
+                </div>
+
+                <div class="workspace-frame">
+                  <iframe
+                    v-for="tab in tabs"
+                    :key="tab.id"
+                    :src="tab.url"
+                    :title="tab.label"
+                    v-show="tab.id === activeTabId"
+                    loading="lazy"
+                    frameborder="0"
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </template>
+    </div>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
