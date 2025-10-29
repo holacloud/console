@@ -12,7 +12,6 @@
   />
   <style>
     :root {
-      color-scheme: dark;
       --color-brand: #5666f5;
       --color-brand-600: #3a4be6;
       --color-brand-100: #e6e9ff;
@@ -21,28 +20,166 @@
       --color-warning: #f59e0b;
       --color-danger: #dc2626;
       --color-neutral-50: #f8fafc;
-      --color-neutral-100: #e2e8f0;
-      --color-neutral-300: #a3b6d6;
+      --color-neutral-100: #f1f5f9;
+      --color-neutral-200: #e2e8f0;
+      --color-neutral-300: #cbd5f5;
       --color-neutral-400: #94a3b8;
       --color-neutral-500: #64748b;
       --color-neutral-600: #475569;
       --color-neutral-700: #334155;
       --color-neutral-800: #1e293b;
-      --color-neutral-850: #15213a;
       --color-neutral-900: #0f172a;
-      --color-neutral-950: #0b1120;
+      --color-text-primary: #0f172a;
+      --color-text-secondary: #475569;
+      --color-text-muted: #64748b;
+      --color-text-inverse: #f8fafc;
+      --color-border-subtle: rgba(15, 23, 42, 0.08);
+      --color-border-strong: rgba(15, 23, 42, 0.14);
+      --color-background: #f8fafc;
+      --color-surface: #ffffff;
+      --color-surface-elevated: #ffffff;
+      --color-surface-muted: #eef2ff;
+      --color-sidebar: #ffffff;
+      --color-sidebar-elevated: #eef2ff;
+      --color-tabbar: #eef2ff;
+      --color-tab-text: #475569;
+      --color-tab-text-active: #1f2937;
+      --color-tab-hover: rgba(86, 102, 245, 0.12);
+      --color-tab-active: rgba(86, 102, 245, 0.18);
+      --color-log-background: #111c30;
+      --color-log-border: rgba(15, 23, 42, 0.12);
+      --color-select-background: #ffffff;
+      --color-select-text: #0f172a;
+      --color-select-placeholder: #64748b;
+      --color-select-border: rgba(86, 102, 245, 0.28);
+      --select-chevron: #475569;
+      --nav-icon-filter: none;
+      --background-aurora: radial-gradient(circle at 20% 15%, rgba(86, 102, 245, 0.2), transparent 60%),
+        radial-gradient(circle at 75% 0%, rgba(255, 122, 89, 0.18), transparent 45%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.95), var(--color-background));
+      --overlay-color: rgba(2, 6, 23, 0.45);
+      --sidebar-shadow: 0 18px 38px rgba(15, 23, 42, 0.16);
+      --button-ghost-border: rgba(86, 102, 245, 0.24);
+      --button-ghost-hover: rgba(86, 102, 245, 0.08);
+      --input-background: #ffffff;
+      --input-border: rgba(148, 163, 184, 0.35);
+      --input-placeholder: #94a3b8;
+      --empty-background: rgba(86, 102, 245, 0.08);
+      --workspace-gradient: linear-gradient(180deg, rgba(86, 102, 245, 0.08), rgba(248, 250, 252, 0.95));
+      --border-radius-sm: 0.5rem;
+      --border-radius-md: 0.75rem;
+      --border-radius-lg: 1rem;
       --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.08);
-      --shadow-md: 0 12px 28px rgba(15, 23, 42, 0.2);
-      --shadow-lg: 0 24px 48px rgba(15, 23, 42, 0.28);
-      --border-radius-sm: 8px;
-      --border-radius-md: 12px;
-      --border-radius-lg: 18px;
+      --shadow-md: 0 10px 20px rgba(15, 23, 42, 0.12);
+      --shadow-lg: 0 20px 40px rgba(15, 23, 42, 0.16);
       --sidebar-width: 320px;
       --transition-base: 0.18s ease;
       --log-panel-height: 280px;
     }
 
-    * {
+    [data-theme='dark'] {
+      --color-neutral-50: #0f172a;
+      --color-neutral-100: #172554;
+      --color-neutral-200: #1d2a5e;
+      --color-neutral-300: #24316a;
+      --color-neutral-400: #334072;
+      --color-neutral-500: #47536f;
+      --color-neutral-600: #64748b;
+      --color-neutral-700: #94a3b8;
+      --color-neutral-800: #cbd5f5;
+      --color-neutral-900: #e2e8f0;
+      --color-text-primary: #f8fafc;
+      --color-text-secondary: #cbd5f5;
+      --color-text-muted: #94a3b8;
+      --color-border-subtle: rgba(148, 163, 184, 0.24);
+      --color-border-strong: rgba(148, 163, 184, 0.36);
+      --color-background: #020617;
+      --color-surface: #0b1220;
+      --color-surface-elevated: #111c30;
+      --color-surface-muted: rgba(86, 102, 245, 0.12);
+      --color-sidebar: #0b1220;
+      --color-sidebar-elevated: #111c30;
+      --color-tabbar: rgba(12, 20, 35, 0.92);
+      --color-tab-text: #cbd5f5;
+      --color-tab-text-active: #f8fafc;
+      --color-tab-hover: rgba(86, 102, 245, 0.14);
+      --color-tab-active: rgba(86, 102, 245, 0.2);
+      --color-log-background: #0b1220;
+      --color-log-border: rgba(86, 102, 245, 0.24);
+      --color-select-background: rgba(15, 23, 42, 0.85);
+      --color-select-text: #f8fafc;
+      --color-select-placeholder: #94a3b8;
+      --color-select-border: rgba(148, 163, 184, 0.28);
+      --select-chevron: #cbd5f5;
+      --nav-icon-filter: brightness(1.2);
+      --background-aurora: radial-gradient(circle at 20% 20%, rgba(86, 102, 245, 0.18), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(255, 122, 89, 0.12), transparent 45%),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.92), var(--color-background));
+      --overlay-color: rgba(2, 6, 23, 0.55);
+      --sidebar-shadow: 0 24px 48px rgba(2, 6, 23, 0.4);
+      --button-ghost-border: rgba(148, 163, 184, 0.25);
+      --button-ghost-hover: rgba(86, 102, 245, 0.16);
+      --input-background: rgba(15, 23, 42, 0.7);
+      --input-border: rgba(148, 163, 184, 0.24);
+      --input-placeholder: #94a3b8;
+      --empty-background: rgba(86, 102, 245, 0.12);
+      --workspace-gradient: linear-gradient(180deg, rgba(13, 23, 43, 0.85), rgba(9, 16, 31, 0.95));
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-neutral-50: #0f172a;
+        --color-neutral-100: #172554;
+        --color-neutral-200: #1d2a5e;
+        --color-neutral-300: #24316a;
+        --color-neutral-400: #334072;
+        --color-neutral-500: #47536f;
+        --color-neutral-600: #64748b;
+        --color-neutral-700: #94a3b8;
+        --color-neutral-800: #cbd5f5;
+        --color-neutral-900: #e2e8f0;
+        --color-text-primary: #f8fafc;
+        --color-text-secondary: #cbd5f5;
+        --color-text-muted: #94a3b8;
+        --color-border-subtle: rgba(148, 163, 184, 0.24);
+        --color-border-strong: rgba(148, 163, 184, 0.36);
+        --color-background: #020617;
+        --color-surface: #0b1220;
+        --color-surface-elevated: #111c30;
+        --color-surface-muted: rgba(86, 102, 245, 0.12);
+        --color-sidebar: #0b1220;
+        --color-sidebar-elevated: #111c30;
+        --color-tabbar: rgba(12, 20, 35, 0.92);
+        --color-tab-text: #cbd5f5;
+        --color-tab-text-active: #f8fafc;
+        --color-tab-hover: rgba(86, 102, 245, 0.14);
+        --color-tab-active: rgba(86, 102, 245, 0.2);
+        --color-log-background: #0b1220;
+        --color-log-border: rgba(86, 102, 245, 0.24);
+        --color-select-background: rgba(15, 23, 42, 0.85);
+        --color-select-text: #f8fafc;
+        --color-select-placeholder: #94a3b8;
+        --color-select-border: rgba(148, 163, 184, 0.28);
+        --select-chevron: #cbd5f5;
+        --nav-icon-filter: brightness(1.2);
+        --background-aurora: radial-gradient(circle at 20% 20%, rgba(86, 102, 245, 0.18), transparent 55%),
+          radial-gradient(circle at 80% 10%, rgba(255, 122, 89, 0.12), transparent 45%),
+          linear-gradient(180deg, rgba(15, 23, 42, 0.92), var(--color-background));
+        --overlay-color: rgba(2, 6, 23, 0.55);
+        --sidebar-shadow: 0 24px 48px rgba(2, 6, 23, 0.4);
+        --button-ghost-border: rgba(148, 163, 184, 0.25);
+        --button-ghost-hover: rgba(86, 102, 245, 0.16);
+        --input-background: rgba(15, 23, 42, 0.7);
+        --input-border: rgba(148, 163, 184, 0.24);
+        --input-placeholder: #94a3b8;
+        --empty-background: rgba(86, 102, 245, 0.12);
+        --workspace-gradient: linear-gradient(180deg, rgba(13, 23, 43, 0.85), rgba(9, 16, 31, 0.95));
+      }
+    }
+
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
     }
 
@@ -50,31 +187,39 @@
     body {
       margin: 0;
       height: 100%;
-      background: var(--color-neutral-950);
       font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-      color: var(--color-neutral-100);
+      background-color: var(--color-background);
+      color: var(--color-text-primary);
     }
 
     body {
-      background-image: radial-gradient(circle at 20% 20%, rgba(86, 102, 245, 0.18), transparent 55%),
-        radial-gradient(circle at 80% 10%, rgba(255, 122, 89, 0.12), transparent 45%),
-        linear-gradient(180deg, rgba(15, 23, 42, 0.92), var(--color-neutral-950));
+      min-height: 100vh;
+      background-image: var(--background-aurora);
+      background-size: cover;
       background-repeat: no-repeat;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body[data-theme='dark'] {
+      color-scheme: dark;
+    }
+
+    body[data-theme='light'] {
+      color-scheme: light;
     }
 
     a {
-      color: var(--color-brand-100);
+      color: var(--color-brand);
       text-decoration: none;
       transition: color var(--transition-base);
     }
 
     a:hover {
-      color: var(--color-brand);
+      color: var(--color-brand-600);
     }
 
     button,
     input,
-    select,
     textarea {
       font: inherit;
     }
@@ -92,7 +237,8 @@
       align-items: center;
       gap: 1rem;
       text-align: center;
-      padding: 2rem;
+      padding: 2.5rem;
+      color: var(--color-text-secondary);
     }
 
     .hc-spinner {
@@ -102,8 +248,8 @@
       gap: 0.75rem;
       padding: 0.75rem 1.5rem;
       border-radius: var(--border-radius-md);
-      background: rgba(86, 102, 245, 0.1);
-      color: var(--color-brand-100);
+      background: rgba(86, 102, 245, 0.12);
+      color: var(--color-brand);
       box-shadow: inset 0 0 0 1px rgba(86, 102, 245, 0.24);
     }
 
@@ -112,7 +258,7 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      border: 3px solid rgba(86, 102, 245, 0.2);
+      border: 3px solid rgba(86, 102, 245, 0.24);
       border-top-color: var(--color-brand);
       animation: hc-spin 0.9s linear infinite;
     }
@@ -124,16 +270,16 @@
     }
 
     .hc-card {
-      background: rgba(17, 24, 39, 0.82);
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      backdrop-filter: blur(18px);
+      background: var(--color-surface-elevated);
+      border: 1px solid var(--color-border-subtle);
       box-shadow: var(--shadow-md);
       border-radius: var(--border-radius-lg);
-      padding: 2.5rem 3rem;
+      padding: 2.5rem 2.75rem;
       max-width: 420px;
       width: 100%;
       margin: auto;
-      color: var(--color-neutral-100);
+      color: var(--color-text-primary);
+      backdrop-filter: blur(12px);
     }
 
     .hc-card h1 {
@@ -145,7 +291,7 @@
 
     .hc-card p {
       margin: 0 0 1.5rem;
-      color: var(--color-neutral-300);
+      color: var(--color-text-secondary);
       line-height: 1.6;
     }
 
@@ -153,23 +299,23 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.75rem 1.75rem;
+      padding: 0.7rem 1.6rem;
       border-radius: var(--border-radius-sm);
       border: none;
       font-weight: 600;
       letter-spacing: 0.01em;
       cursor: pointer;
       transition: transform var(--transition-base), box-shadow var(--transition-base),
-        background var(--transition-base);
-      background: var(--color-brand);
-      color: white;
-      box-shadow: 0 10px 20px rgba(86, 102, 245, 0.25);
+        background var(--transition-base), border-color var(--transition-base);
+      background: linear-gradient(135deg, var(--color-brand), var(--color-brand-600));
+      color: #ffffff;
+      box-shadow: var(--shadow-sm);
     }
 
     .hc-button:hover:not(:disabled) {
-      background: var(--color-brand-600);
+      background: linear-gradient(135deg, var(--color-brand-600), var(--color-brand));
       transform: translateY(-1px);
-      box-shadow: 0 14px 28px rgba(86, 102, 245, 0.28);
+      box-shadow: 0 12px 24px rgba(86, 102, 245, 0.22);
     }
 
     .hc-button:disabled {
@@ -180,42 +326,71 @@
 
     .hc-button--ghost {
       background: transparent;
-      color: var(--color-neutral-300);
+      color: var(--color-text-secondary);
       box-shadow: none;
-      border: 1px solid rgba(148, 163, 184, 0.25);
+      border: 1px solid var(--button-ghost-border);
     }
 
-    .hc-button--ghost:hover {
-      color: var(--color-neutral-100);
-      border-color: rgba(226, 232, 240, 0.6);
+    .hc-button--ghost:hover:not(:disabled) {
+      background: var(--button-ghost-hover);
+      color: var(--color-text-primary);
     }
 
     .hc-console {
+      position: relative;
       flex: 1;
-      display: flex;
       min-height: 0;
+      display: flex;
+    }
+
+    .hc-sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--overlay-color);
+      backdrop-filter: blur(4px);
+      z-index: 30;
     }
 
     .hc-sidebar {
-      width: var(--sidebar-width);
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: min(90vw, var(--sidebar-width));
       display: flex;
       flex-direction: column;
-      background: rgba(10, 18, 32, 0.92);
-      border-right: 1px solid rgba(148, 163, 184, 0.14);
-      backdrop-filter: blur(14px);
+      background: var(--color-sidebar);
+      border-right: 1px solid var(--color-border-subtle);
+      box-shadow: var(--sidebar-shadow);
+      transform: translateX(-105%);
+      transition: transform var(--transition-base);
+      z-index: 40;
+      max-height: 100vh;
+      overflow-y: auto;
+      scrollbar-gutter: stable both-edges;
+    }
+
+    .hc-sidebar.is-open {
+      transform: translateX(0);
     }
 
     .hc-sidebar__brand {
-      padding: 1.5rem 1.75rem 1.25rem;
+      padding: 1.25rem 1.5rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      border-bottom: 1px solid var(--color-border-subtle);
+      background: var(--color-sidebar-elevated);
+    }
+
+    .hc-sidebar__brand-info {
       display: flex;
       align-items: center;
       gap: 0.85rem;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
     }
 
     .hc-sidebar__brand img {
-      width: 38px;
       height: 38px;
+      width: auto;
     }
 
     .hc-sidebar__brand-title {
@@ -231,7 +406,7 @@
 
     .hc-sidebar__brand-title span:last-child {
       font-size: 0.8rem;
-      color: var(--color-neutral-500);
+      color: var(--color-text-muted);
     }
 
     .hc-sidebar__body {
@@ -248,12 +423,12 @@
     }
 
     .hc-sidebar__body::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.4);
+      background: rgba(148, 163, 184, 0.15);
       border-radius: 999px;
     }
 
     .hc-sidebar__body::-webkit-scrollbar-thumb {
-      background: rgba(148, 163, 184, 0.35);
+      background: rgba(86, 102, 245, 0.35);
       border-radius: 999px;
     }
 
@@ -267,43 +442,137 @@
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--color-neutral-500);
+      color: var(--color-text-muted);
     }
 
     .hc-select {
       position: relative;
-    }
-
-    .hc-select select {
-      appearance: none;
       width: 100%;
-      border-radius: 10px;
-      padding: 0.7rem 2.5rem 0.7rem 0.9rem;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.28);
-      color: var(--color-neutral-100);
-      transition: border-color var(--transition-base), box-shadow var(--transition-base);
     }
 
-    .hc-select select:focus {
-      outline: none;
-      border-color: rgba(86, 102, 245, 0.6);
-      box-shadow: 0 0 0 3px rgba(86, 102, 245, 0.2);
+    .hc-select__trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.65rem 0.9rem;
+      border-radius: 0.65rem;
+      border: 1px solid var(--color-select-border);
+      background: var(--color-select-background);
+      color: var(--color-select-text);
+      cursor: pointer;
+      transition: border-color var(--transition-base), box-shadow var(--transition-base),
+        background var(--transition-base);
     }
 
-    .hc-select::after {
-      content: "";
+    .hc-select__trigger:focus-visible {
+      outline: 2px solid rgba(86, 102, 245, 0.5);
+      outline-offset: 2px;
+    }
+
+    .hc-select__trigger[aria-disabled='true'] {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .hc-select__value {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      text-align: left;
+    }
+
+    .hc-select__label {
+      font-weight: 600;
+      color: var(--color-select-text);
+    }
+
+    .hc-select__placeholder {
+      color: var(--color-select-placeholder);
+    }
+
+    .hc-select__description {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    .hc-select__chevron {
+      flex-shrink: 0;
+      width: 1rem;
+      height: 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--select-chevron);
+      transition: transform var(--transition-base);
+    }
+
+    .hc-select.is-open .hc-select__chevron {
+      transform: rotate(180deg);
+    }
+
+    .hc-select__dropdown {
       position: absolute;
-      top: 50%;
-      right: 0.9rem;
-      width: 0.75rem;
-      height: 0.75rem;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23cbd5f5' d='M2.47 4.47a.75.75 0 0 1 1.06 0L6 6.94l2.47-2.47a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 0 1 0-1.06Z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-size: contain;
-      transform: translateY(-50%);
-      pointer-events: none;
-      opacity: 0.85;
+      z-index: 10;
+      top: calc(100% + 0.35rem);
+      left: 0;
+      right: 0;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 0.75rem;
+      box-shadow: var(--shadow-lg);
+      max-height: 280px;
+      overflow-y: auto;
+      padding: 0.35rem 0;
+    }
+
+    .hc-select__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .hc-select__option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.55rem 0.9rem;
+      cursor: pointer;
+      transition: background var(--transition-base), color var(--transition-base);
+      color: var(--color-text-primary);
+    }
+
+    .hc-select__option.is-active,
+    .hc-select__option:hover {
+      background: var(--color-surface-muted);
+    }
+
+    .hc-select__option.is-selected {
+      font-weight: 600;
+      color: var(--color-brand);
+    }
+
+    .hc-select__option.is-disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .hc-select__option-meta {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    .hc-select-fade-enter-active,
+    .hc-select-fade-leave-active {
+      transition: opacity 0.12s ease, transform 0.12s ease;
+    }
+
+    .hc-select-fade-enter-from,
+    .hc-select-fade-leave-to {
+      opacity: 0;
+      transform: translateY(-4px);
     }
 
     .hc-sidebar-section {
@@ -315,7 +584,7 @@
     .hc-sidebar-section__title {
       font-size: 0.85rem;
       font-weight: 600;
-      color: var(--color-neutral-300);
+      color: var(--color-text-muted);
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -334,7 +603,7 @@
     }
 
     .hc-nav-item {
-      border-radius: 9px;
+      border-radius: 0.7rem;
       padding: 0.55rem 0.65rem;
       display: flex;
       align-items: center;
@@ -344,52 +613,56 @@
       background: transparent;
       border: 1px solid transparent;
       transition: background var(--transition-base), border-color var(--transition-base),
-        transform var(--transition-base);
+        color var(--transition-base);
+      color: var(--color-text-primary);
     }
 
     .hc-nav-item:hover {
-      background: rgba(86, 102, 245, 0.08);
-      border-color: rgba(86, 102, 245, 0.24);
+      background: var(--color-tab-hover);
+      border-color: rgba(86, 102, 245, 0.18);
     }
 
     .hc-nav-item__label {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
     }
 
     .hc-nav-item__label img {
       width: 18px;
       height: 18px;
-      filter: grayscale(10%) brightness(1.2);
+      object-fit: contain;
+      filter: var(--nav-icon-filter);
     }
 
     .hc-nav-item__meta {
       font-size: 0.75rem;
-      color: var(--color-neutral-500);
+      color: var(--color-text-muted);
       font-family: "JetBrains Mono", monospace;
     }
 
     .hc-nav-children {
-      padding-left: 0.75rem;
-      border-left: 1px solid rgba(148, 163, 184, 0.1);
+      padding-left: 0.9rem;
+      border-left: 1px solid var(--color-border-subtle);
       margin-left: 0.5rem;
     }
 
     .hc-nav-child {
       padding: 0.45rem 0.5rem;
-      border-radius: 8px;
+      border-radius: 0.6rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      transition: background var(--transition-base), border-color var(--transition-base);
+      transition: background var(--transition-base), border-color var(--transition-base),
+        color var(--transition-base);
       border: 1px solid transparent;
+      color: var(--color-text-primary);
     }
 
     .hc-nav-child:hover {
-      background: rgba(86, 102, 245, 0.1);
-      border-color: rgba(86, 102, 245, 0.2);
+      background: var(--color-tab-hover);
+      border-color: rgba(86, 102, 245, 0.16);
     }
 
     .hc-workspace {
@@ -397,16 +670,44 @@
       display: flex;
       flex-direction: column;
       min-width: 0;
+      background: var(--workspace-gradient);
       backdrop-filter: blur(12px);
-      background: linear-gradient(180deg, rgba(13, 23, 43, 0.8), rgba(9, 16, 31, 0.9));
+      margin-left: 0;
+    }
+
+    .hc-sidebar-toggle,
+    .hc-sidebar-close {
+      border: none;
+      background: var(--color-surface);
+      color: var(--color-text-primary);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: background var(--transition-base), transform var(--transition-base);
+    }
+
+    .hc-sidebar-toggle:hover,
+    .hc-sidebar-close:hover {
+      background: var(--color-surface-muted);
+      transform: translateY(-1px);
+    }
+
+    .hc-sidebar-close {
+      flex-shrink: 0;
     }
 
     .hc-topbar {
-      padding: 1.25rem 2rem 1.15rem;
+      padding: 1.2rem 2rem 1.1rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      border-bottom: 1px solid var(--color-border-subtle);
+      gap: 1.2rem;
     }
 
     .hc-topbar__title {
@@ -422,7 +723,7 @@
     }
 
     .hc-topbar__title span {
-      color: var(--color-neutral-500);
+      color: var(--color-text-secondary);
       font-size: 0.9rem;
     }
 
@@ -445,10 +746,17 @@
       flex-direction: column;
       gap: 0.25rem;
       align-items: flex-end;
+      font-size: 0.9rem;
     }
 
     .hc-user-meta strong {
       font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .hc-user-meta a {
+      font-size: 0.85rem;
+      color: var(--color-brand);
     }
 
     .hc-workspace__content {
@@ -460,14 +768,26 @@
       min-height: 0;
     }
 
+    .hc-empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+      padding: 3rem 2rem;
+      border-radius: var(--border-radius-lg);
+      background: var(--empty-background);
+      color: var(--color-text-secondary);
+    }
+
     .hc-surface {
       flex: 1;
       display: flex;
       flex-direction: column;
       border-radius: var(--border-radius-lg);
-      border: 1px solid rgba(148, 163, 184, 0.15);
-      background: rgba(14, 24, 43, 0.95);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--color-border-subtle);
+      background: var(--color-surface);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
       overflow: hidden;
       min-height: 0;
     }
@@ -475,22 +795,23 @@
     .hc-tabs {
       display: flex;
       align-items: center;
-      gap: 0.25rem;
-      padding: 0.5rem 0.75rem;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-      background: rgba(12, 20, 35, 0.92);
+      gap: 0.4rem;
+      padding: 0.55rem 0.75rem;
+      border-bottom: 1px solid var(--color-border-subtle);
+      background: var(--color-tabbar);
       overflow-x: auto;
+      scrollbar-width: thin;
     }
 
     .hc-tab {
       display: inline-flex;
       align-items: center;
       gap: 0.45rem;
-      border-radius: 9px;
+      border-radius: 0.7rem;
       border: 1px solid transparent;
       padding: 0.45rem 0.85rem;
       background: transparent;
-      color: var(--color-neutral-300);
+      color: var(--color-tab-text);
       cursor: pointer;
       transition: background var(--transition-base), color var(--transition-base),
         border-color var(--transition-base);
@@ -500,45 +821,44 @@
     .hc-tab img {
       width: 16px;
       height: 16px;
-      filter: grayscale(5%) brightness(1.3);
+      object-fit: contain;
+      filter: var(--nav-icon-filter);
     }
 
     .hc-tab.is-active {
-      background: rgba(86, 102, 245, 0.18);
-      color: var(--color-neutral-50);
-      border-color: rgba(86, 102, 245, 0.35);
+      background: var(--color-tab-active);
+      color: var(--color-tab-text-active);
+      border-color: rgba(86, 102, 245, 0.24);
     }
 
     .hc-tab:hover {
-      color: var(--color-neutral-100);
+      background: var(--color-tab-hover);
+      color: var(--color-tab-text-active);
     }
 
     .hc-tab__close {
       font-size: 1rem;
       line-height: 1;
-      color: var(--color-neutral-500);
+      color: var(--color-text-muted);
       transition: color var(--transition-base);
     }
 
     .hc-tab__close:hover {
-      color: var(--color-neutral-100);
+      color: var(--color-text-primary);
     }
 
     .hc-tab-panels {
       position: relative;
       flex: 1;
-      min-height: 0;
-      background: rgba(8, 14, 27, 0.88);
+      display: grid;
     }
 
     .hc-panel-frame {
-      position: absolute;
-      inset: 0;
       width: 100%;
-      height: 100%;
       border: none;
+      flex: 1;
       display: none;
-      background: #0b1120;
+      background: var(--color-background);
     }
 
     .hc-panel-frame.is-active {
@@ -546,174 +866,184 @@
     }
 
     .hc-log-panel {
+      background: var(--color-log-background);
+      border-top: 1px solid var(--color-log-border);
+      color: var(--color-text-inverse);
       height: var(--log-panel-height);
-      border-top: 1px solid rgba(148, 163, 184, 0.14);
-      background: rgba(10, 18, 33, 0.95);
-      position: relative;
+      display: flex;
+      flex-direction: column;
+      transition: height 0.25s ease;
+    }
+
+    .hc-log-panel.is-collapsed {
+      height: 48px;
     }
 
     .hc-log-panel__header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.65rem 1rem;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-      background: rgba(12, 20, 36, 0.9);
-      font-weight: 500;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+    }
+
+    .hc-log-panel__actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: rgba(248, 250, 252, 0.75);
+    }
+
+    .hc-log-toggle {
+      border: 1px solid rgba(248, 250, 252, 0.35);
+      background: transparent;
+      color: inherit;
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: background var(--transition-base), color var(--transition-base);
+    }
+
+    .hc-log-toggle:hover {
+      background: rgba(248, 250, 252, 0.12);
     }
 
     .hc-log-panel__frame {
-      position: absolute;
-      inset: 2.5rem 0 0;
-      border: none;
-      width: 100%;
-      height: calc(100% - 2.5rem);
-      background: #050910;
-    }
-
-    .hc-empty-state {
       flex: 1;
-      border-radius: var(--border-radius-lg);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      background: rgba(12, 20, 36, 0.7);
-      padding: 3rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1.25rem;
-      text-align: center;
-      box-shadow: var(--shadow-sm);
+      border: none;
+      background: transparent;
     }
 
-    .hc-empty-state h3 {
-      margin: 0;
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-
-    .hc-empty-state p {
-      margin: 0;
-      color: var(--color-neutral-400);
-      max-width: 360px;
-      line-height: 1.6;
-    }
-
-    .hc-projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1.25rem;
-      width: 100%;
-    }
-
-    .hc-project-card {
-      border-radius: var(--border-radius-md);
-      background: rgba(13, 23, 43, 0.9);
-      padding: 1.15rem 1.2rem;
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      cursor: pointer;
-      transition: transform var(--transition-base), border-color var(--transition-base),
-        box-shadow var(--transition-base);
-    }
-
-    .hc-project-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(86, 102, 245, 0.4);
-      box-shadow: 0 20px 35px rgba(8, 14, 27, 0.35);
-    }
-
-    .hc-project-card__title {
-      font-weight: 600;
-      font-size: 1.05rem;
-    }
-
-    .hc-project-card__meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      color: var(--color-neutral-500);
-      font-family: "JetBrains Mono", monospace;
-    }
-
-    .hc-project-card__actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .hc-input {
-      width: 100%;
-      border-radius: 10px;
-      padding: 0.75rem 1rem;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      color: var(--color-neutral-100);
-      transition: border-color var(--transition-base), box-shadow var(--transition-base);
-    }
-
-    .hc-input:focus {
-      outline: none;
-      border-color: rgba(86, 102, 245, 0.6);
-      box-shadow: 0 0 0 3px rgba(86, 102, 245, 0.18);
+    .hc-log-panel.is-collapsed .hc-log-panel__frame {
+      opacity: 0;
+      pointer-events: none;
     }
 
     .hc-form {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      width: min(420px, 100%);
-      margin: 0 auto;
-      text-align: left;
+      gap: 1.2rem;
     }
 
-    .hc-form p {
-      margin: 0;
-      color: var(--color-neutral-400);
+    .hc-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 0.75rem;
+      border: 1px solid var(--input-border);
+      background: var(--input-background);
+      color: var(--color-text-primary);
+      transition: border-color var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .hc-input::placeholder {
+      color: var(--input-placeholder);
+    }
+
+    .hc-input:focus {
+      outline: none;
+      border-color: rgba(86, 102, 245, 0.5);
+      box-shadow: 0 0 0 3px rgba(86, 102, 245, 0.18);
     }
 
     .hc-form__actions {
       display: flex;
       gap: 0.75rem;
       justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .hc-projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .hc-project-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1.2rem;
+      border-radius: var(--border-radius-md);
+      border: 1px solid var(--color-border-subtle);
+      background: var(--color-surface);
+      cursor: pointer;
+      transition: transform var(--transition-base), box-shadow var(--transition-base),
+        border-color var(--transition-base);
+    }
+
+    .hc-project-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(86, 102, 245, 0.32);
+      box-shadow: var(--shadow-md);
+    }
+
+    .hc-project-card__title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--color-text-primary);
+    }
+
+    .hc-project-card__meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .hc-project-card__actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    .hc-project-card__actions a {
+      color: var(--color-brand);
     }
 
     .hc-sidebar--collapsed .hc-sidebar__body {
       display: none;
     }
 
-    @media (max-width: 1024px) {
-      :root {
-        --sidebar-width: 280px;
-        --log-panel-height: 240px;
+    .hc-console:has(.hc-sidebar.is-open) {
+      overflow: hidden;
+    }
+
+    @media (min-width: 1024px) {
+      .hc-sidebar {
+        position: sticky;
+        inset: 0;
+        width: var(--sidebar-width);
+        max-width: var(--sidebar-width);
+        transform: none;
+        box-shadow: none;
+      }
+
+      .hc-sidebar-overlay {
+        display: none;
       }
 
       .hc-console {
-        flex-direction: column;
-      }
-
-      .hc-sidebar {
-        width: 100%;
-        flex-direction: row;
-        overflow: hidden;
-      }
-
-      .hc-sidebar__body {
-        flex: 1;
-        padding: 1rem 1.5rem;
-        flex-direction: row;
-        overflow-x: auto;
-      }
-
-      .hc-sidebar-section {
-        min-width: 220px;
+        display: grid;
+        grid-template-columns: var(--sidebar-width) 1fr;
+        min-height: 0;
       }
 
       .hc-workspace {
-        min-height: 0;
+        background: var(--workspace-gradient);
+      }
+    }
+
+    @media (max-width: 1023px) {
+      :root {
+        --sidebar-width: 290px;
+        --log-panel-height: 240px;
       }
 
       .hc-topbar {
@@ -729,7 +1059,6 @@
       .hc-topbar {
         flex-direction: column;
         align-items: flex-start;
-        gap: 1rem;
       }
 
       .hc-user-meta {
@@ -765,28 +1094,41 @@
     </div>
 
     <div v-else class="hc-console" :class="{'hc-sidebar--collapsed': !tricks.showtree && !project}">
-      <aside class="hc-sidebar">
+      <div
+        v-if="ui.isMobile && ui.sidebarOpen"
+        class="hc-sidebar-overlay"
+        @click="toggleSidebar(false)"
+      ></div>
+      <aside class="hc-sidebar" :class="{'is-open': ui.sidebarOpen || !ui.isMobile}">
         <div class="hc-sidebar__brand">
-          <img src="img/logo-short.png" alt="hola.cloud" />
-          <div class="hc-sidebar__brand-title">
-            <span>hola.cloud Console</span>
-            <span>Tu plataforma operativa</span>
+          <div class="hc-sidebar__brand-info">
+            <img src="img/logo-short.png" alt="hola.cloud" />
+            <div class="hc-sidebar__brand-title">
+              <span>hola.cloud Console</span>
+              <span>Tu plataforma operativa</span>
+            </div>
           </div>
+          <button
+            v-if="ui.isMobile"
+            type="button"
+            class="hc-sidebar-close"
+            aria-label="Cerrar navegación"
+            @click="toggleSidebar(false)"
+          >
+            ×
+          </button>
         </div>
         <div class="hc-sidebar__body">
           <div class="hc-field" v-if="projects.length">
             <label for="project-select">Proyecto actual</label>
-            <div class="hc-select">
-              <select
-                id="project-select"
-                v-model="project_id"
-                :disabled="!projects.length"
-                @change="handleProjectChange"
-              >
-                <option value="" disabled>Selecciona un proyecto</option>
-                <option v-for="p in projects" :key="p.id" :value="p.id">{{ p.name }}</option>
-              </select>
-            </div>
+            <HcSelect
+              id="project-select"
+              v-model="project_id"
+              :options="projectOptions"
+              placeholder="Selecciona un proyecto"
+              :disabled="!projects.length"
+              @change="handleProjectChange"
+            ></HcSelect>
           </div>
 
           <div class="hc-sidebar-section" v-if="project">
@@ -795,7 +1137,7 @@
               <li v-for="database in tree.databases" :key="database.id">
                 <div class="hc-nav-item" @click="expandDatabase(database)">
                   <div class="hc-nav-item__label">
-                    <img src="img/icon-db.png" alt="Base de datos" />
+                    <img src="img/icon-database.svg" alt="Base de datos" />
                     <span>{{ database.name }}</span>
                   </div>
                   <span class="hc-nav-item__meta">{{ database.open ? '−' : '+' }}</span>
@@ -844,6 +1186,15 @@
 
       <main class="hc-workspace">
         <header class="hc-topbar">
+          <button
+            v-if="ui.isMobile"
+            type="button"
+            class="hc-sidebar-toggle"
+            aria-label="Abrir navegación"
+            @click="toggleSidebar(true)"
+          >
+            <span aria-hidden="true">☰</span>
+          </button>
           <div class="hc-topbar__title">
             <h2>Panel de control</h2>
             <span>{{ project ? project.name : 'Selecciona un proyecto para comenzar' }}</span>
@@ -962,10 +1313,15 @@
                   :title="t.name"
                 ></iframe>
               </div>
-              <div class="hc-log-panel">
+              <div class="hc-log-panel" :class="{'is-collapsed': ui.logsCollapsed}">
                 <div class="hc-log-panel__header">
-      <span>Logs en vivo</span>
-      <span style="font-size: 0.75rem; color: var(--color-neutral-500);">{{ project ? project.id : '' }}</span>
+                  <span>Logs en vivo</span>
+                  <div class="hc-log-panel__actions">
+                    <span>{{ project ? project.id : '' }}</span>
+                    <button type="button" class="hc-log-toggle" @click="ui.logsCollapsed = !ui.logsCollapsed">
+                      {{ ui.logsCollapsed ? 'Mostrar' : 'Ocultar' }}
+                    </button>
+                  </div>
                 </div>
                 <iframe class="hc-log-panel__frame" :src="logsUrl" title="Logs"></iframe>
               </div>
@@ -979,6 +1335,293 @@
   <script src="lib/vue.global.prod.js"></script>
   <script>
     const { createApp } = Vue;
+
+    let hcSelectId = 0;
+    const HcSelect = {
+      name: 'HcSelect',
+      props: {
+        id: {
+          type: String,
+          default: null,
+        },
+        modelValue: {
+          type: [String, Number],
+          default: '',
+        },
+        options: {
+          type: Array,
+          default: () => [],
+        },
+        placeholder: {
+          type: String,
+          default: 'Selecciona una opción',
+        },
+        disabled: {
+          type: Boolean,
+          default: false,
+        },
+      },
+      emits: ['update:modelValue', 'change'],
+      data() {
+        return {
+          isOpen: false,
+          highlightedIndex: -1,
+          triggerId: this.id || `hc-select-${++hcSelectId}`,
+        };
+      },
+      watch: {
+        id(value) {
+          if (value) {
+            this.triggerId = value;
+          }
+        },
+        modelValue() {
+          this.highlightSelected();
+        },
+        options() {
+          this.highlightSelected();
+        },
+      },
+      computed: {
+        listId() {
+          return `${this.triggerId}-list`;
+        },
+        selectedOption() {
+          return this.options.find((option) => option.value === this.modelValue) || null;
+        },
+      },
+      methods: {
+        toggle() {
+          if (this.disabled) return;
+          if (this.isOpen) {
+            this.close(true);
+          } else {
+            this.open();
+          }
+        },
+        open() {
+          if (this.disabled || !this.options.length) return;
+          this.isOpen = true;
+          this.$nextTick(() => {
+            this.highlightSelected();
+            const list = this.$refs.list;
+            if (list) {
+              list.focus({ preventScroll: true });
+              const index = this.highlightedIndex >= 0 ? this.highlightedIndex : 0;
+              const el = list.children?.[index];
+              if (el && el.scrollIntoView) {
+                el.scrollIntoView({ block: 'nearest' });
+              }
+            }
+          });
+        },
+        close(focusTrigger = false) {
+          if (!this.isOpen) return;
+          this.isOpen = false;
+          this.highlightedIndex = -1;
+          if (focusTrigger) {
+            this.$nextTick(() => {
+              this.$refs.trigger?.focus({ preventScroll: true });
+            });
+          }
+        },
+        highlightSelected() {
+          if (!Array.isArray(this.options) || !this.options.length) {
+            this.highlightedIndex = -1;
+            return;
+          }
+          const index = this.options.findIndex((option) => option.value === this.modelValue);
+          this.highlightedIndex = index;
+        },
+        highlight(index) {
+          if (index === -1) {
+            this.highlightedIndex = -1;
+            return;
+          }
+          if (index < 0 || index >= this.options.length) {
+            this.highlightedIndex = -1;
+            return;
+          }
+          if (this.options[index]?.disabled) {
+            return;
+          }
+          this.highlightedIndex = index;
+        },
+        move(delta) {
+          if (!this.options.length) return;
+          let index = this.highlightedIndex;
+          const length = this.options.length;
+          for (let i = 0; i < length; i += 1) {
+            index = (index + delta + length) % length;
+            const option = this.options[index];
+            if (option && !option.disabled) {
+              this.highlightedIndex = index;
+              const list = this.$refs.list;
+              const el = list?.children?.[index];
+              if (el && el.scrollIntoView) {
+                el.scrollIntoView({ block: 'nearest' });
+              }
+              break;
+            }
+          }
+        },
+        select(option) {
+          if (!option || option.disabled) return;
+          this.$emit('update:modelValue', option.value);
+          this.$emit('change', option.value);
+          this.close(true);
+        },
+        handleTriggerKeydown(event) {
+          switch (event.key) {
+            case 'ArrowDown':
+              event.preventDefault();
+              if (!this.isOpen) {
+                this.open();
+              }
+              this.move(1);
+              break;
+            case 'ArrowUp':
+              event.preventDefault();
+              if (!this.isOpen) {
+                this.open();
+              }
+              this.move(-1);
+              break;
+            case 'Enter':
+            case ' ':
+              event.preventDefault();
+              this.toggle();
+              break;
+            case 'Escape':
+              if (this.isOpen) {
+                event.preventDefault();
+                this.close(true);
+              }
+              break;
+            default:
+          }
+        },
+        handleListKeydown(event) {
+          switch (event.key) {
+            case 'ArrowDown':
+              event.preventDefault();
+              this.move(1);
+              break;
+            case 'ArrowUp':
+              event.preventDefault();
+              this.move(-1);
+              break;
+            case 'Home':
+              event.preventDefault();
+              this.highlight(this.nextEnabledIndex(0, 1));
+              break;
+            case 'End':
+              event.preventDefault();
+              this.highlight(this.nextEnabledIndex(this.options.length - 1, -1));
+              break;
+            case 'Enter':
+            case ' ':
+              event.preventDefault();
+              if (this.highlightedIndex >= 0) {
+                this.select(this.options[this.highlightedIndex]);
+              }
+              break;
+            case 'Escape':
+              event.preventDefault();
+              this.close(true);
+              break;
+            default:
+          }
+        },
+        nextEnabledIndex(start, step) {
+          if (!this.options.length) {
+            return -1;
+          }
+          let index = start;
+          for (let i = 0; i < this.options.length; i += 1) {
+            const option = this.options[index];
+            if (option && !option.disabled) {
+              return index;
+            }
+            index += step;
+            if (index < 0) {
+              index = this.options.length - 1;
+            } else if (index >= this.options.length) {
+              index = 0;
+            }
+          }
+          return -1;
+        },
+        handleOutside(event) {
+          if (!this.isOpen) {
+            return;
+          }
+          if (!this.$el.contains(event.target)) {
+            this.close();
+          }
+        },
+      },
+      mounted() {
+        this.highlightSelected();
+        document.addEventListener('click', this.handleOutside);
+      },
+      beforeUnmount() {
+        document.removeEventListener('click', this.handleOutside);
+      },
+      template: `
+        <div class="hc-select" :class="{'is-open': isOpen}">
+          <button
+            ref="trigger"
+            :id="triggerId"
+            class="hc-select__trigger"
+            type="button"
+            :aria-expanded="isOpen.toString()"
+            :aria-controls="listId"
+            :aria-disabled="disabled ? 'true' : 'false'"
+            @click="toggle"
+            @keydown="handleTriggerKeydown"
+          >
+            <span class="hc-select__value">
+              <span v-if="selectedOption" class="hc-select__label">{{ selectedOption.label }}</span>
+              <span v-else class="hc-select__placeholder">{{ placeholder }}</span>
+              <span v-if="selectedOption && selectedOption.description" class="hc-select__description">{{ selectedOption.description }}</span>
+            </span>
+            <span class="hc-select__chevron" aria-hidden="true">⌄</span>
+          </button>
+          <transition name="hc-select-fade">
+            <div v-if="isOpen" class="hc-select__dropdown">
+              <ul
+                ref="list"
+                class="hc-select__list"
+                role="listbox"
+                tabindex="-1"
+                :id="listId"
+                :aria-labelledby="triggerId"
+                @keydown="handleListKeydown"
+              >
+                <li
+                  v-for="(option, index) in options"
+                  :key="option.value ?? index"
+                  class="hc-select__option"
+                  :class="{ 'is-active': highlightedIndex === index, 'is-selected': option.value === modelValue, 'is-disabled': option.disabled }"
+                  role="option"
+                  :aria-selected="option.value === modelValue"
+                  @mouseenter="highlight(index)"
+                  @mouseleave="highlight(-1)"
+                  @click="select(option)"
+                >
+                  <span>
+                    <span>{{ option.label }}</span>
+                    <span v-if="option.description" class="hc-select__description">{{ option.description }}</span>
+                  </span>
+                  <span v-if="option.meta" class="hc-select__option-meta">{{ option.meta }}</span>
+                </li>
+              </ul>
+            </div>
+          </transition>
+        </div>
+      `,
+    };
 
     const localdev = document.location.hostname === 'localhost';
     const fakeHeaders = {};
@@ -997,7 +1640,7 @@
       base = '/fakeapi/authapi';
     }
 
-    createApp({
+    const app = createApp({
       data() {
         return {
           projects: [],
@@ -1011,7 +1654,7 @@
             showNewProject: false,
           },
           tabs: [
-            { icon: 'img/icon-db.png', name: 'InceptionDB', url: 'about:blank', hideClose: true },
+            { icon: 'img/icon-database.svg', name: 'InceptionDB', url: 'about:blank', hideClose: true },
             { icon: 'img/icon-lambda.png', name: 'Lambdas', url: 'about:blank', hideClose: true },
             { icon: 'img/icon-config.png', name: 'Config', url: 'about:blank', hideClose: true },
             { icon: 'img/icon-files.png', name: 'Archivos', url: 'about:blank', hideClose: true },
@@ -1026,9 +1669,26 @@
             showtree: false,
           },
           keySequence: '',
+          ui: {
+            isMobile: false,
+            sidebarOpen: false,
+            logsCollapsed: false,
+          },
+          theme: 'light',
+          viewportQuery: null,
+          viewportHandler: null,
+          themeQuery: null,
+          themeHandler: null,
         };
       },
       computed: {
+        projectOptions() {
+          return this.projects.map((project) => ({
+            value: project.id,
+            label: project.name,
+            description: project.host || project.id,
+          }));
+        },
         logsUrl() {
           if (!this.project) {
             return 'about:blank';
@@ -1040,11 +1700,103 @@
         this.fetchProjects();
         this.fetchCurrentUser();
         document.addEventListener('keyup', this.handleKeySequence, true);
+        this.setupViewportWatcher();
+        this.setupThemeWatcher();
+        this.applyTheme();
       },
       beforeUnmount() {
         document.removeEventListener('keyup', this.handleKeySequence, true);
+        this.teardownViewportWatcher();
+        this.teardownThemeWatcher();
       },
       methods: {
+        setupViewportWatcher() {
+          if (typeof window === 'undefined' || !window.matchMedia) {
+            this.ui.isMobile = false;
+            this.ui.sidebarOpen = true;
+            return;
+          }
+          const query = window.matchMedia('(max-width: 1023px)');
+          const handler = (event) => {
+            const matches = event.matches !== undefined ? event.matches : event;
+            this.ui.isMobile = !!matches;
+            this.ui.sidebarOpen = matches ? false : true;
+          };
+          handler(query);
+          if (query.addEventListener) {
+            query.addEventListener('change', handler);
+          } else if (query.addListener) {
+            query.addListener(handler);
+          }
+          this.viewportQuery = query;
+          this.viewportHandler = handler;
+        },
+        teardownViewportWatcher() {
+          const query = this.viewportQuery;
+          const handler = this.viewportHandler;
+          if (query && handler) {
+            if (query.removeEventListener) {
+              query.removeEventListener('change', handler);
+            } else if (query.removeListener) {
+              query.removeListener(handler);
+            }
+          }
+          this.viewportQuery = null;
+          this.viewportHandler = null;
+        },
+        setupThemeWatcher() {
+          if (typeof window === 'undefined' || !window.matchMedia) {
+            this.theme = 'light';
+            this.applyTheme();
+            return;
+          }
+          const query = window.matchMedia('(prefers-color-scheme: dark)');
+          const handler = (event) => {
+            const matches = event.matches !== undefined ? event.matches : event;
+            this.theme = matches ? 'dark' : 'light';
+            this.applyTheme();
+          };
+          handler(query);
+          if (query.addEventListener) {
+            query.addEventListener('change', handler);
+          } else if (query.addListener) {
+            query.addListener(handler);
+          }
+          this.themeQuery = query;
+          this.themeHandler = handler;
+        },
+        teardownThemeWatcher() {
+          const query = this.themeQuery;
+          const handler = this.themeHandler;
+          if (query && handler) {
+            if (query.removeEventListener) {
+              query.removeEventListener('change', handler);
+            } else if (query.removeListener) {
+              query.removeListener(handler);
+            }
+          }
+          this.themeQuery = null;
+          this.themeHandler = null;
+        },
+        applyTheme() {
+          const target = document.body;
+          if (!target) {
+            return;
+          }
+          target.setAttribute('data-theme', this.theme === 'dark' ? 'dark' : 'light');
+        },
+        toggleSidebar(force) {
+          if (typeof force === 'boolean') {
+            this.ui.sidebarOpen = force;
+          } else {
+            this.ui.sidebarOpen = !this.ui.sidebarOpen;
+          }
+        },
+        closeSidebarOnMobile() {
+          if (this.ui.isMobile) {
+            this.ui.sidebarOpen = false;
+          }
+        },
         handleKeySequence(event) {
           this.keySequence += event.key;
           if (this.keySequence.length > 20) {
@@ -1175,15 +1927,17 @@
           this.updateCoreTabs();
           this.fetchTree();
           this.tab = 0;
+          this.closeSidebarOnMobile();
         },
-        handleProjectChange(event) {
-          const value = event.target.value;
-          if (!value) {
+        handleProjectChange(value) {
+          const selectedValue = typeof value === 'string' ? value : this.project_id;
+          if (!selectedValue) {
             this.project = null;
             this.project_id = '';
+            this.closeSidebarOnMobile();
             return;
           }
-          const project = this.projects.find((p) => p.id === value);
+          const project = this.projects.find((p) => p.id === selectedValue);
           if (project) {
             this.selectProject(project);
           }
@@ -1223,6 +1977,7 @@
           const existingIndex = this.tabs.findIndex((tab) => tab.url === url);
           if (existingIndex >= 0) {
             this.tab = existingIndex;
+            this.closeSidebarOnMobile();
             return;
           }
           this.tabs.push({
@@ -1231,6 +1986,7 @@
             url,
           });
           this.tab = this.tabs.length - 1;
+          this.closeSidebarOnMobile();
         },
         openCollection(database, collection) {
           if (!this.project_id) {
@@ -1246,14 +2002,16 @@
           const existingIndex = this.tabs.findIndex((tab) => tab.url === url);
           if (existingIndex >= 0) {
             this.tab = existingIndex;
+            this.closeSidebarOnMobile();
             return;
           }
           this.tabs.push({
-            icon: 'img/icon-db.png',
+            icon: 'img/icon-database.svg',
             name: collection.name,
             url,
           });
           this.tab = this.tabs.length - 1;
+          this.closeSidebarOnMobile();
         },
         createProject() {
           if (!this.inputs.name.trim()) {
@@ -1285,7 +2043,10 @@
           this.inputs.showNewProject = false;
         },
       },
-    }).mount('#app');
+    });
+
+    app.component('HcSelect', HcSelect);
+    app.mount('#app');
   </script>
 </body>
 </html>
