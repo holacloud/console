@@ -183,28 +183,227 @@
 		border-color: dodgerblue;
 	}
 
-	.tab {
-		padding: 11px;
-		display: inline-block;
-		margin-right: 1px;
-		color: #8e8e8e;
-		background-color: transparent;
-		cursor: pointer;
-	}
+        .tab {
+                padding: 11px;
+                display: inline-block;
+                margin-right: 1px;
+                color: #8e8e8e;
+                background-color: transparent;
+                cursor: pointer;
+        }
 
-	.tob {
-		/*opacity: 0;*/
-		position: absolute;
-		width: 0;
-		height: 0;
-		border: none;
-	}
+        .tob {
+                /*opacity: 0;*/
+                position: absolute;
+                width: 0;
+                height: 0;
+                border: none;
+        }
 
-	.tob.tob-active {
-		opacity: 1;
-		width: 100%;
-		height: 100%;
-	}
+        .tob.tob-active {
+                opacity: 1;
+                width: 100%;
+                height: 100%;
+        }
+
+        .tob iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+        }
+
+        .tab-project {
+                box-sizing: border-box;
+                padding: 32px;
+                height: 100%;
+                overflow-y: auto;
+                background: radial-gradient(circle at top left, rgba(255,255,255,0.06), transparent 40%);
+        }
+
+        .tab-project h2 {
+                margin-top: 0;
+                display: flex;
+                align-items: baseline;
+                gap: 12px;
+                font-size: 28px;
+        }
+
+        .tab-project .meta {
+                background-color: rgba(18, 18, 18, 0.6);
+                padding: 20px;
+                border-radius: 12px;
+                margin-bottom: 24px;
+                box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+        }
+
+        .tab-project .meta-row {
+                display: grid;
+                grid-template-columns: 160px 1fr;
+                gap: 12px;
+                margin-bottom: 12px;
+        }
+
+        .tab-project .meta-row:last-child {
+                margin-bottom: 0;
+        }
+
+        .tab-project .meta-label {
+                color: #b5b5b5;
+                letter-spacing: 0.02em;
+                text-transform: uppercase;
+                font-size: 12px;
+        }
+
+        .tab-project code {
+                background-color: rgba(0,0,0,0.55);
+                padding: 6px 8px;
+                border-radius: 6px;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 90%;
+        }
+
+        .tab-project .meta-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.1);
+                font-size: 12px;
+        }
+
+        .tab-project .section {
+                margin-bottom: 32px;
+        }
+
+        .tab-project .section:last-child {
+                margin-bottom: 0;
+        }
+
+        .tab-project .section-title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-weight: bold;
+                font-size: 16px;
+                margin-bottom: 12px;
+        }
+
+        .tab-project ul {
+                padding-left: 20px;
+                margin: 0;
+        }
+
+        .tab-project .empty-state {
+                color: #b5b5b5;
+                font-size: 90%;
+        }
+
+        .tab-project .actions {
+                margin-top: 32px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 16px;
+        }
+
+        .button-danger {
+                background-color: #b43131;
+        }
+
+        .button-danger:hover {
+                border-color: #ff5a5a;
+                background-color: #d23d3d;
+        }
+
+        .logs-panel {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 320px;
+                border-top: solid 1px #333333;
+                background-color: #111111;
+                box-shadow: 0 -8px 24px rgba(0,0,0,0.35);
+                display: flex;
+                flex-direction: column;
+        }
+
+        .logs-panel--collapsed {
+                height: 56px;
+        }
+
+        .logs-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+                padding: 12px 18px;
+                border-bottom: solid 1px #252525;
+                background: linear-gradient(180deg, rgba(37,37,37,0.95), rgba(16,16,16,0.95));
+        }
+
+        .logs-header h3 {
+                margin: 0;
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                letter-spacing: 0.02em;
+        }
+
+        .logs-header-actions {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+        }
+
+        .logs-body {
+                flex: 1;
+                position: relative;
+                background-color: #1b1b1b;
+        }
+
+        .logs-body iframe {
+                border: none;
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+        }
+
+        .logs-placeholder {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #b5b5b5;
+                text-align: center;
+                padding: 24px;
+                font-size: 90%;
+        }
+
+        .collapse-button {
+                background: transparent;
+                color: inherit;
+                border: solid 1px rgba(255,255,255,0.15);
+                padding: 6px 12px;
+                border-radius: 4px;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+        }
+
+        .collapse-button:hover {
+                cursor: pointer;
+                border-color: rgba(255,255,255,0.35);
+        }
 
 
 	.tab .tab-close {
@@ -405,41 +604,140 @@
 					style="position: absolute; top: 0; right: 0; bottom: 0; left: 0;"
 				>
 					<div style="background-color: #252526; height: 42px;">
-						<div class="tab" v-for="(t, i) in tabs" :class="{'tab-active': tab==i}" @click="tab=i">
-							<img :src="t.icon" alt="">
-							{{ t.name }}
-							<img src="img/icon-x.png" alt="" v-if="t.hideClose !== true" @click="closeTab(i)">
-						</div>
-					</div>
-					<div style="background-color: #1e1e1e; position: absolute; left: 0; right: 0; bottom: 300px; border-bottom: solid 1px #444444; top: 42px;">
-						<iframe
-							v-for="(t, i) in tabs"
-							class="tob"
-							:class="{'tob-active': tab==i}"
-							:src="t.url"
-						></iframe>
+                                                <div class="tab" v-for="(t, i) in tabs" :class="{'tab-active': tab==i}" @click="tab=i">
+                                                        <img v-if="t.icon" :src="t.icon" alt="">
+                                                        {{ t.name }}
+                                                        <img src="img/icon-x.png" alt="" v-if="t.hideClose !== true" @click.stop="closeTab(i)">
+                                                </div>
+                                        </div>
+                                        <div style="background-color: #1e1e1e; position: absolute; left: 0; right: 0; bottom: 300px; border-bottom: solid 1px #444444; top: 42px;">
+                                                <div
+                                                        v-for="(t, i) in tabs"
+                                                        class="tob"
+                                                        :class="{'tob-active': tab==i}"
+                                                        :key="t.name + '-' + i"
+                                                >
+                                                        <iframe
+                                                                v-if="t.url"
+                                                                :src="t.url"
+                                                        ></iframe>
+                                                        <div
+                                                                v-else-if="t.type === 'project'"
+                                                                class="tab-project"
+                                                        >
+                                                                <div v-if="projectDetailsLoading" class="loader">Cargando proyecto...</div>
+                                                                <div v-else-if="projectDetailsError" class="banner" style="border-color: #ff5a5a; background-color: rgba(255, 90, 90, 0.12);">
+                                                                        {{ projectDetailsError }}
+                                                                </div>
+                                                                <div v-else-if="projectDetails" class="project-details">
+                                                                        <h2>
+                                                                                Gestión del proyecto
+                                                                                <span style="font-size: 60%; font-weight: normal; color: #b5b5b5;">{{ projectDetails.name }}</span>
+                                                                        </h2>
+                                                                        <div class="meta">
+                                                                                <div class="meta-row">
+                                                                                        <div class="meta-label">Identificador</div>
+                                                                                        <div><code><span class="meta-icon">#</span>{{ projectDetails.id }}</code></div>
+                                                                                </div>
+                                                                                <div class="meta-row" v-if="projectDetails.create_timestamp">
+                                                                                        <div class="meta-label">Creado</div>
+                                                                                        <div>{{ formatTimestamp(projectDetails.create_timestamp) }}</div>
+                                                                                </div>
+                                                                                <div class="meta-row" v-if="projectDetails.update_timestamp">
+                                                                                        <div class="meta-label">Actualizado</div>
+                                                                                        <div>{{ formatTimestamp(projectDetails.update_timestamp) }}</div>
+                                                                                </div>
+                                                                                <div class="meta-row" v-if="projectDetails.auth">
+                                                                                        <div class="meta-label">Auth</div>
+                                                                                        <div>{{ projectDetails.auth.enabled ? 'habilitado' : 'deshabilitado' }}</div>
+                                                                                </div>
+                                                                                <div class="meta-row" v-if="projectDetails.deleted">
+                                                                                        <div class="meta-label">Estado</div>
+                                                                                        <div>Eliminado</div>
+                                                                                </div>
+                                                                        </div>
 
-						<iframe class="tob" :class="{'tob-active': tab==0}" :src="tabs[0].url"></iframe>
-						<iframe id="tob1" class="tob" :class="{'tob-active': tab==1}" :src="tabs[1].url"></iframe>
-						<iframe class="tob" :class="{'tob-active': tab==2}" :src="'https://config.hola.cloud/?embed&project='+project_id"></iframe>
-						<iframe class="tob" :class="{'tob-active': tab==3}" :src="'https://files.hola.cloud/?embed&project='+project_id"></iframe>
-					</div>
-					<div style="background: orange; position: absolute; left: 0; right: 0; bottom: 0; height: 300px;">
+                                                                        <div class="section">
+                                                                                <div class="section-title">
+                                                                                        <span class="meta-icon">👥</span>
+                                                                                        Propietarios
+                                                                                </div>
+                                                                                <ul v-if="projectDetails.owners && projectDetails.owners.length">
+                                                                                        <li v-for="owner in projectDetails.owners" :key="owner">{{ owner }}</li>
+                                                                                </ul>
+                                                                                <div v-else class="empty-state">Todavía no hay propietarios adicionales registrados.</div>
+                                                                        </div>
 
-						<div style="background-color: #252526; height: 42px;">
-							<div class="tab tab-active">
-								<img src="img/icon-logs.png" alt="">
-								Logs
-								<img src="img/icon-x.png" alt="">
-							</div>
-						</div>
-						<div style="background-color: #1e1e1e; position: absolute; left: 0; right: 0; bottom: 0; top: 42px;">
-							<iframe class="tob tob-active" :src="'https://instantlogs.hola.cloud/?embed&project='+project_id"></iframe>
-						</div>
-					</div>
-				</div>
+                                                                        <div class="section">
+                                                                                <div class="section-title">
+                                                                                        <span class="meta-icon">🛰️</span>
+                                                                                        Routers
+                                                                                </div>
+                                                                                <div v-if="projectDetails.routers && projectDetails.routers.length">
+                                                                                        <div v-for="(router, routerIndex) in projectDetails.routers" :key="router.id || router.type || routerIndex" style="margin-bottom: 18px;">
+                                                                                                <div style="font-weight: bold; margin-bottom: 6px;">{{ router.type || 'Router' }}</div>
+                                                                                                <div v-if="router.hosts && router.hosts.length">
+                                                                                                        <ul>
+                                                                                                                <li v-for="(host, hostIndex) in router.hosts" :key="host.name || hostIndex">
+                                                                                                                        {{ host.name || 'Host' }}<span v-if="host.verified"> ✅</span>
+                                                                                                                </li>
+                                                                                                        </ul>
+                                                                                                </div>
+                                                                                                <div v-else class="empty-state">No hay hosts registrados para este router.</div>
+                                                                                                <div v-if="router.config" class="empty-state" style="margin-top: 6px;">
+                                                                                                        Configuración disponible. Revísala en la pestaña de Config.
+                                                                                                </div>
+                                                                                        </div>
+                                                                                </div>
+                                                                                <div v-else class="empty-state">Añade tu primer router para publicar servicios.</div>
+                                                                        </div>
 
-		</div>
+                                                                        <div class="actions">
+                                                                                <button class="button" type="button" @click="refreshProjectDetails" :disabled="projectDetailsLoading">Refrescar datos</button>
+                                                                                <button class="button button-white" type="button" @click="openProjectInNewTab" :disabled="!projectDetails || !projectDetails.id">Abrir en Projects</button>
+                                                                                <button class="button button-danger" type="button" @click="deleteProject" :disabled="projectDetailsLoading">Eliminar proyecto</button>
+                                                                        </div>
+                                                                </div>
+                                                                <div v-else>
+                                                                        <div class="banner" v-if="project_id">No se pudo cargar la información del proyecto seleccionado.</div>
+                                                                        <div class="banner" v-else>Selecciona un proyecto para ver los detalles.</div>
+                                                                </div>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                        <div
+                                                class="logs-panel"
+                                                :class="{'logs-panel--collapsed': logsCollapsed}"
+                                        >
+                                                <div class="logs-header">
+                                                        <h3>
+                                                                <img src="img/icon-logs.png" alt="" style="height: 18px;">
+                                                                Logs en tiempo real
+                                                                <span v-if="project && !logsCollapsed" style="color: #b5b5b5; font-size: 85%;">{{ project.name }}</span>
+                                                        </h3>
+                                                        <div class="logs-header-actions">
+                                                                <button class="collapse-button" type="button" @click="toggleLogsPanel">{{ logsCollapsed ? 'Expandir' : 'Contraer' }}</button>
+                                                                <button class="collapse-button" type="button" @click="refreshLogsPanel" :disabled="!project_id">Refrescar</button>
+                                                                <button class="collapse-button" type="button" @click="openLogsInNewTab" :disabled="!project_id">Abrir en nueva pestaña</button>
+                                                        </div>
+                                                </div>
+                                                <div class="logs-body">
+                                                        <iframe
+                                                                v-if="project_id && !logsCollapsed"
+                                                                :key="logsEmbedKey"
+                                                                :src="logsUrl"
+                                                        ></iframe>
+                                                        <div v-else-if="logsCollapsed" class="logs-placeholder">
+                                                                Vista contraída. Pulsa «Expandir» para ver los logs.
+                                                        </div>
+                                                        <div v-else class="logs-placeholder">
+                                                                Selecciona un proyecto para comenzar a recibir logs en vivo.
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </div>
+
+                </div>
 
 
 
@@ -513,40 +811,56 @@
 					name: '',
 					showNewProject: false,
 				},
-				tabs:[
-					{
-						icon: 'img/icon-db.png',
-						name: 'Database',
-						url: 'https://inceptiondb.hola.cloud/?embed&project=+project_id',
-						hideClose: true,
-					},
-					{
-						icon: 'img/icon-lambda.png',
-						name: 'Lambda',
-						url: 'https://lambda.hola.cloud/?embed&project=+project_id',
-						hideClose: true,
-					},
-					{
-						icon: 'img/icon-config.png',
-						name: 'Config',
-						url: 'https://config.hola.cloud/?embed&project=+project_id',
-						hideClose: true,
-					},
-					{
-						icon: 'img/icon-files.png',
-						name: 'Files',
-						url: 'https://files.hola.cloud/?embed&project=+project_id',
-						hideClose: true,
-					},
-				],
-				tab: 0,
-				tabLambdaTitle: 'Lambdas',
-				project_id: null,
-				tree: {
-					databases: [
-						{
-							"id":"111",
-							"name": "db1",
+                                tabs:[
+                                        {
+                                                type: 'project',
+                                                icon: null,
+                                                name: 'Proyecto',
+                                                hideClose: true,
+                                        },
+                                        {
+                                                type: 'database',
+                                                icon: 'img/icon-db.png',
+                                                name: 'Database',
+                                                url: '',
+                                                hideClose: true,
+                                        },
+                                        {
+                                                type: 'lambda',
+                                                icon: 'img/icon-lambda.png',
+                                                name: 'Lambda',
+                                                url: '',
+                                                hideClose: true,
+                                        },
+                                        {
+                                                type: 'config',
+                                                icon: 'img/icon-config.png',
+                                                name: 'Config',
+                                                url: '',
+                                                hideClose: true,
+                                        },
+                                        {
+                                                type: 'files',
+                                                icon: 'img/icon-files.png',
+                                                name: 'Files',
+                                                url: '',
+                                                hideClose: true,
+                                        },
+                                ],
+                                tab: 0,
+                                tabLambdaTitle: 'Lambdas',
+                                project_id: null,
+                                projectDetails: null,
+                                projectDetailsLoading: false,
+                                projectDetailsError: null,
+                                logsCollapsed: false,
+                                logsEmbedKey: 0,
+                                logsUrl: '',
+                                tree: {
+                                        databases: [
+                                                {
+                                                        "id":"111",
+                                                        "name": "db1",
 							"collections":[
 								{"name":"users"},
 								{"name":"products"},
@@ -602,23 +916,103 @@
 			// }, 1000);
 		},
 		methods: {
-			fetchTree() {
-				fakeHeaders['X-Project'] = this.project_id;
-				this.fetchDatabases();
-				this.fetchLambdas();
-			},
-			fetchProjects() {
-				this.loading.fetch++;
-				fetch(baseprojects+'/v0/projects', {headers: {}, credentials: 'include'})
-								.then(resp => resp.json())
-								.then(values => {
-									this.projects = values;
-									this.projects.sort((a,b) => compare(a.name, b.name));
-									this.loading.fetch--;
-								})
-								.catch(function (){
-									this.loading.fetch--;
-								});
+                        fetchTree() {
+                                if (this.project_id) {
+                                        fakeHeaders['X-Project'] = this.project_id;
+                                        const selected = this.projects.find(project => project.id === this.project_id);
+                                        if (selected) {
+                                                this.project = selected;
+                                        }
+                                        this.fetchDatabases();
+                                        this.fetchLambdas();
+                                } else {
+                                        delete fakeHeaders['X-Project'];
+                                        this.project = null;
+                                        this.tree.databases = [];
+                                        this.tree.lambdas = [];
+                                }
+                                this.updateCoreTabUrls();
+                                this.refreshProjectDetails();
+                                this.refreshLogsPanel();
+                        },
+                        refreshProjectDetails() {
+                                if (!this.project_id) {
+                                        this.projectDetails = null;
+                                        this.projectDetailsError = null;
+                                        this.projectDetailsLoading = false;
+                                        return;
+                                }
+
+                                this.projectDetailsLoading = true;
+                                this.projectDetailsError = null;
+
+                                fetch(baseprojects+'/v0/projects/'+this.project_id, {
+                                        headers: fakeHeaders,
+                                        credentials: 'include',
+                                })
+                                                                .then(resp => {
+                                                                        if (!resp.ok) {
+                                                                                throw new Error('No se pudo cargar el proyecto');
+                                                                        }
+                                                                        const contentType = resp.headers.get('content-type') || '';
+                                                                        if (contentType.includes('application/json')) {
+                                                                                return resp.json();
+                                                                        }
+                                                                        return resp.text().then(text => {
+                                                                                if (!text) return {};
+                                                                                try {
+                                                                                        return JSON.parse(text);
+                                                                                } catch(parseErr) {
+                                                                                        console.warn('No se pudo interpretar la respuesta del proyecto como JSON', parseErr);
+                                                                                        return {};
+                                                                                }
+                                                                        });
+                                                                })
+                                                                .then(project => {
+                                                                        if (project && typeof project === 'object') {
+                                                                                if (!project.id && this.project_id) {
+                                                                                        project.id = this.project_id;
+                                                                                }
+                                                                                if (!project.name && this.project && this.project.id === project.id) {
+                                                                                        project.name = this.project.name;
+                                                                                }
+                                                                        }
+                                                                        this.projectDetails = project;
+                                                                        this.projectDetailsLoading = false;
+                                                                })
+                                                                .catch(err => {
+                                                                        console.error(err);
+                                                                        this.projectDetailsError = err.message || 'Error desconocido al cargar el proyecto';
+                                                                        this.projectDetailsLoading = false;
+                                                                });
+                        },
+                        fetchProjects() {
+                                this.loading.fetch++;
+                                fetch(baseprojects+'/v0/projects', {headers: {}, credentials: 'include'})
+                                                                .then(resp => resp.json())
+                                                                .then(values => {
+                                                                        this.projects = values;
+                                                                        this.projects.sort((a,b) => compare(a.name, b.name));
+                                                                        if (this.project_id) {
+                                                                                const selected = this.projects.find(project => project.id === this.project_id);
+                                                                                if (!selected) {
+                                                                                        this.project = null;
+                                                                                        this.project_id = null;
+                                                                                        this.projectDetails = null;
+                                                                                        this.projectDetailsError = null;
+                                                                                        this.projectDetailsLoading = false;
+                                                                                        delete fakeHeaders['X-Project'];
+                                                                                        this.updateCoreTabUrls();
+                                                                                } else {
+                                                                                        this.project = selected;
+                                                                                        this.updateCoreTabUrls();
+                                                                                }
+                                                                        }
+                                                                        this.loading.fetch--;
+                                                                })
+                                                                .catch(() => {
+                                                                        this.loading.fetch--;
+                                                                });
 			},
 			fetchDatabases() {
 				console.log('fetching databases...');
@@ -660,12 +1054,12 @@
 			expandDatabase(db) {
 				db.open = !db.open;
 				if (!db.open) return;
-				fetch(baseinception+'/v1/databases/'+db.id+'/collections', {
-					headers: fakeHeaders,
-					credentials: "include",
-					// crossDomain: true,
-					// withCredentials: true,
-				})
+                                fetch(baseinception+'/v1/databases/'+db.id+'/collections', {
+                                        headers: fakeHeaders,
+                                        credentials: "include",
+                                        // crossDomain: true,
+                                        // withCredentials: true,
+                                })
 								.then(resp => resp.json())
 								.then(values => {
 									db.collections = values;
@@ -674,22 +1068,134 @@
 								});
 
 			},
-			selectProject(p) {
-				this.project = p;
-				this.project_id = this.project.id;
-				if (localdev) {
-					fakeHeaders['X-Project'] = this.project.id;
-				}
-				this.fetchDatabases();
-				this.tabs[0].url = 'https://inceptiondb.hola.cloud/?embed&project='+this.project.id;
-				this.tabs[1].url = 'https://lambda.hola.cloud/?embed&project='+this.project.id;
-			},
-			closeTab(i) {
-				this.tabs.splice(i,1);
-				if (this.tabs.length <= this.tab) {
-					this.tab = this.tabs.length - 1;
-				}
-			},
+                        selectProject(p) {
+                                this.project = p;
+                                this.project_id = this.project.id;
+                                if (localdev) {
+                                        fakeHeaders['X-Project'] = this.project.id;
+                                }
+                                this.projectDetails = null;
+                                this.projectDetailsError = null;
+                                this.projectDetailsLoading = false;
+                                this.fetchTree();
+
+                                const projectTabIndex = this.tabs.findIndex(tab => tab.type === 'project');
+                                if (projectTabIndex !== -1) {
+                                        this.tab = projectTabIndex;
+                                }
+                                this.refreshLogsPanel();
+                        },
+                        closeTab(i) {
+                                this.tabs.splice(i,1);
+                                if (this.tabs.length <= this.tab) {
+                                        this.tab = this.tabs.length - 1;
+                                }
+                        },
+                        deleteProject() {
+                                if (!this.project_id) {
+                                        return;
+                                }
+                                if (!confirm('¿Seguro que deseas eliminar este proyecto? Esta acción no se puede deshacer.')) {
+                                        return;
+                                }
+
+                                this.projectDetailsLoading = true;
+                                this.projectDetailsError = null;
+
+                                fetch(baseprojects+'/v0/projects/'+this.project_id, {
+                                        method: 'DELETE',
+                                        headers: fakeHeaders,
+                                        credentials: 'include',
+                                })
+                                                                .then(resp => {
+                                                                        if (!resp.ok) {
+                                                                                throw new Error('No se pudo eliminar el proyecto');
+                                                                        }
+                                                                        const contentType = resp.headers.get('content-type') || '';
+                                                                        if (contentType.includes('application/json')) {
+                                                                                return resp.json();
+                                                                        }
+                                                                        return resp.text().then(() => null);
+                                                                })
+                                                                .then(() => {
+                                                                        this.projects = this.projects.filter(project => project.id !== this.project_id);
+                                                                        this.project = null;
+                                                                        this.project_id = null;
+                                                                        delete fakeHeaders['X-Project'];
+                                                                        this.projectDetails = null;
+                                                                        this.projectDetailsLoading = false;
+                                                                        this.projectDetailsError = null;
+                                                                        this.updateCoreTabUrls();
+                                                                        this.tab = 0;
+                                                                        this.fetchProjects();
+                                                                })
+                                                                .catch(err => {
+                                                                        console.error(err);
+                                                                        this.projectDetailsLoading = false;
+                                                                        this.projectDetailsError = err.message || 'Error desconocido al eliminar el proyecto';
+                                                                });
+                        },
+                        openProjectInNewTab() {
+                                if (!this.projectDetails || !this.projectDetails.id) {
+                                        return;
+                                }
+                                const url = 'https://projects.hola.cloud/?project=' + encodeURIComponent(this.projectDetails.id);
+                                window.open(url, '_blank');
+                        },
+                        updateCoreTabUrls() {
+                                const projectId = this.project_id;
+                                const databaseTab = this.tabs.find(tab => tab.type === 'database');
+                                if (databaseTab) {
+                                        databaseTab.url = projectId ? 'https://inceptiondb.hola.cloud/?embed&project='+projectId : '';
+                                }
+                                const lambdaTab = this.tabs.find(tab => tab.type === 'lambda');
+                                if (lambdaTab) {
+                                        lambdaTab.url = projectId ? 'https://lambda.hola.cloud/?embed&project='+projectId : '';
+                                }
+                                const configTab = this.tabs.find(tab => tab.type === 'config');
+                                if (configTab) {
+                                        configTab.url = projectId ? 'https://config.hola.cloud/?embed&project='+projectId : '';
+                                }
+                                const filesTab = this.tabs.find(tab => tab.type === 'files');
+                                if (filesTab) {
+                                        filesTab.url = projectId ? 'https://files.hola.cloud/?embed&project='+projectId : '';
+                                }
+                                this.logsUrl = projectId ? 'https://instantlogs.hola.cloud/?embed&project='+projectId : '';
+                        },
+                        toggleLogsPanel() {
+                                this.logsCollapsed = !this.logsCollapsed;
+                                if (!this.logsCollapsed && this.project_id) {
+                                        this.refreshLogsPanel();
+                                }
+                        },
+                        refreshLogsPanel() {
+                                if (!this.project_id) {
+                                        return;
+                                }
+                                this.logsEmbedKey++;
+                        },
+                        openLogsInNewTab() {
+                                if (!this.project_id) {
+                                        return;
+                                }
+                                window.open('https://instantlogs.hola.cloud/?project='+encodeURIComponent(this.project_id), '_blank');
+                        },
+                        formatTimestamp(value) {
+                                if (!value) return '';
+                                const numericValue = Number(value);
+                                if (!numericValue) {
+                                        return value;
+                                }
+                                let milliseconds = numericValue;
+                                if (numericValue < 1000000000000) {
+                                        milliseconds = numericValue * 1000;
+                                }
+                                try {
+                                        return new Date(milliseconds).toLocaleString();
+                                } catch(err) {
+                                        return value;
+                                }
+                        },
 			openLambda(lambda) {
 				let url = 'https://lambda.hola.cloud/?embed&project='+this.project_id+'#/lambdas/'+lambda.id;
 
@@ -731,18 +1237,20 @@
 					name: this.inputs.name,
 				}
 				let that = this;
-				return fetch(baseprojects+'/v0/projects', {
-					method: 'POST',
-					headers: {},
-					credentials: 'include',
-					body: JSON.stringify(body),
-				})
-								.then(resp => resp.json())
-								.then(function(project) {
-									that.projects.push(project);
-									that.selectProject(project);
-								});
-			},
+                                return fetch(baseprojects+'/v0/projects', {
+                                        method: 'POST',
+                                        headers: {},
+                                        credentials: 'include',
+                                        body: JSON.stringify(body),
+                                })
+                                                                .then(resp => resp.json())
+                                                                .then(function(project) {
+                                                                        that.projects.push(project);
+                                                                        that.selectProject(project);
+                                                                        that.inputs.name = '';
+                                                                        that.inputs.showNewProject = false;
+                                                                });
+                        },
 			// patch(k,v) {
 			// 	let payload = {};
 			// 	payload[k]=v;
