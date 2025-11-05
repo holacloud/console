@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>hola.cloud Console</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap"
+    rel="stylesheet"
+  />
+  <script>
+    (() => {
+      const media = window.matchMedia('(prefers-color-scheme: dark)');
+      const applyTheme = () => {
+        document.documentElement.dataset.theme = media.matches ? 'dark' : 'light';
+      };
+      applyTheme();
+      if (typeof media.addEventListener === 'function') {
+        media.addEventListener('change', applyTheme);
+      } else if (typeof media.addListener === 'function') {
+        media.addListener(applyTheme);
+      }
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --color-brand: #5666f5;
+      --color-brand-600: #3a4be6;
+      --color-brand-100: #e6e9ff;
+      --color-accent: #ff7a59;
+      --color-success: #16a34a;
+      --color-warning: #f59e0b;
+      --color-danger: #dc2626;
+      --color-neutral-50: #f8fafc;
+      --color-neutral-100: #e2e8f0;
+      --color-neutral-300: #a3b6d6;
+      --color-neutral-400: #94a3b8;
+      --color-neutral-500: #64748b;
+      --color-neutral-600: #475569;
+      --color-neutral-700: #334155;
+      --color-neutral-800: #1e293b;
+      --color-neutral-850: #15213a;
+      --color-neutral-900: #0f172a;
+      --color-neutral-950: #0b1120;
+      --surface-body: linear-gradient(180deg, rgba(12, 18, 32, 0.96), #020617);
+      --surface-sidebar: rgba(10, 18, 32, 0.92);
+      --surface-card: rgba(17, 24, 39, 0.82);
+      --surface-elevated: rgba(15, 23, 42, 0.78);
+      --surface-workspace: rgba(15, 23, 42, 0.72);
+      --surface-input: rgba(15, 23, 42, 0.8);
+      --surface-overlay: rgba(15, 23, 42, 0.65);
+      --border-muted: rgba(148, 163, 184, 0.18);
+      --border-subtle: rgba(148, 163, 184, 0.1);
+      --text-primary: var(--color-neutral-100);
+      --text-secondary: var(--color-neutral-400);
+      --text-inverse: #f8fafc;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.08);
+      --shadow-md: 0 12px 28px rgba(15, 23, 42, 0.2);
+      --shadow-lg: 0 24px 48px rgba(15, 23, 42, 0.28);
+      --border-radius-sm: 8px;
+      --border-radius-md: 12px;
+      --border-radius-lg: 18px;
+      --sidebar-width: 320px;
+      --transition-base: 0.18s ease;
+      --log-panel-height: 280px;
+    }
+
+    :root[data-theme='light'] {
+      color-scheme: light;
+      --color-neutral-50: #f8fafc;
+      --color-neutral-100: #0f172a;
+      --color-neutral-300: #475569;
+      --color-neutral-400: #64748b;
+      --color-neutral-500: #64748b;
+      --color-neutral-600: #475569;
+      --color-neutral-700: #1e293b;
+      --color-neutral-800: #0f172a;
+      --color-neutral-850: #0b1120;
+      --color-neutral-900: #0a162d;
+      --color-neutral-950: #020617;
+      --surface-body: linear-gradient(180deg, #f8fbff, #eaf1ff);
+      --surface-sidebar: rgba(255, 255, 255, 0.92);
+      --surface-card: rgba(255, 255, 255, 0.94);
+      --surface-elevated: rgba(247, 249, 255, 0.92);
+      --surface-workspace: rgba(255, 255, 255, 0.96);
+      --surface-input: rgba(246, 248, 255, 0.96);
+      --surface-overlay: rgba(15, 23, 42, 0.4);
+      --border-muted: rgba(148, 163, 184, 0.28);
+      --border-subtle: rgba(148, 163, 184, 0.18);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-inverse: #0b1120;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.08);
+      --shadow-md: 0 14px 32px rgba(15, 23, 42, 0.12);
+      --shadow-lg: 0 30px 56px rgba(15, 23, 42, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+      background: var(--surface-body);
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+      color: var(--text-primary);
+    }
+
+    body {
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    a {
+      color: var(--color-brand-600);
+      text-decoration: none;
+      transition: color var(--transition-base);
+    }
+
+    a:hover {
+      color: var(--color-brand);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    #app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hc-fullscreen-state {
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .hc-spinner {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--border-radius-md);
+      background: rgba(86, 102, 245, 0.1);
+      color: var(--color-brand-100);
+      box-shadow: inset 0 0 0 1px rgba(86, 102, 245, 0.24);
+    }
+
+    .hc-spinner::before {
+      content: "";
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 3px solid rgba(86, 102, 245, 0.2);
+      border-top-color: var(--color-brand);
+      animation: hc-spin 0.9s linear infinite;
+    }
+
+    @keyframes hc-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .hc-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-muted);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow-md);
+      border-radius: var(--border-radius-lg);
+      padding: 2.5rem 3rem;
+      max-width: 420px;
+      width: 100%;
+      margin: auto;
+      color: var(--text-primary);
+    }
+
+    .hc-card h1 {
+      margin: 0 0 0.75rem;
+      font-size: 1.75rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .hc-card p {
+      margin: 0 0 1.5rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .hc-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.75rem;
+      border-radius: var(--border-radius-sm);
+      border: none;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: transform var(--transition-base), box-shadow var(--transition-base),
+        background var(--transition-base);
+      background: var(--color-brand);
+      color: var(--text-inverse);
+      box-shadow: 0 10px 20px rgba(86, 102, 245, 0.25);
+    }
+
+    .hc-button:hover:not(:disabled) {
+      background: var(--color-brand-600);
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(86, 102, 245, 0.28);
+    }
+
+    .hc-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .hc-button--ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      box-shadow: none;
+      border: 1px solid var(--border-muted);
+    }
+
+    .hc-button--ghost:hover {
+      color: var(--text-primary);
+      border-color: var(--color-brand-100);
+    }
+
+    .hc-console {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+      position: relative;
+    }
+
+    .hc-console.is-sidebar-open {
+      overflow: hidden;
+    }
+
+    .hc-sidebar {
+      width: var(--sidebar-width);
+      display: flex;
+      flex-direction: column;
+      background: var(--surface-sidebar);
+      border-right: 1px solid var(--border-subtle);
+      backdrop-filter: blur(14px);
+      transition: transform var(--transition-base), box-shadow var(--transition-base);
+      transform: translateX(0);
+      z-index: 30;
+    }
+
+    .hc-console.is-sidebar-open .hc-sidebar {
+      transform: translateX(0);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hc-sidebar__brand {
+      padding: 1.5rem 1.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .hc-sidebar__brand img {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .hc-sidebar__brand-title {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .hc-sidebar__brand-title span:first-child {
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .hc-sidebar__brand-title span:last-child {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .hc-sidebar__body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem 1.75rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    .hc-sidebar__body::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .hc-sidebar__body::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.4);
+      border-radius: 999px;
+    }
+
+    .hc-sidebar__body::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.35);
+      border-radius: 999px;
+    }
+
+    .hc-sidebar__scrim {
+      display: none;
+    }
+
+    .hc-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .hc-field label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+    }
+
+    .hc-select {
+      position: relative;
+    }
+
+    .hc-select__trigger {
+      appearance: none;
+      width: 100%;
+      border-radius: 10px;
+      padding: 0.75rem 2.5rem 0.75rem 0.9rem;
+      background: var(--surface-input);
+      border: 1px solid var(--border-muted);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: border-color var(--transition-base), box-shadow var(--transition-base),
+        background var(--transition-base);
+    }
+
+    .hc-select__trigger:focus-visible {
+      outline: none;
+      border-color: rgba(86, 102, 245, 0.6);
+      box-shadow: 0 0 0 3px rgba(86, 102, 245, 0.18);
+    }
+
+    .hc-select__trigger.is-open {
+      border-color: rgba(86, 102, 245, 0.6);
+      box-shadow: 0 0 0 3px rgba(86, 102, 245, 0.18);
+    }
+
+    .hc-select__label {
+      flex: 1;
+      text-align: left;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hc-select__placeholder {
+      color: var(--text-secondary);
+    }
+
+    .hc-select__chevron {
+      width: 0.75rem;
+      height: 0.75rem;
+      flex-shrink: 0;
+      transition: transform var(--transition-base);
+    }
+
+    .hc-select__trigger.is-open .hc-select__chevron {
+      transform: rotate(180deg);
+    }
+
+    .hc-select__dropdown {
+      position: absolute;
+      top: calc(100% + 0.45rem);
+      left: 0;
+      right: 0;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-muted);
+      border-radius: var(--border-radius-sm);
+      box-shadow: var(--shadow-md);
+      max-height: 240px;
+      overflow-y: auto;
+      padding: 0.35rem 0;
+      z-index: 30;
+    }
+
+    .hc-select__option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 0.9rem;
+      cursor: pointer;
+      transition: background var(--transition-base), color var(--transition-base);
+    }
+
+    .hc-select__option:hover,
+    .hc-select__option.is-active {
+      background: rgba(86, 102, 245, 0.12);
+      color: var(--color-brand-100);
+    }
+
+    .hc-select__meta {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .hc-sidebar-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .hc-sidebar-section__title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .hc-nav-list,
+    .hc-nav-children {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .hc-nav-item {
+      border-radius: 9px;
+      padding: 0.55rem 0.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      cursor: pointer;
+      background: transparent;
+      border: 1px solid transparent;
+      transition: background var(--transition-base), border-color var(--transition-base),
+        transform var(--transition-base);
+    }
+
+    .hc-nav-item:hover {
+      background: rgba(86, 102, 245, 0.08);
+      border-color: rgba(86, 102, 245, 0.24);
+    }
+
+    .hc-nav-item__label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hc-nav-item__label img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+
+    .hc-nav-item__meta {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .hc-nav-children {
+      padding-left: 0.75rem;
+      border-left: 1px solid var(--border-subtle);
+      margin-left: 0.5rem;
+    }
+
+    .hc-nav-child {
+      padding: 0.45rem 0.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background var(--transition-base), border-color var(--transition-base);
+      border: 1px solid transparent;
+    }
+
+    .hc-nav-child:hover {
+      background: rgba(86, 102, 245, 0.1);
+      border-color: rgba(86, 102, 245, 0.2);
+    }
+
+    .hc-workspace {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      backdrop-filter: blur(12px);
+      background: var(--surface-workspace);
+    }
+
+    .hc-topbar {
+      padding: 1.25rem 2rem 1.15rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      background: transparent;
+    }
+
+    .hc-topbar__left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hc-icon-button {
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background var(--transition-base), color var(--transition-base),
+        transform var(--transition-base);
+    }
+
+    .hc-icon-button:hover {
+      background: rgba(86, 102, 245, 0.12);
+      color: var(--color-brand-100);
+    }
+
+    .hc-icon-button:active {
+      transform: scale(0.98);
+    }
+
+    .hc-topbar__menu {
+      display: none;
+    }
+
+    .hc-topbar__title {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .hc-topbar__title h2 {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .hc-topbar__title span {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .hc-topbar__user {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hc-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid rgba(86, 102, 245, 0.45);
+      object-fit: cover;
+    }
+
+    .hc-user-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      align-items: flex-end;
+    }
+
+    .hc-user-meta strong {
+      font-weight: 600;
+    }
+
+    .hc-workspace__content {
+      flex: 1;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      min-height: 0;
+    }
+
+    .hc-surface {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-radius: var(--border-radius-lg);
+      border: 1px solid var(--border-muted);
+      background: var(--surface-elevated);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .hc-tabs {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--border-subtle);
+      background: var(--surface-elevated);
+      overflow-x: auto;
+    }
+
+    .hc-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      border-radius: 9px;
+      border: 1px solid transparent;
+      padding: 0.45rem 0.85rem;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background var(--transition-base), color var(--transition-base),
+        border-color var(--transition-base);
+      white-space: nowrap;
+    }
+
+    .hc-tab img {
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+    }
+
+    .hc-tab.is-active {
+      background: rgba(86, 102, 245, 0.18);
+      color: var(--text-primary);
+      border-color: rgba(86, 102, 245, 0.35);
+    }
+
+    .hc-tab:hover {
+      color: var(--text-primary);
+    }
+
+    .hc-tab__close {
+      font-size: 1rem;
+      line-height: 1;
+      color: var(--text-secondary);
+      transition: color var(--transition-base);
+    }
+
+    .hc-tab__close:hover {
+      color: var(--text-primary);
+    }
+
+    .hc-tab-panels {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      background: var(--surface-elevated);
+    }
+
+    .hc-panel-frame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: none;
+      background: transparent;
+    }
+
+    .hc-panel-frame.is-active {
+      display: block;
+    }
+
+    .hc-log-panel {
+      height: var(--log-panel-height);
+      border-top: 1px solid var(--border-subtle);
+      background: var(--surface-elevated);
+      position: relative;
+      transition: height var(--transition-base);
+    }
+
+    .hc-log-panel__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+      background: var(--surface-elevated);
+      font-weight: 500;
+    }
+
+    .hc-log-panel__frame {
+      position: absolute;
+      inset: 2.5rem 0 0;
+      border: none;
+      width: 100%;
+      height: calc(100% - 2.5rem);
+      background: transparent;
+    }
+
+    .hc-log-panel.is-collapsed {
+      height: 48px;
+    }
+
+    .hc-log-panel.is-collapsed .hc-log-panel__frame {
+      display: none;
+    }
+
+    .hc-log-panel__actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hc-log-panel__project {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .hc-log-toggle {
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.25rem;
+      border-radius: 6px;
+      transition: background var(--transition-base), color var(--transition-base);
+    }
+
+    .hc-log-toggle:hover {
+      background: rgba(86, 102, 245, 0.12);
+      color: var(--color-brand-100);
+    }
+
+    .hc-log-toggle svg {
+      transition: transform var(--transition-base);
+    }
+
+    .hc-log-panel.is-collapsed .hc-log-toggle svg {
+      transform: rotate(180deg);
+    }
+
+    .hc-empty-state {
+      flex: 1;
+      border-radius: var(--border-radius-lg);
+      border: 1px solid var(--border-muted);
+      background: var(--surface-elevated);
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hc-empty-state h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .hc-empty-state p {
+      margin: 0;
+      color: var(--text-secondary);
+      max-width: 360px;
+      line-height: 1.6;
+    }
+
+    .hc-projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.25rem;
+      width: 100%;
+    }
+
+    .hc-project-card {
+      border-radius: var(--border-radius-md);
+      background: var(--surface-elevated);
+      padding: 1.15rem 1.2rem;
+      border: 1px solid var(--border-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      cursor: pointer;
+      transition: transform var(--transition-base), border-color var(--transition-base),
+        box-shadow var(--transition-base);
+    }
+
+    .hc-project-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(86, 102, 245, 0.4);
+      box-shadow: 0 20px 35px rgba(8, 14, 27, 0.35);
+    }
+
+    .hc-project-card__title {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .hc-project-card__meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .hc-project-card__actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hc-input {
+      width: 100%;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      background: var(--surface-input);
+      border: 1px solid var(--border-muted);
+      color: var(--text-primary);
+      transition: border-color var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .hc-input:focus {
+      outline: none;
+      border-color: rgba(86, 102, 245, 0.6);
+      box-shadow: 0 0 0 3px rgba(86, 102, 245, 0.18);
+    }
+
+    .hc-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: min(420px, 100%);
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .hc-form p {
+      margin: 0;
+      color: var(--text-secondary);
+    }
+
+    .hc-form__actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+
+    .hc-sidebar--collapsed .hc-sidebar__body {
+      display: none;
+    }
+
+    @media (max-width: 1024px) {
+      :root {
+        --sidebar-width: min(320px, 86vw);
+        --log-panel-height: 220px;
+      }
+
+      .hc-sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        transform: translateX(-100%);
+        box-shadow: none;
+      }
+
+      .hc-console.is-sidebar-open .hc-sidebar {
+        transform: translateX(0);
+      }
+
+      .hc-sidebar__scrim {
+        display: none;
+      }
+
+      .hc-console.is-sidebar-open .hc-sidebar__scrim {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: var(--surface-overlay);
+        backdrop-filter: blur(2px);
+        z-index: 20;
+      }
+
+      .hc-sidebar__body {
+        padding: 1.25rem 1.5rem 2.5rem;
+      }
+
+      .hc-topbar {
+        padding: 1rem 1.25rem;
+      }
+
+      .hc-workspace__content {
+        padding: 1rem 1.25rem;
+      }
+
+      .hc-topbar__menu {
+        display: inline-flex;
+      }
+
+      .hc-topbar__user {
+        gap: 0.5rem;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .hc-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .hc-user-meta {
+        align-items: flex-start;
+      }
+
+      .hc-workspace__content {
+        padding: 1rem;
+      }
+
+      .hc-surface {
+        border-radius: var(--border-radius-md);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div v-if="user === 'loading'" class="hc-fullscreen-state">
+      <div class="hc-spinner">Validando sesión…</div>
+      <span style="color: var(--text-secondary); font-size: 0.95rem;">Conectando con hola.cloud</span>
+    </div>
+
+    <div v-else-if="user === null" class="hc-card">
+      <h1>Bienvenido a hola.cloud</h1>
+      <p>
+        Administra tus bases de datos, funciones y archivos desde una consola unificada inspirada en un IDE profesional.
+        Inicia sesión para sincronizar tus proyectos.
+      </p>
+      <div style="display: flex; justify-content: center;">
+        <a href="https://hola.cloud/auth/login" class="hc-button">Iniciar sesión</a>
+      </div>
+    </div>
+
+    <div
+      v-else
+      class="hc-console"
+      :class="[
+        { 'hc-sidebar--collapsed': !tricks.showtree && !project },
+        { 'is-sidebar-open': isSidebarOpen && isMobileViewport }
+      ]"
+    >
+      <aside class="hc-sidebar">
+        <div class="hc-sidebar__brand">
+          <img src="img/logo-short.png" alt="hola.cloud" />
+          <div class="hc-sidebar__brand-title">
+            <span>hola.cloud Console</span>
+            <span>Tu plataforma operativa</span>
+          </div>
+        </div>
+        <div class="hc-sidebar__body">
+          <div class="hc-field" v-if="projects.length">
+            <label id="project-select-label">Proyecto actual</label>
+            <div class="hc-select" ref="projectDropdown">
+              <button
+                type="button"
+                class="hc-select__trigger"
+                :class="{'is-open': projectMenuOpen}"
+                aria-haspopup="listbox"
+                :aria-expanded="projectMenuOpen ? 'true' : 'false'"
+                aria-labelledby="project-select-label"
+                @click="toggleProjectMenu"
+                @keydown.escape.prevent.stop="projectMenuOpen = false"
+              >
+                <span
+                  class="hc-select__label"
+                  :class="{'hc-select__placeholder': !project}"
+                >
+                  {{ project ? project.name : 'Selecciona un proyecto' }}
+                </span>
+                <svg
+                  class="hc-select__chevron"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M2.47 4.47a.75.75 0 0 1 1.06 0L6 6.94l2.47-2.47a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 0 1 0-1.06Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </button>
+              <ul
+                v-if="projectMenuOpen"
+                class="hc-select__dropdown"
+                role="listbox"
+                aria-labelledby="project-select-label"
+              >
+                <li
+                  v-for="p in projects"
+                  :key="p.id"
+                  class="hc-select__option"
+                  :class="{'is-active': project && project.id === p.id}"
+                  role="option"
+                  :aria-selected="project && project.id === p.id ? 'true' : 'false'"
+                  tabindex="0"
+                  @click="handleProjectChange(p)"
+                  @keydown.enter.prevent.stop="handleProjectChange(p)"
+                  @keydown.space.prevent.stop="handleProjectChange(p)"
+                  @keydown.escape.prevent.stop="projectMenuOpen = false"
+                >
+                  <span>{{ p.name }}</span>
+                  <span class="hc-select__meta">{{ p.id }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="hc-sidebar-section" v-if="project">
+            <div class="hc-sidebar-section__title">Bases de datos</div>
+            <ul class="hc-nav-list">
+              <li v-for="database in tree.databases" :key="database.id">
+                <div class="hc-nav-item" @click="expandDatabase(database)">
+                  <div class="hc-nav-item__label">
+                    <img src="img/icon-db.png" alt="Base de datos" />
+                    <span>{{ database.name }}</span>
+                  </div>
+                  <span class="hc-nav-item__meta">{{ database.open ? '−' : '+' }}</span>
+                </div>
+                <ul class="hc-nav-children" v-if="database.open">
+                  <li
+                    class="hc-nav-child"
+                    v-for="collection in database.collections"
+                    :key="collection.name"
+                    @click.stop="openCollection(database, collection)"
+                  >
+                    <img
+                      src="https://inceptiondb.hola.cloud/v2/img/icon-collection.svg"
+                      alt="Colección"
+                      style="height: 16px; filter: invert(82%) saturate(120%);"
+                    />
+                    <span>{{ collection.name }}</span>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <div class="hc-sidebar-section" v-if="project">
+            <div class="hc-sidebar-section__title">Lambdas</div>
+            <ul class="hc-nav-list">
+              <li v-for="lambda in tree.lambdas" :key="lambda.id">
+                <div class="hc-nav-item" @click="openLambda(lambda)" :title="lambda.name">
+                  <div class="hc-nav-item__label">
+                    <img src="img/icon-lambda.png" alt="Lambda" />
+                    <span>{{ lambda.method }} {{ lambda.path }}</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="hc-sidebar-section" v-if="!projects.length && !loading.fetch">
+            <div class="hc-empty-state" style="padding: 1.5rem;">
+              <h3>Sin proyectos todavía</h3>
+              <p>Crea tu primer proyecto desde el panel derecho para habilitar la navegación.</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+      <div
+        class="hc-sidebar__scrim"
+        v-if="isSidebarOpen && isMobileViewport"
+        @click="closeSidebar"
+      ></div>
+
+      <main class="hc-workspace">
+        <header class="hc-topbar">
+          <div class="hc-topbar__left">
+            <button
+              type="button"
+              class="hc-icon-button hc-topbar__menu"
+              aria-label="Alternar navegación"
+              @click="toggleSidebar"
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+                <path
+                  d="M3 5h14M3 10h14M3 15h10"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+            <div class="hc-topbar__title">
+              <h2>Panel de control</h2>
+              <span>{{ project ? project.name : 'Selecciona un proyecto para comenzar' }}</span>
+            </div>
+          </div>
+          <div class="hc-topbar__user">
+            <img :src="user.picture" alt="Avatar" class="hc-avatar" />
+            <div class="hc-user-meta">
+              <strong>{{ user.nick }}</strong>
+              <a href="/auth/logout">Cerrar sesión</a>
+            </div>
+          </div>
+        </header>
+
+        <section class="hc-workspace__content">
+          <div v-if="loading.fetch" class="hc-empty-state">
+            <div class="hc-spinner">Cargando proyectos…</div>
+            <p>Estamos sincronizando tus recursos y configuraciones.</p>
+          </div>
+
+          <template v-else>
+            <div v-if="!projects.length" class="hc-surface" style="padding: 2.5rem; align-items: center;">
+              <form class="hc-form" @submit.prevent="createProject">
+                <div>
+                  <h2 style="margin: 0 0 0.5rem; font-size: 1.5rem;">Crea tu primer proyecto</h2>
+                  <p>Define un nombre para tu proyecto y comenzaremos a preparar tu espacio de trabajo.</p>
+                </div>
+                <input
+                  class="hc-input"
+                  type="text"
+                  placeholder="Nombre del proyecto"
+                  v-model="inputs.name"
+                  autofocus
+                />
+                <div class="hc-form__actions">
+                  <button type="submit" class="hc-button" :disabled="!inputs.name.trim()">Crear proyecto</button>
+                </div>
+              </form>
+            </div>
+
+            <div v-else-if="project === null" class="hc-surface" style="padding: 2rem; overflow: auto;">
+              <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+                <div>
+                  <h2 style="margin: 0; font-size: 1.4rem;">Tus proyectos</h2>
+                  <p style="margin: 0; color: var(--text-secondary);">Selecciona un proyecto para activar el panel de trabajo.</p>
+                </div>
+                <button
+                  v-if="!inputs.showNewProject"
+                  class="hc-button"
+                  type="button"
+                  @click="inputs.showNewProject = true"
+                >
+                  Nuevo proyecto
+                </button>
+              </div>
+
+              <div class="hc-projects-grid">
+                <div class="hc-project-card" v-for="p in projects" :key="p.id" @click="selectProject(p)">
+                  <div class="hc-project-card__title">{{ p.name }}</div>
+                  <div class="hc-project-card__meta">
+                    <span>{{ p.id }}</span>
+                    <span v-if="p.owners && p.owners.length > 1">{{ p.owners.length }} 👤</span>
+                  </div>
+                  <div class="hc-project-card__actions">
+                    <a :href="'https://' + p.host" v-if="p.host" target="_blank" @click.stop>Ver sitio</a>
+                    <span v-else style="color: var(--text-secondary); font-size: 0.8rem;">Sin host asignado</span>
+                  </div>
+                </div>
+              </div>
+
+              <div v-if="inputs.showNewProject" style="margin-top: 2rem;">
+                <form class="hc-form" @submit.prevent="createProject" style="margin: 0;">
+                  <h3 style="margin: 0 0 0.5rem;">Crear un nuevo proyecto</h3>
+                  <input
+                    class="hc-input"
+                    type="text"
+                    placeholder="Nombre del proyecto"
+                    v-model="inputs.name"
+                    autofocus
+                  />
+                  <div class="hc-form__actions">
+                    <button type="button" class="hc-button hc-button--ghost" @click="cancelNewProject">Cancelar</button>
+                    <button type="submit" class="hc-button" :disabled="!inputs.name.trim()">Crear</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div v-else class="hc-surface">
+              <div class="hc-tabs" role="tablist">
+                <button
+                  v-for="(t, i) in tabs"
+                  :key="t.name + i"
+                  class="hc-tab"
+                  :class="{'is-active': tab === i}"
+                  type="button"
+                  @click="tab = i"
+                >
+                  <img :src="t.icon" :alt="t.name" />
+                  <span>{{ t.name }}</span>
+                  <span
+                    v-if="t.hideClose !== true"
+                    class="hc-tab__close"
+                    role="button"
+                    aria-label="Cerrar pestaña"
+                    @click.stop="closeTab(i)"
+                  >×</span>
+                </button>
+              </div>
+              <div class="hc-tab-panels">
+                <iframe
+                  v-for="(t, i) in tabs"
+                  :key="t.url + i"
+                  class="hc-panel-frame"
+                  :class="{'is-active': tab === i}"
+                  :src="t.url || 'about:blank'"
+                  :title="t.name"
+                ></iframe>
+              </div>
+              <div class="hc-log-panel" :class="{'is-collapsed': logsCollapsed}">
+                <div class="hc-log-panel__header">
+                  <span>Logs en vivo</span>
+                  <div class="hc-log-panel__actions">
+                    <span class="hc-log-panel__project" v-if="project">{{ project.id }}</span>
+                    <button
+                      type="button"
+                      class="hc-log-toggle"
+                      :aria-expanded="logsCollapsed ? 'false' : 'true'"
+                      @click="toggleLogsPanel"
+                    >
+                      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+                        <path
+                          d="M4.5 7.5 9 12l4.5-4.5"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.8"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <iframe class="hc-log-panel__frame" :src="logsUrl" title="Logs"></iframe>
+              </div>
+            </div>
+          </template>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="lib/vue.global.prod.js"></script>
+  <script>
+    const { createApp } = Vue;
+
+    const localdev = document.location.hostname === 'localhost';
+    const fakeHeaders = {};
+    if (localdev) {
+      fakeHeaders['X-Glue-Authentication'] = '{"user":{"id":"user1"}}';
+    }
+
+    let base = '';
+    let baseprojects = 'https://projects.hola.cloud';
+    let baseinception = 'https://inceptiondb.hola.cloud';
+    let baselambdas = 'https://lambda.hola.cloud';
+    if (localdev) {
+      baseprojects = '/fakeapi/projectsapi';
+      baseinception = '/fakeapi/inceptionapi';
+      baselambdas = '/fakeapi/lambdasapi';
+      base = '/fakeapi/authapi';
+    }
+
+    createApp({
+      data() {
+        return {
+          projects: [],
+          project: null,
+          user: 'loading',
+          loading: {
+            fetch: 0,
+          },
+          inputs: {
+            name: '',
+            showNewProject: false,
+          },
+          tabs: [
+            { icon: 'img/icon-db.png', name: 'InceptionDB', url: 'about:blank', hideClose: true },
+            { icon: 'img/icon-lambda.png', name: 'Lambdas', url: 'about:blank', hideClose: true },
+            { icon: 'img/icon-config.png', name: 'Config', url: 'about:blank', hideClose: true },
+            { icon: 'img/icon-files.png', name: 'Archivos', url: 'about:blank', hideClose: true },
+          ],
+          tab: 0,
+          project_id: '',
+          tree: {
+            databases: [],
+            lambdas: [],
+          },
+          tricks: {
+            showtree: false,
+          },
+          keySequence: '',
+          projectMenuOpen: false,
+          isSidebarOpen: false,
+          isMobileViewport: false,
+          logsCollapsed: false,
+          viewportQuery: null,
+        };
+      },
+      computed: {
+        logsUrl() {
+          if (!this.project) {
+            return 'about:blank';
+          }
+          return 'https://instantlogs.hola.cloud/?embed&project=' + encodeURIComponent(this.project.id);
+        },
+      },
+      mounted() {
+        this.fetchProjects();
+        this.fetchCurrentUser();
+        document.addEventListener('keyup', this.handleKeySequence, true);
+        document.addEventListener('click', this.handleGlobalClick, true);
+        this.viewportQuery = window.matchMedia('(max-width: 1024px)');
+        this.isMobileViewport = this.viewportQuery.matches;
+        if (typeof this.viewportQuery.addEventListener === 'function') {
+          this.viewportQuery.addEventListener('change', this.handleViewportChange);
+        } else if (typeof this.viewportQuery.addListener === 'function') {
+          this.viewportQuery.addListener(this.handleViewportChange);
+        }
+      },
+      beforeUnmount() {
+        document.removeEventListener('keyup', this.handleKeySequence, true);
+        document.removeEventListener('click', this.handleGlobalClick, true);
+        if (this.viewportQuery) {
+          if (typeof this.viewportQuery.removeEventListener === 'function') {
+            this.viewportQuery.removeEventListener('change', this.handleViewportChange);
+          } else if (typeof this.viewportQuery.removeListener === 'function') {
+            this.viewportQuery.removeListener(this.handleViewportChange);
+          }
+        }
+      },
+      methods: {
+        handleKeySequence(event) {
+          this.keySequence += event.key;
+          if (this.keySequence.length > 20) {
+            this.keySequence = this.keySequence.slice(-20);
+          }
+          if (this.keySequence.endsWith('showtree')) {
+            this.tricks.showtree = !this.tricks.showtree;
+          }
+        },
+        toggleProjectMenu() {
+          if (!this.projects.length) {
+            return;
+          }
+          this.projectMenuOpen = !this.projectMenuOpen;
+        },
+        handleGlobalClick(event) {
+          if (!this.projectMenuOpen) {
+            return;
+          }
+          const dropdown = this.$refs.projectDropdown;
+          if (dropdown && !dropdown.contains(event.target)) {
+            this.projectMenuOpen = false;
+          }
+        },
+        handleViewportChange(event) {
+          this.isMobileViewport = event.matches;
+          if (!event.matches) {
+            this.isSidebarOpen = false;
+          }
+          this.projectMenuOpen = false;
+        },
+        toggleSidebar() {
+          if (!this.isMobileViewport) {
+            return;
+          }
+          this.projectMenuOpen = false;
+          this.isSidebarOpen = !this.isSidebarOpen;
+        },
+        closeSidebar() {
+          this.isSidebarOpen = false;
+          this.projectMenuOpen = false;
+        },
+        toggleLogsPanel() {
+          this.logsCollapsed = !this.logsCollapsed;
+        },
+        fetchCurrentUser() {
+          fetch(base + '/auth/me', { credentials: 'include' })
+            .then((resp) => resp.json())
+            .then((user) => {
+              if (user.error) {
+                this.user = null;
+                return;
+              }
+              this.user = user;
+              if (localdev) {
+                fakeHeaders['X-Glue-Authentication'] = JSON.stringify({ user });
+              }
+              if (this.project_id) {
+                this.fetchTree();
+              }
+              this.fetchProjects();
+            })
+            .catch(() => {
+              this.user = null;
+            });
+        },
+        fetchProjects() {
+          this.loading.fetch += 1;
+          fetch(baseprojects + '/v0/projects', { headers: {}, credentials: 'include' })
+            .then((resp) => resp.json())
+            .then((values) => {
+              if (!Array.isArray(values)) {
+                values = [];
+              }
+              values.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+              this.projects = values;
+              if (!this.projects.length) {
+                this.projectMenuOpen = false;
+              }
+              if (!this.project && this.project_id) {
+                const match = this.projects.find((proj) => proj.id === this.project_id);
+                if (match) {
+                  this.selectProject(match);
+                }
+              }
+            })
+            .catch(() => {
+              // no-op, errors handled silently to avoid breaking UI
+            })
+            .finally(() => {
+              this.loading.fetch = Math.max(0, this.loading.fetch - 1);
+            });
+        },
+        fetchTree() {
+          if (!this.project_id) {
+            return;
+          }
+          fakeHeaders['X-Project'] = this.project_id;
+          this.fetchDatabases();
+          this.fetchLambdas();
+        },
+        fetchDatabases() {
+          fetch(baseinception + '/v1/databases', {
+            headers: fakeHeaders,
+            credentials: 'include',
+          })
+            .then((resp) => resp.json())
+            .then((values) => {
+              if (!Array.isArray(values)) {
+                values = [];
+              }
+              values.forEach((db) => {
+                db.collections = [];
+                db.open = false;
+              });
+              values.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+              this.tree.databases = values;
+            })
+            .catch(() => {
+              this.tree.databases = [];
+            });
+        },
+        fetchLambdas() {
+          fetch(baselambdas + '/api/v0/lambdas', {
+            headers: fakeHeaders,
+            credentials: 'include',
+          })
+            .then((resp) => resp.json())
+            .then((values) => {
+              if (!Array.isArray(values)) {
+                values = [];
+              }
+              values.sort((a, b) => {
+                const left = (a.path || '') + ' ' + (a.method || '');
+                const right = (b.path || '') + ' ' + (b.method || '');
+                return left.localeCompare(right);
+              });
+              this.tree.lambdas = values;
+            })
+            .catch(() => {
+              this.tree.lambdas = [];
+            });
+        },
+        expandDatabase(db) {
+          db.open = !db.open;
+          if (!db.open) {
+            return;
+          }
+          fetch(baseinception + '/v1/databases/' + db.id + '/collections', {
+            headers: fakeHeaders,
+            credentials: 'include',
+          })
+            .then((resp) => resp.json())
+            .then((values) => {
+              db.collections = Array.isArray(values) ? values : [];
+            })
+            .catch(() => {
+              db.collections = [];
+            });
+        },
+        selectProject(project) {
+          this.projectMenuOpen = false;
+          this.project = project;
+          this.project_id = project.id;
+          if (this.isMobileViewport) {
+            this.closeSidebar();
+          }
+          this.logsCollapsed = false;
+          if (localdev) {
+            fakeHeaders['X-Project'] = project.id;
+          }
+          this.updateCoreTabs();
+          this.fetchTree();
+          this.tab = 0;
+        },
+        handleProjectChange(project) {
+          if (!project) {
+            this.project = null;
+            this.project_id = '';
+            this.projectMenuOpen = false;
+            this.logsCollapsed = false;
+            return;
+          }
+          this.selectProject(project);
+        },
+        updateCoreTabs() {
+          if (!this.project) {
+            return;
+          }
+          const projectParam = encodeURIComponent(this.project.id);
+          const urls = [
+            'https://inceptiondb.hola.cloud/?embed&project=' + projectParam,
+            'https://lambda.hola.cloud/?embed&project=' + projectParam,
+            'https://config.hola.cloud/?embed&project=' + projectParam,
+            'https://files.hola.cloud/?embed&project=' + projectParam,
+          ];
+          urls.forEach((url, index) => {
+            if (this.tabs[index]) {
+              this.tabs[index].url = url;
+            }
+          });
+        },
+        closeTab(index) {
+          this.tabs.splice(index, 1);
+          if (this.tab >= this.tabs.length) {
+            this.tab = Math.max(0, this.tabs.length - 1);
+          }
+        },
+        openLambda(lambda) {
+          if (!this.project_id) {
+            return;
+          }
+          const url =
+            'https://lambda.hola.cloud/?embed&project=' +
+            encodeURIComponent(this.project_id) +
+            '#/lambdas/' +
+            lambda.id;
+          const existingIndex = this.tabs.findIndex((tab) => tab.url === url);
+          if (existingIndex >= 0) {
+            this.tab = existingIndex;
+            return;
+          }
+          this.tabs.push({
+            icon: 'img/icon-lambda.png',
+            name: (lambda.method || '') + ' ' + (lambda.path || ''),
+            url,
+          });
+          this.tab = this.tabs.length - 1;
+          if (this.isMobileViewport) {
+            this.closeSidebar();
+          }
+        },
+        openCollection(database, collection) {
+          if (!this.project_id) {
+            return;
+          }
+          const url =
+            'https://inceptiondb.hola.cloud/?embed&project=' +
+            encodeURIComponent(this.project_id) +
+            '#/databases/' +
+            database.id +
+            '/collections/' +
+            collection.name;
+          const existingIndex = this.tabs.findIndex((tab) => tab.url === url);
+          if (existingIndex >= 0) {
+            this.tab = existingIndex;
+            return;
+          }
+          this.tabs.push({
+            icon: 'img/icon-db.png',
+            name: collection.name,
+            url,
+          });
+          this.tab = this.tabs.length - 1;
+          if (this.isMobileViewport) {
+            this.closeSidebar();
+          }
+        },
+        createProject() {
+          if (!this.inputs.name.trim()) {
+            return;
+          }
+          const body = {
+            name: this.inputs.name,
+          };
+          fetch(baseprojects + '/v0/projects', {
+            method: 'POST',
+            headers: {},
+            credentials: 'include',
+            body: JSON.stringify(body),
+          })
+            .then((resp) => resp.json())
+            .then((project) => {
+              if (!project || !project.id) {
+                return;
+              }
+              this.projects.push(project);
+              this.projects.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+              this.inputs.name = '';
+              this.inputs.showNewProject = false;
+              this.selectProject(project);
+            });
+        },
+        cancelNewProject() {
+          this.inputs.name = '';
+          this.inputs.showNewProject = false;
+        },
+      },
+    }).mount('#app');
+  </script>
+</body>
+</html>
