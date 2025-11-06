@@ -1295,8 +1295,10 @@
   </div>
 
   <script src="lib/vue.global.prod.js"></script>
+  <script src="https://unpkg.com/vue-router@4.2.5/dist/vue-router.global.prod.js"></script>
   <script>
     const { createApp } = Vue;
+    const { createRouter, createWebHashHistory } = VueRouter;
 
     const localdev = document.location.hostname === 'localhost';
     const fakeHeaders = {};
@@ -1315,7 +1317,22 @@
       base = '/fakeapi/authapi';
     }
 
-    createApp({
+    const routes = [
+      {
+        path: '/:projectId?',
+        name: 'home',
+      },
+    ];
+
+    const router = createRouter({
+      history: createWebHashHistory(),
+      routes,
+      scrollBehavior() {
+        return { left: 0, top: 0 };
+      },
+    });
+
+    const app = createApp({
       data() {
         return {
           projects: [],
@@ -1349,6 +1366,8 @@
           isMobileViewport: false,
           logsCollapsed: false,
           viewportQuery: null,
+          routeReady: false,
+          isRestoringRoute: false,
         };
       },
       computed: {
@@ -1358,6 +1377,9 @@
           }
           return 'https://instantlogs.hola.cloud/?embed&project=' + encodeURIComponent(this.project.id);
         },
+      },
+      created() {
+        this.restoreStateFromRoute(this.$route);
       },
       mounted() {
         this.fetchProjects();
@@ -1383,7 +1405,152 @@
           }
         }
       },
+      watch: {
+        $route(newRoute) {
+          this.restoreStateFromRoute(newRoute);
+        },
+        tab(newValue, oldValue) {
+          if (newValue === oldValue) {
+            return;
+          }
+          if (!this.routeReady || this.isRestoringRoute) {
+            return;
+          }
+          this.commitRouteState({ tab: newValue }, { push: true });
+        },
+        logsCollapsed(newValue, oldValue) {
+          if (newValue === oldValue) {
+            return;
+          }
+          if (!this.routeReady || this.isRestoringRoute) {
+            return;
+          }
+          this.commitRouteState({ logs: newValue }, { push: true });
+        },
+        'tricks.showtree'(newValue, oldValue) {
+          if (newValue === oldValue) {
+            return;
+          }
+          if (!this.routeReady || this.isRestoringRoute) {
+            return;
+          }
+          this.commitRouteState({ tree: newValue }, { push: true });
+        },
+      },
       methods: {
+        restoreStateFromRoute(route) {
+          if (!route) {
+            return;
+          }
+          this.isRestoringRoute = true;
+          this.routeReady = false;
+          const routeProject = typeof route.params.projectId === 'string' ? route.params.projectId : '';
+          const shouldSelectProject =
+            !!routeProject && (!this.project || this.project.id !== routeProject);
+          if (routeProject !== this.project_id) {
+            this.project_id = routeProject;
+          }
+          if (!routeProject) {
+            this.project = null;
+          }
+          const resolveParam = (value) => {
+            if (Array.isArray(value)) {
+              return value[0];
+            }
+            return value;
+          };
+          const tabParam = parseInt(resolveParam(route.query.tab), 10);
+          this.tab = this.normalizeTabIndex(Number.isInteger(tabParam) ? tabParam : 0);
+          const logsParam = resolveParam(route.query.logs);
+          this.logsCollapsed = logsParam === '1';
+          const treeParam = resolveParam(route.query.tree);
+          this.tricks.showtree = treeParam === '1';
+
+          if (shouldSelectProject) {
+            const match = this.projects.find((proj) => proj.id === routeProject);
+            if (match) {
+              this.selectProject(match, { resetTab: false, skipRouteUpdate: true });
+            } else {
+              this.project = null;
+            }
+          } else if (!this.project_id) {
+            this.project = null;
+          }
+          const finalizeRouteRestore = () => {
+            this.isRestoringRoute = false;
+            this.routeReady = true;
+          };
+          if (typeof this.$nextTick === 'function') {
+            this.$nextTick(finalizeRouteRestore);
+          } else {
+            Promise.resolve().then(finalizeRouteRestore);
+          }
+        },
+        normalizeTabIndex(value) {
+          const maxIndex = Math.max(0, this.tabs.length - 1);
+          if (!Number.isInteger(value) || value < 0) {
+            return Math.min(this.tab, maxIndex);
+          }
+          return Math.max(0, Math.min(value, maxIndex));
+        },
+        commitRouteState(overrides = {}, options = {}) {
+          if (!this.routeReady || this.isRestoringRoute) {
+            return;
+          }
+          const { push = true } = options;
+          const params = {};
+          const projectId = Object.prototype.hasOwnProperty.call(overrides, 'projectId')
+            ? overrides.projectId
+            : this.project_id;
+          if (projectId) {
+            params.projectId = projectId;
+          }
+          const getOverride = (key, fallback) =>
+            Object.prototype.hasOwnProperty.call(overrides, key) ? overrides[key] : fallback;
+          const tabValue = getOverride('tab', this.tab);
+          const logsValue = getOverride('logs', this.logsCollapsed);
+          const treeValue = getOverride('tree', this.tricks.showtree);
+          const query = {};
+          if (Number.isInteger(tabValue) && tabValue > 0) {
+            query.tab = String(tabValue);
+          }
+          if (logsValue) {
+            query.logs = '1';
+          }
+          if (treeValue) {
+            query.tree = '1';
+          }
+          const target = { name: 'home', params, query };
+          if (this.isRouteEqual(this.$route, target)) {
+            return;
+          }
+          const method = push ? 'push' : 'replace';
+          this.$router[method](target).catch(() => {});
+        },
+        isRouteEqual(current, target) {
+          const normalize = (source) => {
+            const normalized = {};
+            Object.entries(source || {}).forEach(([key, value]) => {
+              if (value === undefined || value === null || value === '') {
+                return;
+              }
+              if (Array.isArray(value)) {
+                normalized[key] = value.map((v) => String(v));
+              } else {
+                normalized[key] = String(value);
+              }
+            });
+            return normalized;
+          };
+          const currentParams = normalize(current.params);
+          const targetParams = normalize(target.params);
+          const currentQuery = normalize(current.query);
+          const targetQuery = normalize(target.query);
+          return (
+            JSON.stringify(currentParams) === JSON.stringify(targetParams) &&
+            JSON.stringify(currentQuery) === JSON.stringify(targetQuery)
+          );
+        },
         handleKeySequence(event) {
           this.keySequence += event.key;
           if (this.keySequence.length > 20) {
@@ -1466,7 +1633,7 @@
               if (!this.project && this.project_id) {
                 const match = this.projects.find((proj) => proj.id === this.project_id);
                 if (match) {
-                  this.selectProject(match);
+                  this.selectProject(match, { resetTab: false, skipRouteUpdate: true });
                 }
               }
             })
@@ -1544,20 +1711,26 @@
               db.collections = [];
             });
         },
-        selectProject(project) {
+        selectProject(project, options = {}) {
+          const { resetTab = true, skipRouteUpdate = false } = options;
           this.projectMenuOpen = false;
           this.project = project;
           this.project_id = project.id;
           if (this.isMobileViewport) {
             this.closeSidebar();
           }
-          this.logsCollapsed = false;
           if (localdev) {
             fakeHeaders['X-Project'] = project.id;
           }
           this.updateCoreTabs();
           this.fetchTree();
-          this.tab = 0;
+          if (resetTab) {
+            this.logsCollapsed = false;
+            this.tab = 0;
+          }
+          if (!skipRouteUpdate) {
+            this.commitRouteState({ projectId: project.id }, { push: true });
+          }
         },
         handleProjectChange(project) {
           if (!project) {
@@ -1565,6 +1738,7 @@
             this.project_id = '';
             this.projectMenuOpen = false;
             this.logsCollapsed = false;
+            this.commitRouteState({ projectId: '' }, { push: true });
             return;
           }
           this.selectProject(project);
@@ -1672,7 +1846,11 @@
           this.inputs.showNewProject = false;
         },
       },
-    }).mount('#app');
+    });
+    app.use(router);
+    router.isReady().then(() => {
+      app.mount('#app');
+    });
   </script>
 </body>
 </html>
