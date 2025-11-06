@@ -28,6 +28,7 @@ func Build(staticsDir, version string) *box.B {
 	fakeapi.Handle("GET", "/lambdasapi/api/v0/lambdas", FakeListLambdas)
 	fakeapi.Handle("GET", "/projectsapi/v0/projects", FakeListProjects)
 	fakeapi.Handle("GET", "/projectsapi/v0/projects/{projectid}", FakeProject)
+	fakeapi.Handle("GET", "/filesapi/v1/buckets", FakePListBuckets)
 
 	// Static files
 	b.Handle("GET", "/*", statics.ServeStatics(staticsDir)).
@@ -173,6 +174,63 @@ func FakeProject() any {
 		"update_timestamp": 1.7357942044206715e+18,
 		"auth": JSON{
 			"enabled": true,
+		},
+	}
+}
+
+func FakePListBuckets() any {
+	return []JSON{
+		{
+			"created_h":         "2025-05-28T01:32:53.438611Z",
+			"created_timestamp": 1748395973438611000,
+			"description":       "",
+			"id":                "bucket-30b0a95b-1564-4526-90f6-5ed5f344264a",
+			"name":              "Project-Files",
+			"owners": []string{
+				"user-0b654fad-8b74-4431-81d7-a016aa47e29e",
+			},
+		},
+		{
+			"created_h":         "2025-05-28T16:03:14.9537244Z",
+			"created_timestamp": 1748448194953724400,
+			"description":       "",
+			"id":                "bucket-c1d91d63-c2e9-44e2-84e1-6904ff0be73a",
+			"name":              "prueba2",
+			"owners": []string{
+				"user-0b654fad-8b74-4431-81d7-a016aa47e29e",
+			},
+		},
+		{
+			"created_h":         "2025-09-23T01:29:46.1007334Z",
+			"created_timestamp": 1758590986100733400,
+			"description":       "",
+			"id":                "bucket-71ce470a-b130-4c9a-87a6-8d7717515297",
+			"name":              "prueba-nuevo-server",
+			"owners": []string{
+				"user-0b654fad-8b74-4431-81d7-a016aa47e29e",
+			},
+		},
+		{
+			"created_h":         "2025-10-09T22:34:17.9015877Z",
+			"created_timestamp": 1760049257901587700,
+			"description":       "",
+			"id":                "bucket-f34b9c7e-fe68-444b-bc15-737f0e281689",
+			"name":              "ProjectoGo",
+			"owners": []string{
+				"user-0b654fad-8b74-4431-81d7-a016aa47e29e",
+			},
+		},
+		{
+			"created_h":         "2025-10-23T15:54:49.8020337Z",
+			"created_timestamp": 1761234889802033700,
+			"description":       "",
+			"id":                "bucket-b1e76bb9-b821-4702-94f4-01d02cd7a068",
+			"name":              "holacloud",
+			"owners": []string{
+				"user-082f6bc0-066a-415b-a776-34281210c7ea",
+				"user-0b654fad-8b74-4431-81d7-a016aa47e29e",
+				"user-5fea5107-948e-40a2-9860-8baac491449d",
+			},
 		},
 	}
 }
