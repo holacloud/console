@@ -1097,6 +1097,26 @@
           </div>
 
           <div class="hc-sidebar-section" v-if="project">
+            <div class="hc-sidebar-section__title">Buckets</div>
+            <template v-if="tree.buckets.length">
+              <ul class="hc-nav-list">
+                <li v-for="bucket in tree.buckets" :key="bucket.id || bucket.name">
+                  <div class="hc-nav-item" @click="openBucket(bucket)">
+                    <div class="hc-nav-item__label">
+                      <img src="img/icon-files.png" alt="Bucket" />
+                      <span>{{ bucket.name || bucket.id }}</span>
+                    </div>
+                    <span class="hc-nav-item__meta" v-if="bucket.description">{{ bucket.description }}</span>
+                  </div>
+                </li>
+              </ul>
+            </template>
+            <div class="hc-empty-state" v-else style="padding: 1.25rem;">
+              <p style="margin: 0; color: var(--text-secondary);">Sin buckets en este proyecto.</p>
+            </div>
+          </div>
+
+          <div class="hc-sidebar-section" v-if="project">
             <div class="hc-sidebar-section__title">Lambdas</div>
             <ul class="hc-nav-list">
               <li v-for="lambda in tree.lambdas" :key="lambda.id">
@@ -1310,10 +1330,12 @@
     let baseprojects = 'https://projects.hola.cloud';
     let baseinception = 'https://inceptiondb.hola.cloud';
     let baselambdas = 'https://lambda.hola.cloud';
+    let basefiles = 'https://files.hola.cloud';
     if (localdev) {
       baseprojects = '/fakeapi/projectsapi';
       baseinception = '/fakeapi/inceptionapi';
       baselambdas = '/fakeapi/lambdasapi';
+      basefiles = '/fakeapi/filesapi';
       base = '/fakeapi/authapi';
     }
 
@@ -1357,6 +1379,7 @@
           tree: {
             databases: [],
             lambdas: [],
+            buckets: [],
           },
           tricks: {
             showtree: false,
@@ -1650,8 +1673,12 @@
             return;
           }
           fakeHeaders['X-Project'] = this.project_id;
+          this.tree.databases = [];
+          this.tree.lambdas = [];
+          this.tree.buckets = [];
           this.fetchDatabases();
           this.fetchLambdas();
+          this.fetchBuckets();
         },
         fetchDatabases() {
           fetch(baseinception + '/v1/databases', {
@@ -1693,6 +1720,37 @@
             })
             .catch(() => {
               this.tree.lambdas = [];
+            });
+        },
+        fetchBuckets() {
+          fetch(basefiles + '/v1/buckets', {
+            headers: fakeHeaders,
+            credentials: 'include',
+          })
+            .then((resp) => resp.json())
+            .then((values) => {
+              if (!Array.isArray(values)) {
+                values = [];
+              }
+              const buckets = values
+                .filter((bucket) => {
+                  if (!bucket) {
+                    return false;
+                  }
+                  if (bucket.project_id && this.project_id) {
+                    return bucket.project_id === this.project_id;
+                  }
+                  return true;
+                })
+                .sort((a, b) => {
+                  const left = (a.name || a.id || '').toLocaleLowerCase();
+                  const right = (b.name || b.id || '').toLocaleLowerCase();
+                  return left.localeCompare(right);
+                });
+              this.tree.buckets = buckets;
+            })
+            .catch(() => {
+              this.tree.buckets = [];
             });
         },
         expandDatabase(db) {
@@ -1739,6 +1797,10 @@
             this.project_id = '';
             this.projectMenuOpen = false;
             this.logsCollapsed = false;
+            this.tree.databases = [];
+            this.tree.lambdas = [];
+            this.tree.buckets = [];
+            delete fakeHeaders['X-Project'];
             this.commitRouteState({ projectId: '' }, { push: true });
             return;
           }
@@ -1785,6 +1847,32 @@
           this.tabs.push({
             icon: 'img/icon-lambda.png',
             name: (lambda.method || '') + ' ' + (lambda.path || ''),
+            url,
+          });
+          this.tab = this.tabs.length - 1;
+          if (this.isMobileViewport) {
+            this.closeSidebar();
+          }
+        },
+        openBucket(bucket) {
+          if (!this.project_id) {
+            return;
+          }
+          const bucketId = bucket && (bucket.id || bucket.name);
+          const baseUrl =
+            'https://files.hola.cloud/?embed&project=' + encodeURIComponent(this.project_id);
+          const url = bucketId ? baseUrl + '#/buckets/' + encodeURIComponent(bucketId) : baseUrl;
+          const existingIndex = this.tabs.findIndex((tab) => tab.url === url);
+          if (existingIndex >= 0) {
+            this.tab = existingIndex;
+            if (this.isMobileViewport) {
+              this.closeSidebar();
+            }
+            return;
+          }
+          this.tabs.push({
+            icon: 'img/icon-files.png',
+            name: bucket && bucket.name ? bucket.name : bucketId || 'Archivos',
             url,
           });
           this.tab = this.tabs.length - 1;
