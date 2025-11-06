@@ -1350,6 +1350,7 @@
             { icon: 'img/icon-lambda.png', name: 'Lambdas', url: 'about:blank', hideClose: true },
             { icon: 'img/icon-config.png', name: 'Config', url: 'about:blank', hideClose: true },
             { icon: 'img/icon-files.png', name: 'Archivos', url: 'about:blank', hideClose: true },
+            { icon: 'img/icon-projects.png', name: 'Projects API', url: 'about:blank', hideClose: true },
           ],
           tab: 0,
           project_id: '',
@@ -1753,6 +1754,7 @@
             'https://lambda.hola.cloud/?embed&project=' + projectParam,
             'https://config.hola.cloud/?embed&project=' + projectParam,
             'https://files.hola.cloud/?embed&project=' + projectParam,
+            'https://projects.hola.cloud/?embed&project=' + projectParam,
           ];
           urls.forEach((url, index) => {
             if (this.tabs[index]) {
